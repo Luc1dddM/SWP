@@ -1,0 +1,219 @@
+.frame-child {
+  background-color: var(--color-midnightblue-100);
+  text-align: center;
+}
+
+.rectangle-parent {
+}
+.frame-item {
+  width: 100%;
+  background-color: var(--color-midnightblue-100);
+  border: 1px solid var(--color-black);
+  box-sizing: border-box;
+}
+.frame-inner {
+  top: -5px;
+  left: 53px;
+  background-color: var(--color-darkslateblue);
+  width: 100%;
+
+}
+.hatchback,
+.sedan,
+.sports-car {
+  top: 0;
+  left: 31px;
+}
+.hatchback,
+.sports-car {
+  top: 49px;
+}
+.hatchback {
+  top: 100px;
+}
+.other,
+.pickup-truck,
+.sport-utility-vehicle {
+  top: 143px;
+  left: 31px;
+}
+.other,
+.pickup-truck {
+  top: 186px;
+}
+.other {
+  top: 231px;
+}
+.ellipse-div,
+.group-child,
+.group-child1,
+.group-child2,
+.group-inner,
+.group-item {
+  top: 4px;
+  left: 0;
+  border-radius: 50%;
+  background-color: var(--color-midnightblue-200);
+  width: 20px;
+}
+.ellipse-div,
+.group-child1,
+.group-child2,
+.group-inner,
+.group-item {
+  top: 57px;
+}
+.ellipse-div,
+.group-child1,
+.group-child2,
+.group-inner {
+  top: 102px;
+}
+.ellipse-div,
+.group-child1,
+.group-child2 {
+  top: 145px;
+}
+.group-child1,
+.group-child2 {
+  top: 198px;
+}
+.group-child2 {
+  top: 233px;
+}
+.coupe,
+.wagon {
+  top: 6px;
+  left: 626px;
+}
+.wagon {
+  top: 49px;
+}
+.convertible,
+.hybridelectric,
+.minivan {
+  top: 94px;
+  left: 626px;
+}
+.hybridelectric,
+.minivan {
+  top: 145px;
+}
+.hybridelectric {
+  top: 186px;
+}
+.group-child3,
+.group-child4,
+.group-child5,
+.group-child6,
+.group-child7 {
+  top: 12px;
+  left: 585px;
+  border-radius: 50%;
+  background-color: var(--color-midnightblue-200);
+  width: 20px;
+}
+.group-child4,
+.group-child5,
+.group-child6,
+.group-child7 {
+  top: 57px;
+}
+.group-child5,
+.group-child6,
+.group-child7 {
+  top: 104px;
+}
+.group-child6,
+.group-child7 {
+  top: 149px;
+}
+.group-child7 {
+  top: 194px;
+}
+.form-row,
+.vehical-info-parent, .vehical-number-parent {
+    padding: 20px;
+    width: 100%;
+}
+
+.form-type{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-type input{
+    margin-right: 20px;
+}
+
+    .rectangle-container {
+        top: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+    }
+.rectangle-div,
+.vehical-number {
+  top: 0;
+  left: 14px;
+}
+.rectangle-div {
+  top: 46px;
+  left: 0;
+  background-color: var(--color-darkslateblue);
+  width: 243px;
+}
+.vehical-number-parent {
+ 
+}
+.make {
+  top: 0;
+  left: 8px;
+}
+
+.frame-child1 {
+  top: 608px;
+  background-color: var(--color-darkslateblue);
+}
+.model {
+  top: 562px;
+  left: 55px;
+}
+.type-of-services {
+  top: 683px;
+  left: 56px;
+}
+.check-the-engine,
+.group-child9 {
+  top: 0;
+  left: 27px;
+}
+.group-child9 {
+  top: 6px;
+  left: 0;
+  background-color: var(--color-midnightblue-200);
+}
+.check-the-engine-oil-parent {
+  top: 729px;
+  left: 48px;
+}
+.any-special-instructions,
+.frame-child2 {
+  top: 793px;
+  left: 47px;
+}
+.frame-child2 {
+  top: 839px;
+  background-color: var(--color-darkslateblue);
+}
+
+.desktop-1 {
+  background-color: var(--color-midnightblue-200);
+  width: 100%;
+  overflow: hidden;
+  text-align: left;
+  font-size: var(--font-size-11xl);
+  color: var(--color-white);
+  font-family: var(--font-inter);
+}
