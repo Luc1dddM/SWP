@@ -153,11 +153,7 @@
         width: 100%;
         overflow: hidden;
     }
-.rectangle-div,
-.vehical-number {
-  top: 0;
-  left: 14px;
-}
+
 .rectangle-div {
   top: 46px;
   left: 0;

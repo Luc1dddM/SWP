@@ -5,16 +5,20 @@ using SWP_CarService_Final.Models;
 using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using SWP_CarService_Final.Services;
 
 namespace SWP_CarService_Final.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserServices _userService;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, UserServices userService)
         {
             _logger = logger;
+            _userService = userService;
         }
 
         [Authorize]
@@ -36,7 +40,7 @@ namespace SWP_CarService_Final.Controllers
         [HttpPost]
         public async Task<IActionResult> login(String userName, String password, bool rememberMe)
         {
-            var cUser = 1;
+            Customer cUser = _userService.login(userName, password);
             if (cUser != null)
             {
                 List<Claim> claims = new List<Claim>()

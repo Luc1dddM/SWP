@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using SWP_CarService_Final.Services;
 
 namespace SWP_CarService_Final
 {
@@ -10,6 +11,7 @@ namespace SWP_CarService_Final
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<UserServices>();
 
             builder.Services.AddAuthentication(
                 CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
