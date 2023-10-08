@@ -14,10 +14,5 @@ namespace SWP_CarService_Final.Models
         public DateTime createdAt { get; set; }
         public string status { get; set; }
         public Customer customer { get; set; }
-
-        public Appointment()
-        {
-
-        }
     }
 }

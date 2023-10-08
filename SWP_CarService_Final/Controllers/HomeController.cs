@@ -6,19 +6,22 @@ using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using SWP_CarService_Final.Services;
+using Newtonsoft.Json;
 
 namespace SWP_CarService_Final.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IHttpContextAccessor _contx;
         private readonly ILogger<HomeController> _logger;
         private readonly UserServices _userService;
 
 
-        public HomeController(ILogger<HomeController> logger, UserServices userService)
+        public HomeController(ILogger<HomeController> logger, UserServices userService, IHttpContextAccessor contx)
         {
             _logger = logger;
             _userService = userService;
+            _contx = contx;
         }
 
         [Authorize]
@@ -64,7 +67,8 @@ namespace SWP_CarService_Final.Controllers
 
 
                 //create session for current user
-                HttpContext.Session.SetString("userName", "123");
+                string currentCustomer = JsonConvert.SerializeObject(cUser);
+                _contx.HttpContext.Session.SetString("cCus", currentCustomer);
                 return RedirectToAction("Index");
             }
             else

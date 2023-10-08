@@ -11,7 +11,20 @@ namespace SWP_CarService_Final
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(option =>
+            {
+                option.IdleTimeout = TimeSpan.FromMinutes(20);
+            });
+
+            //Add scrope for services
+            builder.Services.AddScoped<DBContext>();
             builder.Services.AddScoped<UserServices>();
+            builder.Services.AddScoped<AppointmentService>();
+
 
             builder.Services.AddAuthentication(
                 CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(

@@ -4,13 +4,21 @@ using System.Data.SqlClient;
 
 namespace SWP_CarService_Final.Services
 {
-    public class UserServices : DBContext
+    public class UserServices
     {
+
+        private readonly DBContext _dbContext;
+
+        public UserServices(DBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public Customer login(string username, string password)
         {
-            DBContext context = new DBContext();
-            context._connection().Open();
-            SqlCommand command = new SqlCommand("select * from Customer where user_name = @username and password = @password", context._connection());
+
+            _dbContext._connection().Open();
+            SqlCommand command = new SqlCommand("select * from Customer where user_name = @username and password = @password", _dbContext._connection());
             command.Parameters.AddWithValue("username", username);
             command.Parameters.AddWithValue("password", password);  
             using(SqlDataReader reader = command.ExecuteReader())
@@ -29,7 +37,7 @@ namespace SWP_CarService_Final.Services
                         return customer;
                 }
             }
-            context._connection().Close();
+            _dbContext._connection().Close();
             return null;
         }
     }
