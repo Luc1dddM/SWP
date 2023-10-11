@@ -2,7 +2,37 @@
 @{
     ViewData["Title"] = "view";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewData["direction"] =  "Appointment List";
 }
 
-<h1>view</h1>
+<div class="list-appointment__container">
+    <div class="row list-appointment__header">
+        <h2 class="header__title">Appointment List</h2>
+        <button class="">Add New</button>
+    </div>
+
+    <div class="row list-appointment__title--container">
+        <h4 class="col-1 list-appointment__title">ID</h4>
+        <h4 class="col list-appointment__title">Description</h4>
+        <h4 class="col list-appointment__title">Time Arrived</h4>
+        <h4 class="col list-appointment__title">Created</h4>
+        <h4 class="col list-appointment__title">Customer</h4>
+    </div>
+
+    <div class="list-appointment__item--container">
+        <div class="row list-appointment__item">
+            <p class="col-1 list-appointment__item--id">01</p>
+            <p class="col list-appointment__item--description">test</p>
+            <p class="col list-appointment__item--time-arrived">9.30 am</p>
+            <p class="col list-appointment__item--created">12/9/2023</p>
+            <p class="col list-appointment__item--customer">Lam</p>
+        </div>
+        <div class="row appointment-detail__container">
+            <div class="appointment-detail__item">
+                <img src="~/img/oilfilter-4640192-1@2x.png" class="appointment-detail__item--img">
+                <p class="appointment-detail__item--name">Change oil</p>
+            </div>
+        </div>
+    </div>
+</div>
 
