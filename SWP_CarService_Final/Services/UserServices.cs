@@ -34,7 +34,15 @@ namespace SWP_CarService_Final.Services
                         customer.phone_number = reader.GetString(4);
                         customer.account_status = reader.GetBoolean(5);
                         customer.img = (!reader.IsDBNull(6)) ? reader.GetString(6) : "";
-                        return customer;
+
+                    Console.WriteLine(customer.user_name);
+                    Console.WriteLine(customer.fullName);
+                    Console.WriteLine(customer.password);
+                    Console.WriteLine(customer.email);
+                    Console.WriteLine(customer.phone_number);
+                    Console.WriteLine(customer.account_status);
+                    Console.WriteLine(customer.img);
+                    return customer;
                 }
             }
             _dbContext._connection().Close();
