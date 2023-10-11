@@ -47,5 +47,10 @@ namespace SWP_CarService_Final.Controllers
             
             return RedirectToAction("index", "Home");
         }
+
+        public IActionResult view()
+        {
+            return View();
+        }
     }
 }

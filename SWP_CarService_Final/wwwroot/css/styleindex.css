@@ -1,0 +1,420 @@
+body {
+    background: linear-gradient(111.4deg, rgb(167, 216, 245) 18.8%, rgb(54, 181, 255) 100.2%);
+    user-select: none;
+    height: 100vh;  
+}
+
+.flex-center {
+    width: 100%;
+}
+
+.profile {
+    justify-content: flex-end;
+    display: flex;
+    padding: 10px 10px 0;
+    right: 14px;
+
+}
+
+.avatar {
+    padding: 4px;
+}
+
+.avatar img {
+    width: 40px;
+    border-radius: 50%;
+    padding: 4px;
+    background-color: #E4EBFE;
+}
+
+.menu-bar {
+    display: flex;
+    justify-content: left;
+    padding: 14px 0;
+    left: 32px;
+    font-size: 32px;
+}
+
+.name {
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.arrow-down {
+    font-size: 16px;
+    text-align: center;
+    padding: 12px 0px;
+    position: relative;
+
+}
+
+.dashboard {
+    font-weight: bold;
+    font-size: 26px;
+    padding-bottom: 20px;
+}
+
+.left-box {
+    padding: 20px 15px;
+    background-color: white;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.text {
+    color: #6C757D;
+}
+
+.value {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.right-box {
+    text-align: center;
+    background-color: #17252c;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 0 !important;
+}
+
+.main-container {
+    padding: 30px 30px;
+}
+
+.box-work-order i {
+    color: rgb(0, 236, 207);
+    font-size: 28px;
+    padding-top: 34px;
+}
+
+.box-client i {
+    color: rgb(255, 91, 91);
+    font-size: 28px;
+    padding-top: 34px;
+}
+
+.box-technician i {
+    color: #a9b2b9;
+    font-size: 28px;
+    padding-top: 34px;
+}
+
+.box-earning i {
+    color: rgb(9, 204, 6);
+    font-size: 28px;
+    padding-top: 34px;
+}
+
+.side-bar {
+    background-color: white;
+    width: 290px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    overflow-y: auto;
+    z-index: 1;
+    transition-property: left;
+    transition: 0.4s ease;
+    transition-property: left;
+}
+
+.side-bar .menu .brand {
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.brand img {
+    width: 56px;
+    padding-bottom: 10px;
+}
+
+.side-bar .menu .brand a {
+    font-size: 22px;
+    color: rgb(44, 44, 44);
+    font-weight: lighter;
+    text-decoration: none;
+    font-weight: bold;
+
+}
+
+
+.side-bar .menu .item {
+    position: relative;
+    cursor: pointer;
+}
+
+.side-bar .menu .item i {
+    color: rgb(44, 44, 44);
+    font-size: 25px;
+    padding: 6px;
+    padding-left: 28px;
+    padding-right: 18px;
+}
+
+.side-bar .menu .item a {
+    color: black;
+    scroll-behavior: smooth;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.side-bar .menu .item:hover {
+    background-color: #54c3f7;
+    transition: 0.3s ease;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #4b4949;
+}
+
+.side-bar .menu .item a .dropdown {
+    position: absolute;
+    right: 0;
+    margin: 20px 0;
+    transition: 0.3s ease;
+}
+
+.dropup {
+    transition: 0.5s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.side-bar.active {
+    left: 0;
+}
+
+.small-menu {
+    background-color: white;
+    transition: 0.3s ease;
+}
+
+.small-menu:hover {
+    background-color: #c0edff;
+    transition: 1s;
+}
+
+.side-bar .menu .item .sub-menu {
+    background: rgba(255, 255, 255, 0.1);
+    display: none;
+
+}
+
+.side-bar .menu .item .sub-menu a {
+    padding-left: 20px;
+}
+
+.sub-item {
+    display: block;
+    transition: 0.3s ease;
+}
+
+.rotate {
+    transform: rotate(90deg);
+}
+
+.flip {
+    transform: rotate(180deg);
+    transition: 0.5s;
+}
+
+.close-btn {
+    color: rgb(44, 44, 44);
+    font-size: 20px;
+}
+
+.menu-profile {
+    position: absolute;
+    display: block;
+    right: 0;
+    width: 160px;
+    text-align: left;
+    background-color: rgb(236, 248, 253);
+    top: 60px;
+    padding: 10px;
+    z-index: 1;
+    border-radius: 10px;
+    font-size: 16px;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.menu-profile.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.menu-profile ul {
+    margin: 0;
+    padding: 0 20px;
+    text-decoration: none;
+}
+
+.menu-profile a {
+    color: #444444;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.menu-profile li {
+    padding: 10px 0;
+    list-style: none;
+
+}
+
+.menu-profile i {
+    padding-right: 20px;
+}
+
+hr {
+    margin: 10px;
+}
+
+.menu-profile a:hover {
+    color: #02afff;
+}
+
+.arrow-down :hover {
+    color: #02afff;
+}
+
+.header-page {
+    background-color: white;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.header-page a {
+    text-decoration: none;
+}
+
+.header-page i {
+    padding: 0 10px;
+}
+
+.header-page h6 {
+    padding: 10px 10px 0;
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+nav {
+    background-color: white;
+    margin: 40px 30px 20px;
+    padding: 25px;
+    border-radius: 14px;
+}
+
+.icon-content i {
+    font-size: 24px;
+    padding-right: 14px;
+}
+
+.icon-content {
+    font-size: 30px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.link-content i {
+    padding: 0 4px;
+    font-size: 12px;
+}
+
+h3 {
+    font-weight: bold;
+}
+
+.content {
+    background-color: white;
+    margin: 30px;
+    border-radius: 14px;
+}
+
+.content-search {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title-container {
+    flex: 1;
+}
+
+.search-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.search-container form {
+    display: flex;
+    align-items: center;
+}
+
+.search-container input[type="text"] {
+    padding: 6px 40px 6px 12px;
+    font-size: 17px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    position: relative;
+}
+
+.search-container button {
+    padding: 6px 10px;
+    background: #72c3fa;
+    font-size: 17px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    right: 188px;
+}
+
+.search-container button:hover {
+    background: #008cff;
+}
+
+.search-container input[type="text"],
+.search-container button {
+    margin-top: 0;
+}
+
+.add-service-button {
+    margin-left: 18px;
+    padding: 8px 10px;
+    background-color: #008cff;
+    border-radius: 4px;
+}
+
+.add-service-button a {
+    color: white;
+    text-decoration: none;
+}
+
+
