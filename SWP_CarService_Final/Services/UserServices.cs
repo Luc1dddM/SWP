@@ -34,11 +34,10 @@ namespace SWP_CarService_Final.Services
                         customer.phone_number = reader.GetString(4);
                         customer.account_status = reader.GetBoolean(5);
                         customer.img = (!reader.IsDBNull(6)) ? reader.GetString(6) : "";
-
+                    Console.WriteLine(customer.fullName);
                     return customer;
                 }
             }
-            Console.WriteLine("cc");
             _dbContext._connection().Close();
             return null;
         }
