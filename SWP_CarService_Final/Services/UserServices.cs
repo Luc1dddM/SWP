@@ -35,7 +35,6 @@ namespace SWP_CarService_Final.Services
                         customer.account_status = reader.GetBoolean(5);
                         customer.img = (!reader.IsDBNull(6)) ? reader.GetString(6) : "";
 
-                    Console.WriteLine(customer.account_status);
                     return customer;
                 }
             }
