@@ -38,6 +38,7 @@ namespace SWP_CarService_Final.Services
                     return customer;
                 }
             }
+            Console.WriteLine("cd");
             _dbContext._connection().Close();
             return null;
         }
