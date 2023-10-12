@@ -39,7 +39,6 @@ namespace SWP_CarService_Final.Services
                     return customer;
                 }
             }
-            Console.WriteLine("Meo");
             _dbContext._connection().Close();
             return null;
         }
