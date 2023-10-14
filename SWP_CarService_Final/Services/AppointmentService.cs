@@ -49,7 +49,7 @@ namespace SWP_CarService_Final.Services
                 try
                 {
                     _dbcontext._connection().Open();
-                    SqlCommand cmd = new SqlCommand("insert appointmentDetail values(@appointment_id = @appointmentID, task_id = @taskID)", _dbcontext._connection());
+                    SqlCommand cmd = new SqlCommand("insert Appointment_Detail values(@appointmentID, @taskID)", _dbcontext._connection());
                     cmd.Parameters.AddWithValue("appointmentID", apmID);
                     cmd.Parameters.AddWithValue("taskID", detail);
                     cmd.ExecuteNonQuery();

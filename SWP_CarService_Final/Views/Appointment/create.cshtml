@@ -41,7 +41,7 @@
                                     @foreach (var task in @taskService.getAllTasks())
                                     {
                                         <div class="col-4 form-group form-type">
-                                            <input type="checkbox" name="listTasks" value="@task.taskID">
+                                            <input type="checkbox" name="servicesIDs" value="@task.taskID">
                                             <label class="form-check-label" for="exampleCheck1">@task.taskName</label>
                                         </div>
                                     }
