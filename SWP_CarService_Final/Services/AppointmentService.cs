@@ -1,6 +1,7 @@
 ﻿using SWP_CarService_Final.Models;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 
 namespace SWP_CarService_Final.Services
@@ -16,7 +17,6 @@ namespace SWP_CarService_Final.Services
         }
         public int getNumberOfAppointment()
         {
-
             _dbcontext._connection().Open();
             SqlCommand command = new SqlCommand("select count(*) from Appointment", _dbcontext._connection());
             Int32 count = (Int32)command.ExecuteScalar();
@@ -24,7 +24,7 @@ namespace SWP_CarService_Final.Services
             return count;
         }
 
-        public void createAppointment(Appointment apppointment)
+        public void createAppointment(Appointment apppointment, List<string> detailIDs)
         {
             string id = "APM" + (getNumberOfAppointment() + 1);
             _dbcontext._connection().Open();
@@ -39,9 +39,22 @@ namespace SWP_CarService_Final.Services
             command.Parameters.AddWithValue("userName", apppointment.customer.user_name);
             command.ExecuteNonQuery();
             _dbcontext._connection().Close();
-
+            createAppointmentDetails(id, detailIDs);
         }
 
-
+        public void createAppointmentDetails(string apmID, List<string> detailIDs)
+        {
+            foreach (string detail in detailIDs)
+            {
+                try
+                {
+                    _dbcontext._connection().Open();
+                    SqlCommand cmd = new SqlCommand("insert appointmentDetail values(@appointment_id = @appointmentID, task_id = @taskID)", _dbcontext._connection());
+                    cmd.Parameters.AddWithValue("appointmentID", apmID);
+                    cmd.Parameters.AddWithValue("taskID", detail);
+                    cmd.ExecuteNonQuery();
+                }finally { _dbcontext._connection().Close(); }
+            }
+        }
     }
 }
