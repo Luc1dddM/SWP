@@ -2,10 +2,10 @@
 {
     public class Task
     {
-        private string taskID { get; set; }
-        private string taskName { get; set; }  
-        private double price { get; set; }
-        private bool actice { get; set; }
-        private string img {  get; set; }
+        public string taskID;
+        public string taskName { get; set; }  
+        public decimal price { get; set; }
+        public bool actice { get; set; }
+        public string img {  get; set; }
     }
 }
