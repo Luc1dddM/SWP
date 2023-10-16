@@ -78,7 +78,7 @@ namespace SWP_CarService_Final.Services
                         var detail = new AppointmentDetail()
                         {
                             appointmentID = reader.GetString(0),
-                            task = _taskService.getTaskByID(reader.GetString(1)),
+                            task = _taskService.getTaskByIDForAppointment(reader.GetString(1)),
                         };
                         details.Add(detail);
                     }
