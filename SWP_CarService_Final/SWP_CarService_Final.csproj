@@ -12,4 +12,11 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Team\Controllers\" />
+    <Folder Include="Areas\Team\Data\" />
+    <Folder Include="Areas\Team\Views\" />
+    <Folder Include="Areas\User\Data\" />
+  </ItemGroup>
+
 </Project>

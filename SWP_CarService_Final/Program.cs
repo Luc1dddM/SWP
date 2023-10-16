@@ -54,6 +54,8 @@ namespace SWP_CarService_Final
                 app.UseHsts();
             }
 
+
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
@@ -66,9 +68,25 @@ namespace SWP_CarService_Final
 
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
+
+                endpoints.MapAreaControllerRoute(
+                  name: "User",
+                  areaName: "User",
+                  pattern: "{user}/{controller=Home}/{action=Login}/{id?}"
+                );
+
+                endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
+            });
 
             app.Run();
         }
