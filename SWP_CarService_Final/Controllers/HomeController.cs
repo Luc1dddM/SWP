@@ -46,6 +46,10 @@ namespace SWP_CarService_Final.Controllers
             Customer cUser = _userService.login(userName, password);
             if (cUser != null)
             {
+                string currentCustomer = JsonConvert.SerializeObject(cUser);
+                _contx.HttpContext.Session.SetString("cCus", currentCustomer);
+
+
                 List<Claim> claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, userName),
@@ -67,8 +71,7 @@ namespace SWP_CarService_Final.Controllers
 
 
                 //create session for current user
-                string currentCustomer = JsonConvert.SerializeObject(cUser);
-                _contx.HttpContext.Session.SetString("cCus", currentCustomer);
+                
                 return RedirectToAction("Index");
             }
             else
@@ -80,6 +83,7 @@ namespace SWP_CarService_Final.Controllers
 
         public async Task<IActionResult> logout()
         {
+            _contx.HttpContext.Session.Remove("cCus");
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("login");
         }
