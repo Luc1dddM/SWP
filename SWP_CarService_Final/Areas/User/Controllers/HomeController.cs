@@ -1,27 +1,26 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using SWP_CarService_Final.Models;
-using System.Diagnostics;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using SWP_CarService_Final.Services;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SWP_CarService_Final.Services;
+using System.Security.Claims;
+using SWP_CarService_Final.Areas.User.Models;
 
-namespace SWP_CarService_Final.Controllers
+namespace Areas
 {
+    [Area("User")]
     public class HomeController : Controller
     {
-        private readonly IHttpContextAccessor _contx;
+        private readonly IHttpContextAccessor _context;
         private readonly ILogger<HomeController> _logger;
         private readonly UserServices _userService;
 
-
-        public HomeController(ILogger<HomeController> logger, UserServices userService, IHttpContextAccessor contx)
+        public HomeController(IHttpContextAccessor context, ILogger<HomeController> logger, UserServices userService)
         {
             _logger = logger;
             _userService = userService;
-            _contx = contx;
+            _context = context;
         }
 
         [Authorize]
@@ -30,30 +29,26 @@ namespace SWP_CarService_Final.Controllers
             return View();
         }
 
-        public IActionResult login()
+        public IActionResult Login()
         {
             ClaimsPrincipal claimUser = HttpContext.User;
             if (claimUser.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(); //note: chua add view cua admin muon do cua user 
         }
 
         [HttpPost]
         public async Task<IActionResult> login(String userName, String password, bool rememberMe)
         {
-            Customer cUser = _userService.CustomerLogin(userName, password);
-            if (cUser != null)
+            User user = _userService.UserLogin(userName, password);
+            if (user != null)
             {
-                string currentCustomer = JsonConvert.SerializeObject(cUser);
-                _contx.HttpContext.Session.SetString("cCus", currentCustomer);
-
-
                 List<Claim> claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, userName),
-                    new Claim(ClaimTypes.Role, "customer"),
+                    new Claim(ClaimTypes.Role, "admin"),
                 };
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
@@ -71,33 +66,21 @@ namespace SWP_CarService_Final.Controllers
 
 
                 //create session for current user
-                
+                string currentCustomer = JsonConvert.SerializeObject(user);
+                _context.HttpContext.Session.SetString("user", currentCustomer);
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.Msg = "del dc roi";
+                ViewBag.Msg = "ko hop le";
             }
             return View();
         }
 
         public async Task<IActionResult> logout()
         {
-            _contx.HttpContext.Session.Remove("cCus");
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("login");
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
     }
 }
