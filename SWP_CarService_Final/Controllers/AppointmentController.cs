@@ -27,12 +27,14 @@ namespace SWP_CarService_Final.Controllers
         public IActionResult create()
         {
 
-            
+            TaskService taskService = new TaskService();
+            Console.WriteLine(taskService.getAllTasks()[0].taskID);
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult create(string vehicleType, string description, DateTime timeArrived)
+        public IActionResult create(string vehicleType, string description, DateTime timeArrived, List<string> servicesIDs)
         {
             string cCustomerString = _contx.HttpContext.Session.GetString("cCus");
             Customer cCustomer = JsonConvert.DeserializeObject<Customer>(cCustomerString);
@@ -43,14 +45,25 @@ namespace SWP_CarService_Final.Controllers
                 timeArrived = timeArrived,
                 customer = cCustomer
             };
-            _appointmentService.createAppointment(newAppointment);
-            
-            return RedirectToAction("index", "Home");
+            _appointmentService.createAppointment(newAppointment, servicesIDs);
+            return RedirectToAction("view");
         }
 
         public IActionResult view()
         {
-            return View();
+            List<Appointment> appointments = new List<Appointment>();
+            string cCustomerString = _contx.HttpContext.Session.GetString("cCus");
+            if(cCustomerString != null)
+            {
+                Customer cCustomer = JsonConvert.DeserializeObject<Customer>(cCustomerString);
+                appointments = _appointmentService.getAllApppointments(cCustomer);
+            }
+            else
+            {
+                RedirectToAction("login", "Home");
+
+            }
+            return View(appointments);
         }
     }
 }

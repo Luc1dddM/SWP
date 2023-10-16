@@ -1,7 +1,8 @@
-﻿
+﻿@using SWP_CarService_Final.Services;
 
 @{
     Layout = null;
+    TaskService taskService = new TaskService();
 }
 
 <!DOCTYPE html>
@@ -37,14 +38,13 @@
                             <div class="vehical-info-parent">
                                 <b class="vehical-type">Vehical Type</b>
                                 <div class="row form-row">
-                                  @*   @foreach (var task in @taskService.getAllService())
+                                    @foreach (var task in @taskService.getAllTasks())
                                     {
                                         <div class="col-4 form-group form-type">
-                                            <input type="checkbox" name="listTasks" value="@task.TaskId">
-                                            <label class="form-check-label" for="exampleCheck1">@task.TaskName</label>
+                                            <input type="checkbox" name="servicesIDs" value="@task.taskID">
+                                            <label class="form-check-label" for="exampleCheck1">@task.taskName</label>
                                         </div>
-                                    } *@
-
+                                    }
                                 </div>
 
                                 <div class="form-group">

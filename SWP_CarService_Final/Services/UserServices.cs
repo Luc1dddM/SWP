@@ -24,8 +24,8 @@ namespace SWP_CarService_Final.Services
             _dbContext._connection().Open();
             SqlCommand command = new SqlCommand("select * from Customer where user_name = @username and password = @password", _dbContext._connection());
             command.Parameters.AddWithValue("username", username);
-            command.Parameters.AddWithValue("password", password);
-            using (SqlDataReader reader = command.ExecuteReader())
+            command.Parameters.AddWithValue("password", password);  
+            using(SqlDataReader reader = command.ExecuteReader())
             {
                 if (reader.Read())
                 {
