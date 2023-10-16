@@ -50,7 +50,7 @@ namespace SWP_CarService_Final.Services
                 try
                 {
                     connection.Open();
-                    SqlCommand cmd = new SqlCommand("insert Appointment_Detail values(@appointmentID, @taskID)", connection);
+                    SqlCommand cmd = new SqlCommand("insert Appointment_Details values(@appointmentID, @taskID)", connection);
                     cmd.Parameters.AddWithValue("appointmentID", apmID);
                     cmd.Parameters.AddWithValue("taskID", detail);
                     cmd.ExecuteNonQuery();
@@ -69,7 +69,7 @@ namespace SWP_CarService_Final.Services
                 {
                     connection.Open();
                 }
-                SqlCommand cmd = new SqlCommand("Select * from appointment_Detail where appointment_id = @APMID", connection);
+                SqlCommand cmd = new SqlCommand("Select * from appointment_Details where appointment_id = @APMID", connection);
                 cmd.Parameters.AddWithValue("APMID", APMID);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
