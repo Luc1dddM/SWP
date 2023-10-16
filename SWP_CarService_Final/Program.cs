@@ -24,6 +24,8 @@ namespace SWP_CarService_Final
             builder.Services.AddScoped<DBContext>();
             builder.Services.AddScoped<UserServices>();
             builder.Services.AddScoped<AppointmentService>();
+            builder.Services.AddScoped<TaskService>();
+
 
 
             builder.Services.AddAuthentication(

@@ -2,7 +2,7 @@
 {
     public class AppointmentDetail
     {
-        public Appointment appointment;
+        public string appointmentID;
         public Task task;
     }
 }

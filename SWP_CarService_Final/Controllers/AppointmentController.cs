@@ -46,12 +46,24 @@ namespace SWP_CarService_Final.Controllers
                 customer = cCustomer
             };
             _appointmentService.createAppointment(newAppointment, servicesIDs);
-            return RedirectToAction("index", "Home");
+            return RedirectToAction("view");
         }
 
         public IActionResult view()
         {
-            return View();
+            List<Appointment> appointments = new List<Appointment>();
+            string cCustomerString = _contx.HttpContext.Session.GetString("cCus");
+            if(cCustomerString != null)
+            {
+                Customer cCustomer = JsonConvert.DeserializeObject<Customer>(cCustomerString);
+                appointments = _appointmentService.getAllApppointments(cCustomer);
+            }
+            else
+            {
+                RedirectToAction("login", "Home");
+
+            }
+            return View(appointments);
         }
     }
 }
