@@ -48,11 +48,12 @@ namespace SWP_CarService_Final.Controllers
                     string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", ImgName);
                     var stream = new FileStream(uploadfilepath, FileMode.Create);
                     fileImg.CopyToAsync(stream);
+                    stream.Close();
                     ImgName = fileImg.FileName;
                 }
                 else
                 {
-                    ImgName = null;
+                    ImgName = "";
                 }
                 Models.Task service = new Models.Task()
                 {

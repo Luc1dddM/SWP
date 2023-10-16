@@ -24,6 +24,8 @@ namespace SWP_CarService_Final
             builder.Services.AddScoped<DBContext>();
             builder.Services.AddScoped<UserServices>();
             builder.Services.AddScoped<AppointmentService>();
+            builder.Services.AddScoped<TaskService>();
+
 
 
             builder.Services.AddAuthentication(
@@ -39,7 +41,7 @@ namespace SWP_CarService_Final
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });

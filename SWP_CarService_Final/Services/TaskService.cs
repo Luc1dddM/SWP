@@ -1,19 +1,23 @@
 ﻿using SWP_CarService_Final.Models;
 using System.Data.SqlClient;
 using SWP_CarService_Final.Models;
+using Task = SWP_CarService_Final.Models.Task;
 using System.Data;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using NuGet.Protocol.Plugins;
 
 namespace SWP_CarService_Final.Services
 {
     public class TaskService : DBContext
     {
+
+        
         readonly string rootFolder = @"D:\FPT\SWP391\Garage\SWP_CarService_Final\wwwroot\img";
         public List<Models.Task> getAllTasks()
         {
-            List<Models.Task> tasks = new List<Models.Task>();
+            List<Task> tasks = new List<Task>();
             try
             {
                 connection.Open();
@@ -22,7 +26,7 @@ namespace SWP_CarService_Final.Services
                 {
                     while (reader.Read())
                     {
-                        var task = new Models.Task()
+                        var task = new Task()
                         {
                             taskID = reader.GetString(0),
                             taskName = reader.GetString(1),
@@ -39,11 +43,43 @@ namespace SWP_CarService_Final.Services
             return tasks;
         }
 
-        public Models.Task GetTaskByID(string taskID)
+        public Task getTaskByIDForAppointment(string id)
+        {
+            Task task = null;
+            try
+            {
+                if(connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                SqlCommand cmd = new SqlCommand("Select * from Task where task_id = @id", connection);
+                cmd.Parameters.AddWithValue("id", id);
+                using(SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        task = new Task()
+                        {
+                            taskID = reader.GetString(0),
+                            taskName = reader.GetString(1),
+                            price = reader.GetDecimal(2),
+                            active = reader.GetBoolean(3),
+                            img = (!reader.IsDBNull(4)) ? reader.GetString(4) : "",
+                        };
+                    }
+                }
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return task;
+        }
+    
+
+        public Task GetTaskByID(string taskID)
         {
             Models.Task task = null;
-
-            try
+        try
             {
                 connection.Open();
                 string SQLSelect = "SELECT * FROM [SWP].[dbo].[Task] WHERE task_id = @task_id";
@@ -103,23 +139,17 @@ namespace SWP_CarService_Final.Services
                         }
                         else
                         {
-                            throw new Exception("The img does not already exist.");
+                            string SQLDelete = "DELETE FROM [SWP].[dbo].[Task] WHERE task_id = @task_id";
+                            SqlCommand command = new SqlCommand(SQLDelete, connection);
+                            command.Parameters.AddWithValue("task_id", taskId);
+                            command.ExecuteNonQuery();
                         }
-                    }
-                    else
-                    {
-                        string SQLDelete = "DELETE FROM [SWP].[dbo].[Task] WHERE task_id = @task_id";
-                        SqlCommand command = new SqlCommand(SQLDelete, connection);
-                        command.Parameters.AddWithValue("task_id", taskId);
-                        command.ExecuteNonQuery();
                     }
                 }
                 else
                 {
                     throw new Exception("The service does not already exist.");
                 }
-
-
             }
             catch (Exception ex)
             {

@@ -1,8 +1,9 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "view";
+    ViewData["direction"] = "Appointment List";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    ViewData["direction"] =  "Appointment List";
+    @model List<Appointment>
+
 }
 
 <div class="list-appointment__container">
@@ -20,19 +21,26 @@
     </div>
 
     <div class="list-appointment__item--container">
-        <div class="row list-appointment__item">
-            <p class="col-1 list-appointment__item--id">01</p>
-            <p class="col list-appointment__item--description">test</p>
-            <p class="col list-appointment__item--time-arrived">9.30 am</p>
-            <p class="col list-appointment__item--created">12/9/2023</p>
-            <p class="col list-appointment__item--customer">Lam</p>
-        </div>
-        <div class="row appointment-detail__container">
-            <div class="appointment-detail__item">
-                <img src="~/img/oilfilter-4640192-1@2x.png" class="appointment-detail__item--img">
-                <p class="appointment-detail__item--name">Change oil</p>
+        @foreach (var @appointment in @Model)
+        {
+            <div class="row list-appointment__item">
+                <p class="col-1 list-appointment__item--id">@appointment.appointmentID</p>
+                <p class="col list-appointment__item--description">@appointment.description</p>
+                <p class="col list-appointment__item--time-arrived">@appointment.timeArrived</p>
+                <p class="col list-appointment__item--created">@appointment.createdAt</p>
+                <p class="col list-appointment__item--customer">@appointment.customer.fullName</p>
             </div>
-        </div>
+            <div class="row appointment-detail__container">
+
+                @foreach(var @appointmentDetail in @appointment.details)
+                {
+                <div class="appointment-detail__item">
+                    <img src="~/img/oilfilter-4640192-1@2x.png" class="appointment-detail__item--img">
+                    <p class="appointment-detail__item--name">@appointmentDetail.task.taskName</p>
+                </div>
+                }
+            </div>
+        }
     </div>
 </div>
 
