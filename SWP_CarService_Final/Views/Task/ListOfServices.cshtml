@@ -1,7 +1,9 @@
-﻿
+﻿@using SWP_CarService_Final.Services;
+
 @{
     ViewData["Title"] = "ListOfServices";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    TaskService taskService = new TaskService();
 }
 
  <div class="main-container content">
@@ -30,99 +32,38 @@
                     <th style="width: 10%;">Status</th>
                     <th>Action</th>
                 </tr>
+            @foreach (var task in @taskService.getAllTasks()){
                 <tr>
-                    <td>01</td>
-                    <td><img src="~/img/engine-repair.png" alt="Engine Repair"></td>
-                    <td>Engine Repair</td>
-                    <td>2,000,000</td>
-                    <td>Includes repair or replacement of engine components, such as the fuel system, electrical system,
-                        starter, cooling system, refrigeration system, valves, combustion chambers, and drive system.
+                    <td>@task.taskID</td>
+                    <td><img src="~/img/@task.img" alt="Engine Repair"></td>
+                    <td>@task.taskName</td>
+                    <td>@task.price</td>
+                    <td>@task.Description
                     </td>
                     <td>
-                        <div class="inactive-status">
-                            In-Active
-                        </div>
+                        @if (task.active)
+                        {
+                            <div class="active-status">
+                                Active
+                            </div>
+                        }
+                        else{
+                            <div class="inactive-status">
+                                In-Active
+                            </div>
+                        }
                     </td>
                     <td>
                         <div class="action-button">
                             <div class="edit-button">
-                                <a href="editservice">Edit</a>
+                                <a href="Edit?task_id=@task.taskID">Edit</a>
                             </div>
-                            <div class="delete-button"><button>Delete</button>
+                            <div class="delete-button" onclick="cfDelete('@task.taskID')"><button>Delete</button>
                             </div>
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>02</td>
-                    <td><img src="~/img/Periodic_Maintenance.png" alt="Periodic Maintenance"></td>
-                    <td>Periodic Maintenance</td>
-                    <td>1,000,000</td>
-                    <td>Check and change engine oil, filter, spark plug, belt, suspension parts, brake system, cooling
-                        system, and check other parts to ensure good operation and safety.</td>
-                    <td>
-                        <div class="inactive-status">
-                            In-Active
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-button">
-                            <div class="edit-button">
-                                <a href="#">Edit</a>
-                            </div>
-                            <div class="delete-button"><button>Delete</button>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>03</td>
-                    <td><img src="~/img/cooling-system.png" alt="Cooling System Repair"></td>
-                    <td>Cooling System Repair</td>
-                    <td>2,000,000</td>
-                    <td>Check and repair or replace parts such as coolant tank, coolant pump, cooling fan, thermostat
-                        valve and water pipes.</td>
-                    <td>
-                        <div class="inactive-status">
-                            In-Active
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-button">
-                            <div class="edit-button">
-                                <a href="#">Edit</a>
-                            </div>
-                            <div class="delete-button"><button>Delete</button>
-                            </div>
-                        </div>
-        </div>
-        </td>
-        </tr>
-        <tr>
-            <td>04</td>
-            <td><img src="~/img/brake.png" alt="Brake System Repair">
-    </div>
-    </td>
-    <td>Brake System Repair</td>
-    <td>3,000,000</td>
-    <td>Check, repair or replace parts such as disc brakes, drum brakes, brake pumps, brake cylinders,
-        anti-lock brakes (ABS), brake controllers and pipes.</td>
-    <td>
-        <div class="active-status">
-            Active
-        </div>
-    </td>
-    <td>
-        <div class="action-button">
-            <div class="edit-button">
-                <a href="#">Edit</a>
-            </div>
-            <div class="delete-button"><button>Delete</button>
-            </div>
-        </div>
-        </div>
-    </td>
-    </tr>
+                }
     </table>
     </div>
     <div class="delete-message" style="display: none;">
@@ -133,4 +74,12 @@
             <button class="cancel-button">No</button>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function cfDelete(key) {
+            if (confirm("Do you want to delete this service?")) {
+                window.location = "/task/ListOfService?task_id=" + key;
+            }
+        }
+    </script>
 

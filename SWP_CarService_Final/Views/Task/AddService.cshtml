@@ -5,7 +5,7 @@
 }
 
 <div class="container">
-    <form action="" class="centered-form">
+    <form asp-action="AddService" enctype="multipart/form-data" class="centered-form" method="post">
         <div class="header-form">
             <div class="left-element">
                 <a href="listofservices" class="back-link"><i class="fa-solid fa-chevron-left"></i></a>
@@ -17,28 +17,28 @@
         <div class="input-form">
             <div class="upload-name">
                 <label>Service name</label>
-                <input type="text" />
+                <input type="text" name="ServiceName"/>
             </div>
             <div class="upload-image">
                 <label>Image</label>
-                <input type="file" class="upload-box" />
+                <input type="file" class="upload-box" name="fileImg" />
             </div>
             <div class="upload-price">
                 <label>Price</label>
-                <input type="text" />
+                <input type="text" name="Price"/>
             </div>
             <div class="upload-description">
                 <label>Description</label>
-                <textarea rows="5" cols="38"></textarea>
+                <input name="description" type="text" rows="5" cols="38">
             </div>
             <div class="upload-status">
                 <label>Status</label>
                 <div class="active-option">
-                    <input type="radio" id="choice1" name="choice" value="creative" checked>
+                    <input type="radio" id="choice1" name="choice" value="active" checked>
                     <label for="choice1">Active</label>
                 </div>
                 <div class="inactive-option">
-                    <input type="radio" id="choice2" name="choice" value="productive">
+                    <input type="radio" id="choice2" name="choice" value="In-active">
                     <label for="choice2">In-active</label>
                 </div>
 
