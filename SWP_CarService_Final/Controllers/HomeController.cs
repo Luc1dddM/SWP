@@ -46,13 +46,17 @@ namespace SWP_CarService_Final.Controllers
         [HttpPost]
         public async Task<IActionResult> login(String userName, String password, bool rememberMe)
         {
-            Customer cUser = _userService.login(userName, password);
+            Customer cUser = _userService.CustomerLogin(userName, password);
             if (cUser != null)
             {
+                string currentCustomer = JsonConvert.SerializeObject(cUser);
+                _contx.HttpContext.Session.SetString("cCus", currentCustomer);
+
+
                 List<Claim> claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, userName),
-                    new Claim(ClaimTypes.Role, "admin"),
+                    new Claim(ClaimTypes.Role, "customer"),
                 };
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
@@ -70,8 +74,7 @@ namespace SWP_CarService_Final.Controllers
 
 
                 //create session for current user
-                string currentCustomer = JsonConvert.SerializeObject(cUser);
-                _contx.HttpContext.Session.SetString("cCus", currentCustomer);
+                
                 return RedirectToAction("Index");
             }
             else
@@ -83,6 +86,7 @@ namespace SWP_CarService_Final.Controllers
 
         public async Task<IActionResult> logout()
         {
+            _contx.HttpContext.Session.Remove("cCus");
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("login");
         }

@@ -43,7 +43,7 @@ namespace SWP_CarService_Final
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
@@ -58,6 +58,8 @@ namespace SWP_CarService_Final
                 app.UseHsts();
             }
 
+
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
@@ -70,9 +72,25 @@ namespace SWP_CarService_Final
 
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
+
+                endpoints.MapAreaControllerRoute(
+                  name: "User",
+                  areaName: "User",
+                  pattern: "{user}/{controller=Home}/{action=Login}/{id?}"
+                );
+
+                endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
+            });
 
             app.Run();
         }

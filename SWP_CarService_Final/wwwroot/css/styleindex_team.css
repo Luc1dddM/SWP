@@ -1,62 +1,4 @@
-/*CSS Register New Account _ Bui Ngoc Minh Tam*/
-body {
-    background: linear-gradient(109.6deg, rgb(0, 149, 203) 11.2%, rgb(38, 78, 209) 91.1%);
-    user-select: none;
-    height: 100vh;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-/*End CSS Register New Account _ Bui Ngoc Minh Tam*/
-
-/*CSS View Appoiment List _ Nguyen Son Lam*/
-.list-appointment__container{
-  padding: 40px;
-  background-color: white;
-}
-
-.list-appointment__header{
-  display: flex;
-  justify-content: space-between;
-}
-
-.list-appointment__title--container{
-  margin-top: 50px;
-  text-align: center;
-}
-
-.list-appointment__item{
-  text-align: center;
-  padding: 12px 0;
-}
-
-.appointment-detail__item{
-  display: flex;
-  align-items: center;
-  width: 80%;
-  margin: 0 auto;
-}
-
-.appointment-detail__item img{
-  width: 50px;
-  height: 50px;
-  margin-right: 24px;
-}
-
-.appointment-detail__item p{
-  margin: 0;
-}
-
-/*End CSS View Appoiment List _ Nguyen Son Lam*/
-
-
-
-/*CSS Garagemanagement+Service_Hoang Vu Thai*/
-body {
+﻿body {
     background: linear-gradient(111.4deg, rgb(167, 216, 245) 18.8%, rgb(54, 181, 255) 100.2%);
     user-select: none;
     height: 100vh;
@@ -206,14 +148,14 @@ body {
         font-size: 25px;
         padding: 6px;
         padding-left: 28px;
-        padding-right: 28px;
+        padding-right: 18px;
     }
 
     .side-bar .menu .item a {
         color: black;
         scroll-behavior: smooth;
         text-decoration: none;
-        font-size: 20px;
+        font-size: 18px;
         line-height: 60px;
     }
 
@@ -417,19 +359,20 @@ h3 {
     flex: 1;
 }
 
-.search-container {
+/*services*/
+.search-container-services {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: flex-end;
 }
 
-    .search-container form {
+    .search-container-services form {
         display: flex;
         align-items: center;
     }
 
-    .search-container input[type="text"] {
+    .search-container-services input[type="text"] {
         padding: 6px 40px 6px 12px;
         font-size: 17px;
         border: 1px solid #ccc;
@@ -438,7 +381,7 @@ h3 {
         position: relative;
     }
 
-    .search-container button {
+    .search-container-services button {
         padding: 6px 10px;
         background: #72c3fa;
         font-size: 17px;
@@ -449,12 +392,12 @@ h3 {
         right: 188px;
     }
 
-        .search-container button:hover {
+        .search-container-services button:hover {
             background: #008cff;
         }
 
-    .search-container input[type="text"],
-    .search-container button {
+    .search-container-services input[type="text"],
+    .search-container-services button {
         margin-top: 0;
     }
 
@@ -497,13 +440,13 @@ h3 {
     border-bottom: 1px solid #ccc;
 }
 
-.action-button {
+.table-services .action-button-services {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.edit-button a {
+.table-services .edit-button-services a {
     background-color: rgb(25, 167, 25);
     padding: 8px 22px;
     border-radius: 4px;
@@ -511,11 +454,11 @@ h3 {
     margin: 0 5px;
 }
 
-.action-button a {
+.table-services .action-button-services a {
     color: white;
 }
 
-.delete-button button {
+.table-services .delete-button-services button {
     background-color: rgb(216, 27, 27);
     padding: 8px 12px;
     border-radius: 4px;
@@ -524,273 +467,176 @@ h3 {
     color: white;
 }
 
-.inactive-status {
+.table-services .inactive-status {
     background-color: rgb(216, 27, 27);
     padding: 8px;
     border-radius: 4px;
     color: white;
 }
 
-.active-status {
+.table-services .active-status {
     background-color: rgb(0, 145, 12);
     padding: 8px;
     border-radius: 4px;
     color: white;
 }
 
-.delete-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    font-size: 18px;
-    text-align: center;
-    color: black;
-    border: 1px solid black;
+
+/*customer list*/
+
+.search-container-customerlist {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
-    .delete-message p {
-        padding: 16px;
+    .search-container-customerlist form {
+        display: flex;
+        align-items: center;
     }
 
-.btn-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
+    .search-container-customerlist input[type="text"] {
+        padding: 6px 40px 6px 12px;
+        font-size: 17px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        outline: none;
+        position: relative;
+    }
 
-.confirm-button,
-.cancel-button {
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.confirm-button {
-    background-color: rgb(25, 167, 25);
-    color: white;
-    margin-right: 10px;
-}
-
-.cancel-button {
-    background-color: rgb(216, 27, 27);
-    color: white;
-}
-
-.delete-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    font-size: 18px;
-    text-align: center;
-    color: black;
-    border: 1px solid rgb(168, 168, 168);
-}
-
-    .delete-message .close-icon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
+    .search-container-customerlist button {
+        padding: 6px 10px;
+        background: #72c3fa;
+        font-size: 17px;
+        border: none;
+        border-radius: 50%;
         cursor: pointer;
-        font-size: 20px;
+        position: absolute;
+        right: 200px;
     }
 
-    .delete-message p {
-        padding: 16px;
+        .search-container-customerlist button:hover {
+            background: #008cff;
+        }
+
+    .search-container-customerlist input[type="text"],
+    .search-container-customerlist button {
+        margin-top: 0;
     }
 
-.btn-container {
+/*Team */
+.search-container-team {
+    flex: 1;
     display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    align-items: center;
+    justify-content: flex-end;
 }
 
-.confirm-button,
-.cancel-button {
-    padding: 8px 16px;
+    .search-container-team form {
+        display: flex;
+        align-items: center;
+    }
+
+    .search-container-team input[type="text"] {
+        padding: 6px 40px 6px 12px;
+        font-size: 17px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        outline: none;
+        position: relative;
+    }
+
+    .search-container-team button {
+        padding: 6px 10px;
+        background: #72c3fa;
+        font-size: 17px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        position: absolute;
+        right: 206px;
+    }
+
+        .search-container-team button:hover {
+            background: #008cff;
+        }
+
+    .search-container-team input[type="text"],
+    .search-container-team button {
+        margin-top: 0;
+    }
+
+.add-team-button {
+    margin-left: 18px;
+    padding: 8px 10px;
+    background-color: #008cff;
     border-radius: 4px;
-    cursor: pointer;
 }
 
-.confirm-button {
-    background-color: rgb(25, 167, 25);
-    color: white;
-    margin-right: 10px;
-    border: none;
-}
-
-.cancel-button {
-    background-color: rgb(216, 27, 27);
-    color: white;
-    border: none;
-}
-/*End CSS Garagemanagement+Service_Hoang Vu Thai*/
-
-/*CSS Form for ServiceManagement_Hoang Vu Thai*/
-body {
-    background: linear-gradient(109.6deg, rgb(0, 149, 203) 11.2%, rgb(38, 78, 209) 91.1%);
-    user-select: none;
-    height: 100vh;
-    text-align: center;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.centered-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    max-width: 600px;
-    width: 100%;
-}
-
-.header-form {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    padding-bottom: 30px;
-}
-
-
-.center-content {
-    flex-grow: 1;
-    text-align: center;
-}
-
-.upload-name {
-    display: flex;
-    justify-content: space-around;
-    margin: 0 58px;
-    padding: 10px 0;
-}
-
-
-
-    .upload-name input {
-        width: 300px;
+    .add-team-button a {
+        color: white;
+        text-decoration: none;
     }
 
-.upload-image {
-    display: flex;
-    justify-content: space-around;
-    margin: 0 40px;
-    padding: 10px 0;
+.table-team-management {
+    border: 2px solid #ccc;
 }
 
-    .upload-image label {
+    .table-team-management .ateam h4 {
         text-align: center;
-        padding-top: 4px;
-        margin: 0;
+        font-weight: bold;
+        /* background-color: #1ba2fc;
+    color: white; */
     }
 
-    .upload-image input {
-        border: 1px solid rgb(105, 105, 105);
-        padding: 4px;
-        border-radius: 2px;
-        font-size: 13px;
-        width: 300px;
-        margin-left: 10px;
-    }
-
-.upload-price {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    margin: 0 44px;
+.table-team-management {
+    padding: 20px;
+    text-align: center;
+    margin: 0 280px;
 }
 
-    .upload-price label {
-        margin-bottom: 0;
-        margin-right: 30px;
-    }
-
-    .upload-price input {
-        width: 300px;
-    }
-
-.upload-description {
-    display: flex;
-    justify-content: space-around;
-    margin: 0 50px;
-    padding: 10px 0;
-}
-
-    .upload-description label {
-        margin: 0;
+    .table-team-management th, td {
+        padding: 8px;
         text-align: center;
     }
 
-    .upload-description input {
-        width: 300px;
+    .table-team-management th {
+        font-size: 18px;
     }
 
-.upload-status {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    margin: 0 38px;
-}
-
-    .upload-status label {
-        margin: 0;
+    .table-team-management td {
+        font-size: 16px;
     }
 
-.active-option {
-    margin-left: 10px;
-}
 
-.inactive-option {
-    margin-right: 90px;
-}
-
-.success-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    font-size: 18px;
-    text-align: center;
-    color: black;
-    border: 1px solid black;
-}
-
-    .success-message p {
-        padding: 16px;
+    .table-team-management tr {
+        border-bottom: 1px solid #ccc;
     }
 
-.close-button {
-    cursor: pointer;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    margin-top: 0;
-}
+    .table-team-management .action-button-team {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.btn-close {
-    background-color: rgb(216, 27, 27);
-    display: inline;
-    padding: 6px 12px 8px;
-    border-radius: 4px;
-}
-.btn-submit{
-    text-align: center;
-}
-/*End CSS Form for ServiceManagement_Hoang Vu Thai*/
+    .table-team-management .edit-button-team a {
+        background-color: rgb(25, 167, 25);
+        padding: 8px 22px;
+        border-radius: 4px;
+        text-decoration: none;
+        margin: 0 5px;
+    }
 
+    .table-team-management .action-button-team a {
+        color: white;
+    }
+
+    .table-team-management .delete-button-team button {
+        background-color: rgb(216, 27, 27);
+        padding: 8px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        border: none;
+        color: white;
+    }
