@@ -60,8 +60,7 @@ namespace SWP_CarService_Final.Controllers
                 };
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
-                        CookieAuthenticationDefaults.AuthenticationScheme
-                    );
+                        CookieAuthenticationDefaults.AuthenticationScheme);
 
                 AuthenticationProperties properties = new AuthenticationProperties()
                 {
@@ -79,7 +78,7 @@ namespace SWP_CarService_Final.Controllers
             }
             else
             {
-                ViewBag.Msg = "del dc roi";
+                ViewBag.Msg = "Invalid information!!!";
             }
             return View();
         }
