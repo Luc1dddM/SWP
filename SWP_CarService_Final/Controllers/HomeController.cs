@@ -123,7 +123,7 @@ namespace SWP_CarService_Final.Controllers
                 /*img = null*/
             };
             _createAccount.CreateCustomer(newAccount);
-                return View("Index");
+            return View("Index");
         }
     }
 }
