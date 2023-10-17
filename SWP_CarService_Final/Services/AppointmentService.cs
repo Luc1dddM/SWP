@@ -31,7 +31,7 @@ namespace SWP_CarService_Final.Services
             connection.Open();
             SqlCommand command = new SqlCommand("insert into Appointment(appointment_id, vehical_type, [description], time_arrived, created_at, [status], user_name) " +
                 "values(@id, @type, @description, @arrived, @create, @status, @userName)", connection);
-            command.Parameters.AddWithValue("id", id);
+            command.Parameters.AddWithValue("id", id.Trim());
             command.Parameters.AddWithValue("type", apppointment.vehicalType);
             command.Parameters.AddWithValue("description", apppointment.description);
             command.Parameters.AddWithValue("arrived", apppointment.timeArrived);
@@ -50,7 +50,7 @@ namespace SWP_CarService_Final.Services
                 try
                 {
                     connection.Open();
-                    SqlCommand cmd = new SqlCommand("insert Appointment_Detail values(@appointmentID, @taskID)", connection);
+                    SqlCommand cmd = new SqlCommand("insert Appointment_Details values(@appointmentID, @taskID)", connection);
                     cmd.Parameters.AddWithValue("appointmentID", apmID);
                     cmd.Parameters.AddWithValue("taskID", detail);
                     cmd.ExecuteNonQuery();
@@ -69,7 +69,8 @@ namespace SWP_CarService_Final.Services
                 {
                     connection.Open();
                 }
-                SqlCommand cmd = new SqlCommand("Select * from appointment_Detail", connection);
+                SqlCommand cmd = new SqlCommand("Select * from appointment_Details where appointment_id = @APMID", connection);
+                cmd.Parameters.AddWithValue("APMID", APMID);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -77,7 +78,7 @@ namespace SWP_CarService_Final.Services
                         var detail = new AppointmentDetail()
                         {
                             appointmentID = reader.GetString(0),
-                            task = _taskService.getTaskByID(reader.GetString(1)),
+                            task = _taskService.getTaskByIDForAppointment(reader.GetString(1)),
                         };
                         details.Add(detail);
                     }
@@ -110,7 +111,7 @@ namespace SWP_CarService_Final.Services
                             createdAt = reader.GetDateTime(4),
                             status = reader.GetString(5),
                             customer = cCustomer,
-                            details = getAppointmentDetailByAPMID(reader.GetString(6)),
+                            details = getAppointmentDetailByAPMID(reader.GetString(0)),
                         };
                         appointments.Add(appointment);
                     }
