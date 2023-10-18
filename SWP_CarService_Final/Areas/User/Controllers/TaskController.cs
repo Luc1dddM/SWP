@@ -99,7 +99,6 @@ namespace SWP_CarService_Final.Areas.User.Controllers
                     if (_taskService.GetTaskByID(ServiceId).img != null)
                     {
                         System.IO.File.Delete(Path.Combine(rootFolder, _taskService.GetTaskByID(ServiceId).img));
-
                     }
                     ImgName = Path.GetFileName(fileImg.FileName);
                     string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", ImgName);

@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "ListOfServices";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewData["direction"] = "ListOfServices";
     TaskService taskService = new TaskService();
 }
 
@@ -10,12 +11,6 @@
         <div class="content-search">
             <div>
                 <h3>Services</h3>
-            </div>
-            <div class="search-container">
-                <form action="">
-                    <input type="text" placeholder="Search.." name="search">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
             </div>
             <div class="add-service-button">
             <a href="AddService">Add Services</a>
