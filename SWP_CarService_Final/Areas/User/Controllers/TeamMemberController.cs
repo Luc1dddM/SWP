@@ -7,13 +7,16 @@ namespace Areas
     [Area("User")]
     public class TeamMemberController : Controller
     {
-        UserAccount userAccount = new UserAccount();
+        private readonly UserAccount _userAccount;
 
         public IActionResult ListOfTeamMembers()
         {
             return View();
         }
-
+        public TeamMemberController(UserAccount userAccount) 
+        {
+            _userAccount = userAccount;
+        }
 
         public IActionResult CreateAccount()
         {
@@ -35,11 +38,17 @@ namespace Areas
                     account_status = status == "active" ? true : false,
                     created = DateTime.Now,
                 };
-                userAccount.createAccount(user);
+                _userAccount.createAccount(user);
             }catch (Exception ex) 
             { 
                 throw new Exception(ex.Message); 
             }
+            return Redirect("ListOfTeamMembers");
+        }
+
+        public IActionResult Remove(string username)
+        {
+            _userAccount.deleteAccount(username);
             return Redirect("ListOfTeamMembers");
         }
 
