@@ -2,8 +2,9 @@
 using SWP_CarService_Final.Models;
 using SWP_CarService_Final.Services;
 
-namespace SWP_CarService_Final.Controllers
+namespace SWP_CarService_Final.Areas.User.Controllers
 {
+    [Area("User")]
     public class TeamController : Controller
     {
         private readonly IHttpContextAccessor _contx;
@@ -40,7 +41,6 @@ namespace SWP_CarService_Final.Controllers
         [HttpPost]
         public IActionResult CreateTeam(string teamID)
         {
-            string currentAdmin = _contx.HttpContext.Session.GetString("adminUser");
             Team newTeam = new Team()
             {
                 team_id = teamID,

@@ -49,18 +49,36 @@ namespace Areas.Controllers
         {
 
             User user = _userService.UserLogin(userName, password);
-
-            if (user != null && user.role_name.Trim() == "admin")
+            if (user != null)
             {
-                List<Claim> claims = new List<Claim>()
+                List<Claim> claims = null;
+                if (user.role_name.Trim() == "admin")
                 {
-                    new Claim(ClaimTypes.NameIdentifier, userName),
-                    new Claim(ClaimTypes.Role, "admin"),
+                    claims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, userName),
+                        new Claim(ClaimTypes.Role, "admin"),
+                    };
+                }
+                else if (user.role_name.Trim() == "leader")
+                {
+                    claims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, userName),
+                        new Claim(ClaimTypes.Role, "leader"),
+                    };
+
+                }
+                else if (user.role_name.Trim() == "member")
+                {
+                    claims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, userName),
+                        new Claim(ClaimTypes.Role, "member"),
                 };
-
-
+                }
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
-                        CookieAuthenticationDefaults.AuthenticationScheme);
+                    CookieAuthenticationDefaults.AuthenticationScheme);
 
                 AuthenticationProperties properties = new AuthenticationProperties()
                 {
@@ -69,77 +87,21 @@ namespace Areas.Controllers
                 };
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity), properties);
+                            new ClaimsPrincipal(claimsIdentity), properties);
 
                 //create session for current user
-                string currentAdmin = JsonConvert.SerializeObject(user);
-                _context.HttpContext.Session.SetString("adminUser", currentAdmin);
-                _context.HttpContext.Session.SetString("role", user.role_name.Trim());
-
-                return RedirectToAction("Index");
-            }
-
-            else if (user != null && user.role_name.Trim() == "leader")
-            {
-                List<Claim> claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.NameIdentifier, userName),
-                    new Claim(ClaimTypes.Role, "leader"),
-                };
-
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
-                        CookieAuthenticationDefaults.AuthenticationScheme);
-
-                AuthenticationProperties properties = new AuthenticationProperties()
-                {
-                    AllowRefresh = true,
-                    IsPersistent = false
-                };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity), properties);
-
-
-                //create session for current user
-                string currentLeader = JsonConvert.SerializeObject(user);
-                _context.HttpContext.Session.SetString("leaderUser", currentLeader);
+                string currentUser = JsonConvert.SerializeObject(user);
+                _context.HttpContext.Session.SetString("cUser", currentUser);
                 _context.HttpContext.Session.SetString("role", user.role_name.Trim());
                 return RedirectToAction("Index");
             }
-
-            else if (user != null && user.role_name.Trim() == "member")
-            {
-                List<Claim> claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.NameIdentifier, userName),
-                    new Claim(ClaimTypes.Role, "member"),
-                };
-
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
-                        CookieAuthenticationDefaults.AuthenticationScheme);
-
-                AuthenticationProperties properties = new AuthenticationProperties()
-                {
-                    AllowRefresh = true,
-                    IsPersistent = false
-                };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity), properties);
-
-
-                //create session for current user
-                string currentMember = JsonConvert.SerializeObject(user);
-                _context.HttpContext.Session.SetString("memberUser", currentMember);
-                _context.HttpContext.Session.SetString("role", user.role_name.Trim());
-                return RedirectToAction("Index");
-            }
-
             else
             {
-                ViewBag.Msg = "Invalid information!!!";
+                {
+                    ViewBag.Msg = "Invalid information!!!";
+                }
+                return View();
             }
-            return View();
         }
 
         public async Task<IActionResult> Logout()
