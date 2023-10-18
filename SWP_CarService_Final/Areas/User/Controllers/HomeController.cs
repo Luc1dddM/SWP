@@ -10,7 +10,7 @@ using System.Data;
 using System.Data.SqlClient;
 
 
-namespace Areas
+namespace Areas.Controllers
 {
     [Area("User")]
     public class HomeController : Controller
@@ -45,11 +45,11 @@ namespace Areas
         }
 
         [HttpPost]
-        public async Task<IActionResult> login(String userName, String password, bool rememberMe)
+        public async Task<IActionResult> Login(String userName, String password, bool rememberMe)
         {
 
             User user = _userService.UserLogin(userName, password);
-            
+
             if (user != null && user.role_name.Trim() == "admin")
             {
                 List<Claim> claims = new List<Claim>()
@@ -58,7 +58,6 @@ namespace Areas
                     new Claim(ClaimTypes.Role, "admin"),
                 };
 
-                TempData["role"] = "admin";
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
                         CookieAuthenticationDefaults.AuthenticationScheme);
@@ -71,7 +70,6 @@ namespace Areas
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity), properties);
-
 
                 //create session for current user
                 string currentAdmin = JsonConvert.SerializeObject(user);
@@ -128,11 +126,11 @@ namespace Areas
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity), properties);
-                
+
 
                 //create session for current user
                 string currentMember = JsonConvert.SerializeObject(user);
-                _context.HttpContext.Session.SetString("MemberUser", currentMember);
+                _context.HttpContext.Session.SetString("memberUser", currentMember);
                 _context.HttpContext.Session.SetString("role", user.role_name.Trim());
                 return RedirectToAction("Index");
             }
@@ -146,6 +144,8 @@ namespace Areas
 
         public async Task<IActionResult> Logout()
         {
+            _context.HttpContext.Session.Remove("role");
+            Console.WriteLine(_context.HttpContext.Session.GetString("role"));
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }

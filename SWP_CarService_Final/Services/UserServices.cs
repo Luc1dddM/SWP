@@ -1,5 +1,4 @@
 ﻿using NuGet.Protocol.Plugins;
-using SWP_CarService_Final.Areas.Team.Models;
 using SWP_CarService_Final.Areas.User.Models;
 using SWP_CarService_Final.Models;
 using System.Data;
@@ -7,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace SWP_CarService_Final.Services
 {
-    public class UserServices
+    public class UserServices : DBContext
     {
 
         private readonly DBContext _dbContext;
