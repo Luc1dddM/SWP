@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SWP_CarService_Final.Areas.User.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [Area("User")]
     public class TaskController : Controller
     {
