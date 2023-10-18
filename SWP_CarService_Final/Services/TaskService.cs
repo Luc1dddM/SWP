@@ -15,7 +15,7 @@ namespace SWP_CarService_Final.Services
 
         
         readonly string rootFolder = @"D:\FPT\SWP391\Garage\SWP_CarService_Final\wwwroot\img";
-        public List<Models.Task> getAllTasks()
+        public List<Task> getAllTasks()
         {
             List<Task> tasks = new List<Task>();
             try
@@ -78,7 +78,7 @@ namespace SWP_CarService_Final.Services
 
         public Task GetTaskByID(string taskID)
         {
-            Models.Task task = null;
+            Task task = null;
         try
             {
                 connection.Open();
@@ -89,13 +89,13 @@ namespace SWP_CarService_Final.Services
                 {
                     if (reader.Read())
                     {
-                        task = new Models.Task()
+                        task = new Task()
                         {
                             taskID = reader.GetString(0),
                             taskName = reader.GetString(1),
                             price = reader.GetDecimal(2),
                             active = reader.GetBoolean(3),
-                            img = (!reader.IsDBNull(4)) ? reader.GetString(4) : "",
+                            img = (!reader.IsDBNull(4)) ? reader.GetString(4) : null,
                             Description = (!reader.IsDBNull(5)) ? reader.GetString(5) : "",
                         };
                     }
@@ -119,7 +119,7 @@ namespace SWP_CarService_Final.Services
             try
             {
 
-                Models.Task task = GetTaskByID(taskId);
+                Task task = GetTaskByID(taskId);
                 connection.Open();
 
                 if (task != null)
@@ -167,31 +167,46 @@ namespace SWP_CarService_Final.Services
             return count;
         }
 
-        public void createService(Models.Task ntask)
+        public void createService(Task ntask)
         {
-            Models.Task task = new Models.Task();
+            Task task = new Task();
             try
             {
                 string id = "TASK" + (getNumberOfService() + 1);
                 connection.Open();
-                SqlCommand command = new SqlCommand("INSERT INTO[SWP].[dbo].[Task] ([task_id],[task_name],[task_price],[task_active],[image],[Description]) " +
-                    "values(@task_id,@task_name, @task_price, @task_active, @img,@description)", connection);
-                command.Parameters.AddWithValue("task_id", id);
-                command.Parameters.AddWithValue("task_name", ntask.taskName);
-                command.Parameters.AddWithValue("task_price", ntask.price);
-                command.Parameters.AddWithValue("task_active", ntask.active);
-                command.Parameters.AddWithValue("img", ntask.img);
-                command.Parameters.AddWithValue("description", ntask.Description);
+                if(ntask.img != null)
+                {
+                    SqlCommand command = new SqlCommand("INSERT INTO[SWP].[dbo].[Task] ([task_id],[task_name],[task_price],[task_active],[image],[Description]) " +
+                                                        "values(@task_id,@task_name, @task_price, @task_active, @img,@description)", connection);
+                    command.Parameters.AddWithValue("task_id", id);
+                    command.Parameters.AddWithValue("task_name", ntask.taskName);
+                    command.Parameters.AddWithValue("task_price", ntask.price);
+                    command.Parameters.AddWithValue("task_active", ntask.active);
+                    command.Parameters.AddWithValue("img", ntask.img);
+                    command.Parameters.AddWithValue("description", ntask.Description);
+                    command.ExecuteNonQuery();
+                }
+                else
+                {
+                    SqlCommand command = new SqlCommand("INSERT INTO[SWP].[dbo].[Task] ([task_id],[task_name],[task_price],[task_active],[Description]) " +
+                                    "values(@task_id,@task_name, @task_price, @task_active,@description)", connection);
+                    command.Parameters.AddWithValue("task_id", id);
+                    command.Parameters.AddWithValue("task_name", ntask.taskName);
+                    command.Parameters.AddWithValue("task_price", ntask.price);
+                    command.Parameters.AddWithValue("task_active", ntask.active);
+                    command.Parameters.AddWithValue("description", ntask.Description);
+                    command.ExecuteNonQuery();
+                }
 
-                command.ExecuteNonQuery();
+
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
             finally { connection.Close(); }
         }
 
-        public void editService(Models.Task ntask)
+        public void editService(Task ntask)
         {
-            Models.Task task = new Models.Task();
+            Task task = new Task();
             try
             {
                 task = GetTaskByID(ntask.taskID);
