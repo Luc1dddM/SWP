@@ -1,3 +1,17 @@
+/*CSS Register New Account _ Bui Ngoc Minh Tam*/
+body {
+    background: linear-gradient(109.6deg, rgb(0, 149, 203) 11.2%, rgb(38, 78, 209) 91.1%);
+    user-select: none;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+/*End CSS Register New Account _ Bui Ngoc Minh Tam*/
 
 /*CSS View Appoiment List _ Nguyen Son Lam*/
 .list-appointment__container{

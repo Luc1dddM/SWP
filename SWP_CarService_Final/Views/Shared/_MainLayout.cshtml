@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+
+    IHttpContextAccessor contx = new HttpContextAccessor();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -21,7 +26,7 @@
             </div>
             <div class=" col-md-6 profile">
                 <div class="avatar">
-                    <img alt="" src="./img/avatar.png" />
+                    <img alt="" src="~/img/avatar.png" />
                 </div>
                 <div class="name">John Doe</div>
                 <div class="arrow-down" onclick="menuToggle();">
@@ -41,30 +46,64 @@
                 <div class="brand"> <img alt="" src="./img/logo.png" /><a href="#" class="px-2">Garage Nhà Làm</a><i
                         class="fa-solid fa-xmark close-btn"></i></div>
     
-                <div class="item"><i class="fa-solid fa-gauge"></i><a href="./dashboard.html">Dashboard</a>
-                </div>
-                <div class="item"><i class="fa-solid fa-user-tie"></i><a href="#">Customer</a>
-                </div>
-                <div class="item"><i class="fa-solid fa-screwdriver-wrench"></i><a href="task/listofservices">Services</a></div>
-                <div class="item"><i class="fa-solid fa-wrench"></i><a href="#">Components</a></div>
-                <div class="item"><i style="font-size: 20px;" class="fa-solid fa-warehouse"></i><a href="#">Components Category</a></div>
-                <div class="item"><i class="fa-solid fa-file-signature"></i><a href="#">Appointments</a></div>
+                <div class="item"><i class="fa-solid fa-gauge"></i><a href="./dashboard.html">Dashboard</a></div>
 
-                <div class="item"><i class="fa-solid fa-briefcase"></i><a href="#">Work Order</a></div>
-                <div class="item">
-                    <a class="sub-btn "><i class="fa-solid fa-flag"></i>Reports<i
-                            class="fas fa-angle-right dropdown"></i></a>
-                    <div class="sub-menu">
-                        <div class="small-menu">
-                            <a href="#" class="sub-item"><i class="fa-solid fa-chart-pie"></i>Pie Chart</a>
+                @if (contx.HttpContext.Session.GetString("role") == "admin")
+                {
+                    <div class="item"><i class="fa-solid fa-user-tie"></i><a href="#">Customer</a></div>
+
+                    <div class="item"><i class="fa-solid fa-screwdriver-wrench"></i><a href="/task/ListOfServices">Services</a></div>
+
+                    <div class="item"><i class="fa-solid fa-wrench"></i><a href="#">Components</a></div>
+
+                    <div class="item"><i style="font-size: 20px;" class="fa-solid fa-warehouse"></i><a href="#">Components Category</a></div>
+
+                    <div class="item"><i class="fa-solid fa-file-signature"></i><a href="#">Appointments</a></div>
+
+                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="#">Work Order</a></div>
+
+                    <div class="item">
+                        <a class="sub-btn ">
+                            <i class="fa-solid fa-flag"></i>Reports<i class="fas fa-angle-right dropdown"></i>
+                        </a>
+                        <div class="sub-menu">
+                            <div class="small-menu">
+                                <a href="#" class="sub-item"><i class="fa-solid fa-chart-pie"></i>Pie Chart</a>
+                            </div>
+                            <div class="small-menu">
+                                <a href="#" class="sub-item">
+                                    <i class="fa-solid fa-chart-simple"></i>Bar
+                                    Chart
+                                </a>
+                            </div>
+
                         </div>
-                        <div class="small-menu"> <a href="#" class="sub-item"><i class="fa-solid fa-chart-simple"></i>Bar
-                                Chart</a></div>
-    
                     </div>
-                </div>
-                <div class="item"><i class="fa-solid fa-user"></i><a href="#">Team member</a></div>
-                <div class="item"><i style="font-size: 20px;" class="fa-solid fa-users"></i><a href="#">Team leader</a></div>
+
+                    <div class="item"><i class="fa-solid fa-user"></i><a href="#">Team member</a></div>
+
+                    <div class="item"><i style="font-size: 20px;" class="fa-solid fa-users"></i><a href="#">Team leader</a></div>
+                }
+
+                else if(contx.HttpContext.Session.GetString("role")  == "leader"){
+                    <div class="item"><i class="fa-solid fa-file-signature"></i><a href="#">Appointments</a></div>
+
+                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="#">Work Order</a></div>
+
+                    <div class="item"><i class="fa-solid fa-user"></i><a href="#">Team member</a></div>
+
+                    <div class="item"><i style="font-size: 20px;" class="fa-solid fa-users"></i><a href="#">Team leader</a></div>
+                }
+
+                else if (contx.HttpContext.Session.GetString("role") == "member")
+                {
+
+                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="#">Work Order</a></div>
+
+                    <div class="item"><i class="fa-solid fa-user"></i><a href="#">Team member</a></div>
+                }
+
+                
             </div>
         </div>
     </header>

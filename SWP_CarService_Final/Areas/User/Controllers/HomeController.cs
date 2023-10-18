@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SWP_CarService_Final.Services;
 using System.Security.Claims;
+using SWP_CarService_Final.Services;
 using SWP_CarService_Final.Areas.User.Models;
+using System.Data;
+using System.Data.SqlClient;
+
 
 namespace Areas
 {
@@ -15,12 +18,14 @@ namespace Areas
         private readonly IHttpContextAccessor _context;
         private readonly ILogger<HomeController> _logger;
         private readonly UserServices _userService;
+        private readonly DBContext _dBContext;
 
-        public HomeController(IHttpContextAccessor context, ILogger<HomeController> logger, UserServices userService)
+        public HomeController(IHttpContextAccessor context, ILogger<HomeController> logger, UserServices userService, DBContext dBContext)
         {
             _logger = logger;
             _userService = userService;
             _context = context;
+            _dBContext = dBContext;
         }
 
         [Authorize]
@@ -36,14 +41,16 @@ namespace Areas
             {
                 return RedirectToAction("Index");
             }
-            return View(); //note: chua add view cua admin muon do cua user 
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> login(String userName, String password, bool rememberMe)
         {
+
             User user = _userService.UserLogin(userName, password);
-            if (user != null)
+            
+            if (user != null && user.role_name.Trim() == "admin")
             {
                 List<Claim> claims = new List<Claim>()
                 {
@@ -51,9 +58,10 @@ namespace Areas
                     new Claim(ClaimTypes.Role, "admin"),
                 };
 
+                TempData["role"] = "admin";
+
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
-                        CookieAuthenticationDefaults.AuthenticationScheme
-                    );
+                        CookieAuthenticationDefaults.AuthenticationScheme);
 
                 AuthenticationProperties properties = new AuthenticationProperties()
                 {
@@ -66,21 +74,80 @@ namespace Areas
 
 
                 //create session for current user
-                string currentCustomer = JsonConvert.SerializeObject(user);
-                _context.HttpContext.Session.SetString("user", currentCustomer);
+                string currentAdmin = JsonConvert.SerializeObject(user);
+                _context.HttpContext.Session.SetString("adminUser", currentAdmin);
+                _context.HttpContext.Session.SetString("role", user.role_name.Trim());
+
                 return RedirectToAction("Index");
             }
+
+            else if (user != null && user.role_name.Trim() == "leader")
+            {
+                List<Claim> claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.NameIdentifier, userName),
+                    new Claim(ClaimTypes.Role, "leader"),
+                };
+
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
+                        CookieAuthenticationDefaults.AuthenticationScheme);
+
+                AuthenticationProperties properties = new AuthenticationProperties()
+                {
+                    AllowRefresh = true,
+                    IsPersistent = false
+                };
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity), properties);
+
+
+                //create session for current user
+                string currentLeader = JsonConvert.SerializeObject(user);
+                _context.HttpContext.Session.SetString("leaderUser", currentLeader);
+                _context.HttpContext.Session.SetString("role", user.role_name.Trim());
+                return RedirectToAction("Index");
+            }
+
+            else if (user != null && user.role_name.Trim() == "member")
+            {
+                List<Claim> claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.NameIdentifier, userName),
+                    new Claim(ClaimTypes.Role, "member"),
+                };
+
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
+                        CookieAuthenticationDefaults.AuthenticationScheme);
+
+                AuthenticationProperties properties = new AuthenticationProperties()
+                {
+                    AllowRefresh = true,
+                    IsPersistent = false
+                };
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity), properties);
+                
+
+                //create session for current user
+                string currentMember = JsonConvert.SerializeObject(user);
+                _context.HttpContext.Session.SetString("MemberUser", currentMember);
+                _context.HttpContext.Session.SetString("role", user.role_name.Trim());
+                return RedirectToAction("Index");
+            }
+
             else
             {
-                ViewBag.Msg = "ko hop le";
+                ViewBag.Msg = "Invalid information!!!";
             }
             return View();
         }
 
-        public async Task<IActionResult> logout()
+        public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("login");
+            return RedirectToAction("Login");
         }
     }
 }
