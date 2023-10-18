@@ -2,8 +2,9 @@
 using SWP_CarService_Final.Models;
 using SWP_CarService_Final.Services;
 
-namespace SWP_CarService_Final.Controllers
+namespace SWP_CarService_Final.Areas.User.Controllers
 {
+    [Area("User")]
     public class TeamController : Controller
     {
         private readonly IHttpContextAccessor _contx;
