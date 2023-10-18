@@ -1,14 +1,13 @@
 ﻿@using SWP_CarService_Final.Services;
 @using SWP_CarService_Final.Models;
-
 @{
     ViewData["Title"] = "EditService";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     TaskService taskService = new TaskService();
-    SWP_CarService_Final.Models.Task task = taskService.GetTaskByID(TempData["serviceId"].ToString());
+    SWP_CarService_Final.Models.Task task = taskService.GetTaskByID(ViewBag.ServiceId);
 }
 <div class="container">
-    <form asp-action="Edit" class="centered-form" enctype="multipart/form-data" method="post">
+    <form asp-action="EditService" class="centered-form" enctype="multipart/form-data" method="post">
         <div class="header-form">
             <div class="left-element">
                 <a href="listofservices" class="back-link"><i class="fa-solid fa-chevron-left"></i></a>
@@ -38,7 +37,7 @@
             </div>
             <div class="upload-status">
                 <label>Status</label>
-                @if(task.active)
+                @if (task.active)
                 {
                     <div class="active-option">
                         <input type="radio" id="choice1" name="choice" value="active" checked>
@@ -60,12 +59,8 @@
                         <label for="choice2">In-active</label>
                     </div>
                 }
-
-
-
-
-
             </div>
+            
         </div>
         <div class="btn-submit"><input type="submit" value="Submit"></div>
     </form>
@@ -76,4 +71,6 @@
         <span class="close-button">Close</span>
     </div>
 </div>
+
+
 

@@ -9,15 +9,15 @@ namespace SWP_CarService_Final.Services
         public Models.Customer GetCustomerByUsername (string username)
         {
             Models.Customer customer = null;
-                try
+            try
             {
                 connection.Open();
                 String SQLSelect = "SELECT * FROM [SWP].[dbo].[CUSTOMER] WHERE user_name = @user_name";
                 SqlCommand command = new SqlCommand(SQLSelect, connection);
-                command.Parameters.AddWithValue("user_name", username); 
+                command.Parameters.AddWithValue("user_name", username);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    if(reader.Read())
+                    if (reader.Read())
                     {
                         customer = new Models.Customer()
                         {
@@ -40,8 +40,8 @@ namespace SWP_CarService_Final.Services
             return customer;
         }
 
-        public void CreateCustomer (Customer customer)
-        {   
+        public void CreateCustomer(Customer customer)
+        {
             try
             {
                 connection.Open();
@@ -54,7 +54,7 @@ namespace SWP_CarService_Final.Services
                 command.Parameters.AddWithValue("email", customer.email);
                 command.Parameters.AddWithValue("phone_number", customer.phone_number);
                 command.Parameters.AddWithValue("account_status", customer.account_status);
-               /* command.Parameters.AddWithValue("img", customer.img);*/
+                /* command.Parameters.AddWithValue("img", customer.img);*/
 
                 command.ExecuteNonQuery();
             }
@@ -62,8 +62,8 @@ namespace SWP_CarService_Final.Services
             {
                 throw new Exception(ex.Message);
             }
-            finally 
-            { 
+            finally
+            {
                 connection.Close();
             }
         }
