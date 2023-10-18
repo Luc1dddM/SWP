@@ -3,7 +3,7 @@ using User = SWP_CarService_Final.Areas.User.Models.User;
 
 namespace SWP_CarService_Final.Services
 {
-    public class UserAccount : DBContext
+    public class UserAccountServices : DBContext
     {
         public List<User> getAllListUserAccounts()
         {

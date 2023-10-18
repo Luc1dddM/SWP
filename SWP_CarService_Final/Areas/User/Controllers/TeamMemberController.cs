@@ -7,13 +7,13 @@ namespace Areas
     [Area("User")]
     public class TeamMemberController : Controller
     {
-        private readonly UserAccount _userAccount;
+        private readonly UserAccountServices _userAccount;
 
         public IActionResult ListOfTeamMembers()
         {
             return View();
         }
-        public TeamMemberController(UserAccount userAccount) 
+        public TeamMemberController(UserAccountServices userAccount) 
         {
             _userAccount = userAccount;
         }

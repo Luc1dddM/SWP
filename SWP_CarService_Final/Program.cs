@@ -26,7 +26,7 @@ namespace SWP_CarService_Final
             builder.Services.AddScoped<AppointmentService>();
             builder.Services.AddScoped<TaskService>();
             builder.Services.AddScoped<OrderService>();
-
+            builder.Services.AddScoped<UserAccountServices>();
             builder.Services.AddScoped<AccountService>();
 
 

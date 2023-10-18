@@ -9,9 +9,6 @@
         public string password { get; set;}
         public Boolean account_status { get; set; }
         public DateTime created { get; set; }
-<<<<<<< HEAD
-        
-=======
         public string role_name { get; set; }
     }
 }
