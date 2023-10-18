@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SWP_CarService_Final.Services;
 using User = SWP_CarService_Final.Areas.User.Models.User;
 
 namespace Areas
 {
     [Area("User")]
+    [Authorize(Roles = "admin")]
     public class TeamMemberController : Controller
     {
         private readonly UserAccountServices _userAccount;
