@@ -1,17 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
-using SWP_CarService_Final.Models;
+using Task = SWP_CarService_Final.Models.Task;
 using SWP_CarService_Final.Services;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.AspNetCore.Authorization;
 
-
-namespace SWP_CarService_Final.Controllers
+namespace SWP_CarService_Final.Areas.User.Controllers
 {
+    [Authorize(Roles = "admin")]
+    [Area("User")]
     public class TaskController : Controller
     {
-        TaskService taskService = new TaskService();
+
+        private readonly TaskService _taskService;
+
+
+        public TaskController(TaskService taskService)
+        {
+            _taskService = taskService;
+        }
         readonly string rootFolder = @"D:\FPT\SWP391\Garage\SWP_CarService_Final\wwwroot\img";
 
 
@@ -20,67 +29,18 @@ namespace SWP_CarService_Final.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult ListOfService(string task_id)
+        public IActionResult Remove(string task_id)
         {
-            TaskService taskService = new TaskService();
-            taskService.Remove(task_id);
-            return RedirectToAction("ListOfServices"); 
+            _taskService.Remove(task_id);
+            return Redirect("ListOfServices");
         }
+
         public IActionResult AddService()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult AddService(string ServiceName,IFormFile fileImg, string Price, string description, string choice)
-        {
-            string ImgName = "";
-            try
-            {
-                if(fileImg != null)
-                {
-                    if (System.IO.File.Exists(Path.Combine(rootFolder, fileImg.FileName)))
-                    {
-                        // If file found, delete it
-                        System.IO.File.Delete(Path.Combine(rootFolder, fileImg.FileName));
-                    }
-                    ImgName = Path.GetFileName(fileImg.FileName);
-                    string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", ImgName);
-                    var stream = new FileStream(uploadfilepath, FileMode.Create);
-                    fileImg.CopyToAsync(stream);
-                    stream.Close();
-                    ImgName = fileImg.FileName;
-                }
-                else
-                {
-                    ImgName = "";
-                }
-                Models.Task service = new Models.Task()
-                {
-                    taskName = ServiceName,
-                    img = ImgName,
-                    price = decimal.Parse(Price),
-                    Description = description,
-                    active = choice == "active" ? true : false
-                };
-                taskService.createService(service);
-            }
-            catch (Exception ex) { throw new Exception(ex.Message); }
-
-            return RedirectToAction("ListOfServices");
-        }
-        public IActionResult EditService()
-        {
-            return View();
-        }
-        [HttpGet]
-        public IActionResult Edit(string task_id)
-        {
-            TempData["serviceId"] = task_id;
-            return RedirectToAction("EditService");
-        }
-        [HttpPost]
-        public IActionResult Edit(string ServiceId, string ServiceName, IFormFile fileImg, string Price, string description, string choice)
+        public IActionResult AddService(string ServiceName, IFormFile fileImg, string Price, string description, string choice)
         {
             string ImgName = "";
             try
@@ -96,8 +56,57 @@ namespace SWP_CarService_Final.Controllers
                     string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", ImgName);
                     var stream = new FileStream(uploadfilepath, FileMode.Create);
                     fileImg.CopyToAsync(stream);
+                    stream.Close();
                     ImgName = fileImg.FileName;
-                    Models.Task service = new Models.Task()
+                }
+                else
+                {
+                    ImgName = null;
+                }
+                Task service = new Task()
+                {
+                    taskName = ServiceName,
+                    img = ImgName,
+                    price = decimal.Parse(Price),
+                    Description = description,
+                    active = choice == "active" ? true : false
+                };
+                _taskService.createService(service);
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+
+            return Redirect("ListOfServices");
+        }
+
+        public IActionResult EditService(string task_id)
+        {
+            ViewBag.ServiceId = task_id;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult EditService(string ServiceId, string ServiceName, IFormFile fileImg, string Price, string description, string choice)
+        {
+            string ImgName = "";
+            try
+            {
+                if (fileImg != null)
+                {
+                    if (System.IO.File.Exists(Path.Combine(rootFolder, fileImg.FileName)))
+                    {
+                        // If file found, delete it
+                        System.IO.File.Delete(Path.Combine(rootFolder, fileImg.FileName));
+                    }
+                    if (_taskService.GetTaskByID(ServiceId).img != null)
+                    {
+                        System.IO.File.Delete(Path.Combine(rootFolder, _taskService.GetTaskByID(ServiceId).img));
+
+                    }
+                    ImgName = Path.GetFileName(fileImg.FileName);
+                    string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", ImgName);
+                    var stream = new FileStream(uploadfilepath, FileMode.Create);
+                    fileImg.CopyToAsync(stream);
+                    stream.Close();
+                    Task service = new Task()
                     {
                         taskID = ServiceId,
                         taskName = ServiceName,
@@ -106,26 +115,26 @@ namespace SWP_CarService_Final.Controllers
                         Description = description,
                         active = choice == "active" ? true : false
                     };
-                    taskService.editService(service);
+                    _taskService.editService(service);
                 }
                 else
                 {
-                    Models.Task service = new Models.Task()
+                    Task service = new Task()
                     {
                         taskID = ServiceId,
                         taskName = ServiceName,
-                        img = taskService.GetTaskByID(ServiceId).img,
+                        img = _taskService.GetTaskByID(ServiceId).img,
                         price = decimal.Parse(Price),
                         Description = description,
                         active = choice == "active" ? true : false
                     };
-                    taskService.editService(service);
+                    _taskService.editService(service);
                 }
 
-                
+
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
-            return RedirectToAction("ListOfServices");
+            return Redirect("ListOfServices");
         }
 
 

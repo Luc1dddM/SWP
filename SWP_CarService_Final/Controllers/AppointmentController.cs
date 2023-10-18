@@ -61,7 +61,6 @@ namespace SWP_CarService_Final.Controllers
             else
             {
                 RedirectToAction("login", "Home");
-
             }
             return View(appointments);
         }
