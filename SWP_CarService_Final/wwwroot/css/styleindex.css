@@ -365,17 +365,6 @@ h3 {
 }
 
 
-.add-service-button {
-    margin-left: 18px;
-    padding: 8px 10px;
-    background-color: #008cff;
-    border-radius: 4px;
-}
-
-.add-service-button a {
-    color: white;
-    text-decoration: none;
-}
 
 /*Team */
 .search-container-team {

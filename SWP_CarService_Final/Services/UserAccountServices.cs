@@ -44,10 +44,10 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                string SQLSelect = "SELECT * FROM [User] WHERE UserName = @UserName";
-                SqlCommand command = new SqlCommand(SQLSelect, connection);
-                command.Parameters.AddWithValue("UserName", userName);
-                using (SqlDataReader reader = command.ExecuteReader())
+                string SQLSelect = "SELECT * from [User] WHERE UserName = @UserName";
+                SqlCommand cmd = new SqlCommand(SQLSelect, connection);
+                cmd.Parameters.AddWithValue("UserName", userName);
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     if (reader.Read())
                     {
@@ -106,9 +106,9 @@ namespace SWP_CarService_Final.Services
             try
             {
                 User user = getUserByUserName(UserName);
+                connection.Open();
                 if (user != null)
                 {
-                    connection.Open();
                     SqlCommand command = new SqlCommand("DELETE FROM [User] WHERE UserName = @UserName", connection);
                     command.Parameters.AddWithValue("UserName", UserName);
                     command.ExecuteNonQuery();
@@ -138,7 +138,7 @@ namespace SWP_CarService_Final.Services
                 {
                     SqlCommand command = new SqlCommand("UPDATE [User] SET User_fullname = @User_fullname, " +
                         "phone_number = @phone_number, email = @email, [password] = @password, " +
-                        "account_status = @account_status where " +
+                        "account_status = @account_status, created = @created where " +
                         "UserName = @UserName", connection);
                     command.Parameters.AddWithValue("UserName", uName.UserName);
                     command.Parameters.AddWithValue("User_fullname", uName.User_fullname);
@@ -146,6 +146,7 @@ namespace SWP_CarService_Final.Services
                     command.Parameters.AddWithValue("email", uName.email);
                     command.Parameters.AddWithValue("password", uName.password);
                     command.Parameters.AddWithValue("account_status", uName.account_status);
+                    command.Parameters.AddWithValue("created", user.created);
 
                     command.ExecuteNonQuery();
                 }
