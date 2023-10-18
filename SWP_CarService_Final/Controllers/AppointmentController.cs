@@ -61,9 +61,14 @@ namespace SWP_CarService_Final.Controllers
             else
             {
                 RedirectToAction("login", "Home");
-
             }
             return View(appointments);
+        }
+
+        public IActionResult cancel(string id)
+        {
+            _appointmentService.cancelAppointment(id);
+            return RedirectToAction("view");
         }
     }
 }

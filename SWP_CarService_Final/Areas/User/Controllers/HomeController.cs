@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SWP_CarService_Final.Services;
 using System.Security.Claims;
+using SWP_CarService_Final.Services;
 using SWP_CarService_Final.Areas.User.Models;
+using System.Data;
+using System.Data.SqlClient;
 
-namespace Areas
+
+namespace Areas.Controllers
 {
     [Area("User")]
     public class HomeController : Controller
@@ -15,12 +18,14 @@ namespace Areas
         private readonly IHttpContextAccessor _context;
         private readonly ILogger<HomeController> _logger;
         private readonly UserServices _userService;
+        private readonly DBContext _dBContext;
 
-        public HomeController(IHttpContextAccessor context, ILogger<HomeController> logger, UserServices userService)
+        public HomeController(IHttpContextAccessor context, ILogger<HomeController> logger, UserServices userService, DBContext dBContext)
         {
             _logger = logger;
             _userService = userService;
             _context = context;
+            _dBContext = dBContext;
         }
 
         [Authorize]
@@ -36,24 +41,36 @@ namespace Areas
             {
                 return RedirectToAction("Index");
             }
-            return View(); //note: chua add view cua admin muon do cua user 
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> login(String userName, String password, bool rememberMe)
+        public async Task<IActionResult> Login(String userName, String password, bool rememberMe)
         {
+
             User user = _userService.UserLogin(userName, password);
+
             if (user != null)
             {
-                List<Claim> claims = new List<Claim>()
+                List<Claim> claims = new List<Claim>();
+                if (user.role_name.Trim() == "admin")
                 {
-                    new Claim(ClaimTypes.NameIdentifier, userName),
-                    new Claim(ClaimTypes.Role, "admin"),
-                };
+                    new Claim(ClaimTypes.NameIdentifier, userName);
+                    new Claim(ClaimTypes.Role, "admin");
+                }
+                else if (user.role_name.Trim() == "leader")
+                {
+                    new Claim(ClaimTypes.NameIdentifier, userName);
+                    new Claim(ClaimTypes.Role, "leader");
+                }
+                else if (user.role_name.Trim() == "member")
+                {
+                    new Claim(ClaimTypes.NameIdentifier, userName);
+                    new Claim(ClaimTypes.Role, "member");
+                }
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
-                        CookieAuthenticationDefaults.AuthenticationScheme
-                    );
+                        CookieAuthenticationDefaults.AuthenticationScheme);
 
                 AuthenticationProperties properties = new AuthenticationProperties()
                 {
@@ -64,23 +81,26 @@ namespace Areas
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity), properties);
 
-
                 //create session for current user
-                string currentCustomer = JsonConvert.SerializeObject(user);
-                _context.HttpContext.Session.SetString("user", currentCustomer);
+                string currentUser = JsonConvert.SerializeObject(user);
+                _context.HttpContext.Session.SetString("cUser", currentUser);
+                _context.HttpContext.Session.SetString("role", user.role_name.Trim());
+
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.Msg = "ko hop le";
+                ViewBag.Msg = "Invalid information!!!";
             }
             return View();
         }
 
-        public async Task<IActionResult> logout()
+        public async Task<IActionResult> Logout()
         {
+            _context.HttpContext.Session.Remove("role");
+            Console.WriteLine(_context.HttpContext.Session.GetString("role"));
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("login");
+            return RedirectToAction("Login");
         }
     }
 }
