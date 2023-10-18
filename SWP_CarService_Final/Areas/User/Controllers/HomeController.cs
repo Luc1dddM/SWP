@@ -50,14 +50,24 @@ namespace Areas.Controllers
 
             User user = _userService.UserLogin(userName, password);
 
-            if (user != null && user.role_name.Trim() == "admin")
+            if (user != null)
             {
-                List<Claim> claims = new List<Claim>()
+                List<Claim> claims = new List<Claim>();
+                if (user.role_name.Trim() == "admin")
                 {
-                    new Claim(ClaimTypes.NameIdentifier, userName),
-                    new Claim(ClaimTypes.Role, "admin"),
-                };
-
+                    new Claim(ClaimTypes.NameIdentifier, userName);
+                    new Claim(ClaimTypes.Role, "admin");
+                }
+                else if (user.role_name.Trim() == "leader")
+                {
+                    new Claim(ClaimTypes.NameIdentifier, userName);
+                    new Claim(ClaimTypes.Role, "leader");
+                }
+                else if (user.role_name.Trim() == "member")
+                {
+                    new Claim(ClaimTypes.NameIdentifier, userName);
+                    new Claim(ClaimTypes.Role, "member");
+                }
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
                         CookieAuthenticationDefaults.AuthenticationScheme);
@@ -72,69 +82,12 @@ namespace Areas.Controllers
                     new ClaimsPrincipal(claimsIdentity), properties);
 
                 //create session for current user
-                string currentAdmin = JsonConvert.SerializeObject(user);
-                _context.HttpContext.Session.SetString("adminUser", currentAdmin);
+                string currentUser = JsonConvert.SerializeObject(user);
+                _context.HttpContext.Session.SetString("cUser", currentUser);
                 _context.HttpContext.Session.SetString("role", user.role_name.Trim());
 
                 return RedirectToAction("Index");
             }
-
-            else if (user != null && user.role_name.Trim() == "leader")
-            {
-                List<Claim> claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.NameIdentifier, userName),
-                    new Claim(ClaimTypes.Role, "leader"),
-                };
-
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
-                        CookieAuthenticationDefaults.AuthenticationScheme);
-
-                AuthenticationProperties properties = new AuthenticationProperties()
-                {
-                    AllowRefresh = true,
-                    IsPersistent = false
-                };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity), properties);
-
-
-                //create session for current user
-                string currentLeader = JsonConvert.SerializeObject(user);
-                _context.HttpContext.Session.SetString("leaderUser", currentLeader);
-                _context.HttpContext.Session.SetString("role", user.role_name.Trim());
-                return RedirectToAction("Index");
-            }
-
-            else if (user != null && user.role_name.Trim() == "member")
-            {
-                List<Claim> claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.NameIdentifier, userName),
-                    new Claim(ClaimTypes.Role, "member"),
-                };
-
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
-                        CookieAuthenticationDefaults.AuthenticationScheme);
-
-                AuthenticationProperties properties = new AuthenticationProperties()
-                {
-                    AllowRefresh = true,
-                    IsPersistent = false
-                };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity), properties);
-
-
-                //create session for current user
-                string currentMember = JsonConvert.SerializeObject(user);
-                _context.HttpContext.Session.SetString("memberUser", currentMember);
-                _context.HttpContext.Session.SetString("role", user.role_name.Trim());
-                return RedirectToAction("Index");
-            }
-
             else
             {
                 ViewBag.Msg = "Invalid information!!!";

@@ -40,7 +40,6 @@ namespace SWP_CarService_Final.Controllers
         [HttpPost]
         public IActionResult CreateTeam(string teamID)
         {
-            string currentAdmin = _contx.HttpContext.Session.GetString("adminUser");
             Team newTeam = new Team()
             {
                 team_id = teamID,
