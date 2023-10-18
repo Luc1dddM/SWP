@@ -39,7 +39,7 @@ namespace Areas.Controllers
             ClaimsPrincipal claimUser = HttpContext.User;
             if (claimUser.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index");
+                return Redirect("Index");
             }
             return View();
         }
@@ -109,7 +109,7 @@ namespace Areas.Controllers
             _context.HttpContext.Session.Remove("role");
             Console.WriteLine(_context.HttpContext.Session.GetString("role"));
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+            return Redirect("Login");
         }
     }
 }

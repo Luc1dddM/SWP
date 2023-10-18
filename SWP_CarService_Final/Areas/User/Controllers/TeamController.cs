@@ -7,14 +7,15 @@ namespace SWP_CarService_Final.Areas.User.Controllers
     [Area("User")]
     public class TeamController : Controller
     {
-        private readonly IHttpContextAccessor _contx;
-        private readonly TeamService _teamService;
+        /*private readonly IHttpContextAccessor _contx;*/
+        /*private readonly TeamService _teamService;*/
 
-        public TeamController(IHttpContextAccessor contx, TeamService teamService)
+        TeamService TeamService = new TeamService();
+
+        /*public TeamController(TeamService teamService)
         {
-            _contx = contx;
             _teamService = teamService;
-        }
+        }*/
 
         public IActionResult Index()
         {
@@ -23,12 +24,6 @@ namespace SWP_CarService_Final.Areas.User.Controllers
 
         public IActionResult ViewAllTeam()
         {
-            /*List<Team> allTeam = new List<Team>();
-            if (!allTeam.Any())
-            {
-                _teamService.GetAllTeam();
-            }*/
-
             return View();
         }
 
@@ -39,14 +34,16 @@ namespace SWP_CarService_Final.Areas.User.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateTeam(string teamID)
+        public IActionResult CreateTeam(string teamName)
         {
             Team newTeam = new Team()
             {
-                team_id = teamID,
+                team_name = teamName,
             };
-            _teamService.CreateTeam(newTeam);
-            return RedirectToAction("Index", "Home");
+            TeamService.CreateTeam(newTeam);
+            return Redirect("ViewAllTeam");
         }
+
+
     }
 }
