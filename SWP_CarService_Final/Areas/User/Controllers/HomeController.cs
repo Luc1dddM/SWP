@@ -66,8 +66,8 @@ namespace Areas
 
 
                 //create session for current user
-                string currentCustomer = JsonConvert.SerializeObject(user);
-                _context.HttpContext.Session.SetString("user", currentCustomer);
+                string currentUser = JsonConvert.SerializeObject(user);
+                _context.HttpContext.Session.SetString("cUser", currentUser);
                 return RedirectToAction("Index");
             }
             else

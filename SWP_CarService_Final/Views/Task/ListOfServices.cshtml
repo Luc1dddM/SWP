@@ -35,7 +35,7 @@
             @foreach (var task in @taskService.getAllTasks()){
                 <tr>
                     <td>@task.taskID</td>
-                    <td><img src="~/img/@task.img" alt="Engine Repair"></td>
+                    <td><img style="width:50px; height:50px" src="~/img/@task.img" alt="Engine Repair"></td>
                     <td>@task.taskName</td>
                     <td>@task.price</td>
                     <td>@task.Description

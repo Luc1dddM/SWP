@@ -123,5 +123,88 @@ namespace SWP_CarService_Final.Services
             finally { connection.Close(); }
             return appointments;
         }
+
+        public List<Appointment> getAllApppointments()
+        {
+            List<Appointment> appointments = new List<Appointment>();
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("Select * from Appointment", connection);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var appointment = new Appointment()
+                        {
+                            appointmentID = reader.GetString(0),
+                            vehicalType = reader.GetString(1),
+                            description = reader.GetString(2),
+                            timeArrived = reader.GetDateTime(3),
+                            createdAt = reader.GetDateTime(4),
+                            status = reader.GetString(5),
+                            customer = new Customer() { fullName = "test" },
+                            details = getAppointmentDetailByAPMID(reader.GetString(0)),
+                        };
+                        appointments.Add(appointment);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally { connection.Close(); }
+            return appointments;
+        }
+
+        public Appointment getAppointmentByID(string id)
+        {
+            var appointment = new Appointment();
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("Select * from Appointment where appointment_id = @id", connection);
+                cmd.Parameters.AddWithValue("id", id);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                         appointment = new Appointment()
+                        {
+                            appointmentID = reader.GetString(0),
+                            vehicalType = reader.GetString(1),
+                            description = reader.GetString(2),
+                            timeArrived = reader.GetDateTime(3),
+                            createdAt = reader.GetDateTime(4),
+                            status = reader.GetString(5),
+                            customer = new Customer() { user_name = "hvuthai"},
+                            details = getAppointmentDetailByAPMID(reader.GetString(0)),
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally { connection.Close(); }
+            return appointment;
+        }
+
+
+        public void cancelAppointment(string id)
+        {
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("update Appointment set status = 'Cancel' where appointment_id = @id", connection);
+                cmd.Parameters.AddWithValue("id", id);
+                cmd.ExecuteNonQuery();
+            }catch( Exception ex )
+            {
+                throw new Exception(ex.Message);
+            }finally { connection.Close(); }
+        }
     }
 }

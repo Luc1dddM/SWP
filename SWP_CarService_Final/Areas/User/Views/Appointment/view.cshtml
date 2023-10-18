@@ -1,20 +1,9 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "view";
-    ViewData["direction"] = "Appointment List";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    @model List<Appointment>
+    ViewData["direction"] = "Appointment List";
 
-}
-
-@section Javascript{
-        function deleteService(id) {
-    let text = "Are you sure you want to cancel this Appointment?";
-    if (confirm(text) == true) {
-        window.location = "/Appointment/cancel?id=" + id;
-    } else {
-        alert("You canceled!");
-    }
-}
 }
 
 <div class="list-appointment__container">
@@ -40,7 +29,7 @@
                 <p class="col-2 list-appointment__item--time-arrived">@appointment.timeArrived</p>
                 <p class="col-2 list-appointment__item--created">@appointment.createdAt</p>
                 <p class="col-2 list-appointment__item--customer">@appointment.status</p>
-                <a class="col-2" onclick="deleteService('@appointment.appointmentID.Trim()')">Cancel</a>
+                <a class="col-2" href="/user/order/create?ApmID=@appointment.appointmentID">Create Order</a>
             </div>
             <div class="row appointment-detail__container">
 
@@ -55,4 +44,6 @@
         }
     </div>
 </div>
+
+
 
