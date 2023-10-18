@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using SWP_CarService_Final.Services;
 using Newtonsoft.Json;
+using SWP_CarService_Final.Areas.User.Models;
 
 namespace SWP_CarService_Final.Controllers
 {
@@ -15,7 +16,6 @@ namespace SWP_CarService_Final.Controllers
         private readonly IHttpContextAccessor _contx;
         private readonly ILogger<HomeController> _logger;
         private readonly UserServices _userService;
-        private DBContext _dbContext = new DBContext();
         private readonly AccountService _createAccount;
 
 
@@ -49,9 +49,6 @@ namespace SWP_CarService_Final.Controllers
             Customer cUser = _userService.CustomerLogin(userName, password);
             if (cUser != null)
             {
-                string currentCustomer = JsonConvert.SerializeObject(cUser);
-                _contx.HttpContext.Session.SetString("cCus", currentCustomer);
-
 
                 List<Claim> claims = new List<Claim>()
                 {
@@ -73,7 +70,8 @@ namespace SWP_CarService_Final.Controllers
 
 
                 //create session for current user
-                
+                string currentCustomer = JsonConvert.SerializeObject(cUser);
+                _contx.HttpContext.Session.SetString("cCus", currentCustomer);
                 return RedirectToAction("Index");
             }
             else
