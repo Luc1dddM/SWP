@@ -56,10 +56,8 @@
                                 Add Member
                             </button>
                         </a>
-                        <div class="add-team-button">
-                            <a href="EditTeam?team_id=@team.team_id">Edit Team</a>
-                        </div>
-                        <button type="button" class="btn btn-danger ml-3 pt-1 pb-1 pl-2.5 pt-2" onclick="deleteTeam('@team.team_id')">X</button>
+                        <a href="EditTeam?team_id=@team.team_id"><button type="button" class="btn btn-warning ml-2">Edit</button></a>
+                        <a><button type="button" class="btn btn-danger mr-5 ml-2" onclick="deleteTeam('@team.team_id')">X</button></a>
                     </div>
                 </div>
             </div>
