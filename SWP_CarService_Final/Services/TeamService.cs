@@ -51,14 +51,28 @@ namespace SWP_CarService_Final.Services
                 string id = (getNumberOfTeam() + 1).ToString(); 
                 connection.Open();
                 SqlCommand command = new SqlCommand("insert into [Team] ([Team].[team_id], [Team].[team_name], [Team].[created])" +
-                                                                   "values ('@team_id', '@team_name', '@created')", connection);
-                command.Parameters.AddWithValue("team_id", team.team_id);
+                                                                   "values (@team_id, @team_name, @created)", connection);
+                command.Parameters.AddWithValue("team_id", id);
                 command.Parameters.AddWithValue("team_name", team.team_name);
-                command.Parameters.AddWithValue("created", team.created);
+                command.Parameters.AddWithValue("created", DateTime.Now);
 
                 command.ExecuteNonQuery();
             }
             catch (Exception ex) 
+            {
+                throw new Exception(ex.Message);
+            }
+            finally { connection.Close(); }
+        }
+
+        public void DeleteTeam(Team team)
+        {
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("delete from [Team] where [Team].[team_name] = @team_name");
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

@@ -13,13 +13,19 @@ namespace Areas
         {
             return View();
         }
-        public TeamMemberController(UserAccountServices userAccount) 
+        public TeamMemberController(UserAccountServices userAccount)
         {
             _userAccount = userAccount;
         }
 
         public IActionResult CreateAccount()
         {
+            return View();
+        }
+
+        public IActionResult EditAccount(string UserName)
+        {
+            ViewBag.username = UserName;
             return View();
         }
 
@@ -39,16 +45,41 @@ namespace Areas
                     created = DateTime.Now,
                 };
                 _userAccount.createAccount(user);
-            }catch (Exception ex) 
-            { 
-                throw new Exception(ex.Message); 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
             return Redirect("ListOfTeamMembers");
         }
 
-        public IActionResult Remove(string username)
+        [HttpPost]
+        public IActionResult EditAccount(string username, string fullname, string password, string email, string phonenumber, string status)
         {
-            _userAccount.deleteAccount(username);
+            try
+            {
+                User user = new User()
+                {
+                    UserName = username,
+                    User_fullname = fullname,
+                    password = password,
+                    email = email,
+                    phone_number = phonenumber,
+                    account_status = status == "active" ? true : false,
+                    created = DateTime.Now,
+                };
+                _userAccount.editAccount(user);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return Redirect("ListOfTeamMembers");
+        }
+
+        public IActionResult DeleteAccount(string UserName)
+        {
+            _userAccount.deleteAccount(UserName);
             return Redirect("ListOfTeamMembers");
         }
 
