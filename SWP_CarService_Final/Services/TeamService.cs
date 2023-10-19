@@ -70,7 +70,7 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand("delete from [Team] where [Team].[team_name] = @team_name");
+                SqlCommand command = new SqlCommand("delete from [Team] where [Team].[team_name] = @team_name", connection);
             }
             catch (Exception ex)
             {

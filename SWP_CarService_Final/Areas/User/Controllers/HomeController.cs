@@ -45,7 +45,7 @@ namespace Areas.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(String userName, String password, bool rememberMe)
+        public async Task<IActionResult> Login(String userName, String password)
         {
 
             User user = _userService.UserLogin(userName, password);

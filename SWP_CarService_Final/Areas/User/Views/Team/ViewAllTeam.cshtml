@@ -1,8 +1,7 @@
 ﻿@using SWP_CarService_Final.Services;
-
 @{
     ViewData["Title"] = "ViewAllTeam";
-    Layout = null;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
     TeamService teamService = new TeamService();
 }
 
@@ -34,74 +33,6 @@
 </head>
 
 <body>
-    <header class="bg-white">
-        <div class="row flex-center">
-            <div class="col-md-6 menu-bar">
-                <i class="fa-solid fa-bars"></i>
-            </div>
-            <div class=" col-md-6 profile">
-                <div class="avatar">
-                    <img alt="" src="~/img/avatar.png" />
-                </div>
-                <div class="name">John Doe</div>
-                <div class="arrow-down" onclick="menuToggle();">
-                    <a class="sub-btn-avatar"> <i class="fa-solid fa-angle-down dropup"></i></a>
-                    <div class="menu-profile">
-                        <ul>
-                            <li><a href="#"><i class="fa-solid fa-user"></i>Profile</a></li>
-                            <hr>
-                            <li> <a href="/user/Home/Logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>Log Out</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="side-bar">
-            <div class="menu">
-                <div class="brand">
-                    <img alt="" src="./img/logo.png" /><a href="#" class="px-2">Garage Nhà Làm</a><i class="fa-solid fa-xmark close-btn"></i>
-                </div>
-
-                <div class="item">
-                    <i class="fa-solid fa-gauge"></i><a href="./dashboard.html">Dashboard</a>
-                </div>
-                <div class="item">
-                    <i class="fa-solid fa-user-tie"></i><a href="#">Customer</a>
-                </div>
-                <div class="item">
-                    <i class="fa-solid fa-screwdriver-wrench"></i><a href="./services.html">Services</a>
-                </div>
-                <div class="item"><i class="fa-solid fa-wrench"></i><a href="#">Components</a></div>
-                <div class="item">
-                    <i style="font-size: 20px;" class="fa-solid fa-warehouse"></i><a href="#">Inventory</a>
-                </div>
-                <div class="item"><i class="fa-solid fa-file-signature"></i><a href="#">Appointments</a></div>
-
-                <div class="item"><i class="fa-solid fa-briefcase"></i><a href="#">Work Order</a></div>
-                <div class="item">
-                    <a class="sub-btn ">
-                        <i class="fa-solid fa-flag"></i>Reports<i class="fas fa-angle-right dropdown"></i>
-                    </a>
-                    <div class="sub-menu">
-                        <div class="small-menu">
-                            <a href="#" class="sub-item"><i class="fa-solid fa-chart-pie"></i>Pie Chart</a>
-                        </div>
-                        <div class="small-menu">
-                            <a href="#" class="sub-item">
-                                <i class="fa-solid fa-chart-simple"></i>Bar
-                                Chart
-                            </a>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="item"><i class="fa-solid fa-user"></i><a href="#">Team member</a></div>
-                <div class="item">
-                    <i style="font-size: 20px;" class="fa-solid fa-users"></i><a href="#">Team leader</a>
-                </div>
-            </div>
-        </div>
-    </header>
     <nav>
         <div class="icon-content">
             <span><i class="fa-solid fa-people-group"></i>Team</span>
@@ -215,3 +146,4 @@
 </body>
 
 </html>
+

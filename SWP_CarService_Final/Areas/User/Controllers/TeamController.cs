@@ -1,32 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SWP_CarService_Final.Models;
 using SWP_CarService_Final.Services;
 
 namespace SWP_CarService_Final.Areas.User.Controllers
 {
     [Area("User")]
+    [Authorize(Roles = "admin")]
     public class TeamController : Controller
     {
-        /*private readonly IHttpContextAccessor _contx;*/
-        /*private readonly TeamService _teamService;*/
+        private readonly IHttpContextAccessor _contx;
+        private readonly TeamService _teamService;
 
-        TeamService TeamService = new TeamService();
-
-        /*public TeamController(TeamService teamService)
+        public TeamController(IHttpContextAccessor contx ,TeamService teamService)
         {
+            _contx = contx;
             _teamService = teamService;
-        }*/
-
-        public IActionResult Index()
-        {
-            return View();
         }
 
         public IActionResult ViewAllTeam()
         {
             return View();
         }
-
 
         public IActionResult CreateTeam()
         {
@@ -40,7 +35,7 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             {
                 team_name = teamName,
             };
-            TeamService.CreateTeam(newTeam);
+            _teamService.CreateTeam(newTeam);
             return Redirect("ViewAllTeam");
         }
 

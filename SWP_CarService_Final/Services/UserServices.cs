@@ -68,10 +68,6 @@ namespace SWP_CarService_Final.Services
                     user.created = read.GetDateTime(6);
                     user.role_name = read.GetString(10);
                     _dbContext._connection().Close();
-                    Console.WriteLine(user.UserName);
-                    Console.WriteLine(user.password);
-                    Console.WriteLine(user.role_name);
-
                     return user;
                 }
 
