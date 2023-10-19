@@ -6,63 +6,70 @@
     ViewData["direction"] = "ListOfServices";
     TaskService taskService = new TaskService();
 }
-
- <div class="main-container content">
-        <div class="content-search">
-            <div>
-                <h3>Services</h3>
-            </div>
-            <div class="add-service-button">
-            <a href="AddService">Add Services</a>
-            </div>
+<nav>
+    <div class="icon-content">
+        <span><i class="fa-solid fa-screwdriver-wrench"></i>Services</span>
+    </div>
+    <div class="link-content">
+        <span><a href="./dashboard.html">Dashboard</a><i class="fa-solid fa-angle-right"></i>Services</span>
+    </div>
+</nav>
+<div class="main-container content">
+    <div class="content-search">
+        <div>
+            <h3>Services</h3>
         </div>
-        <div class="table-services">
-            <table style="width: 100%;">
+        <div class="add-service-button">
+            <a href="AddService">Add Services</a>
+        </div>
+    </div>
+    <div class="table-services">
+        <table style="width: 100%;">
+            <tr>
+                <th style="width: 5%;">ID</th>
+                <th style="width: 15%;">Image</th>
+                <th style="width: 15%;">Name Services</th>
+                <th style="width: 10%;">Price</th>
+                <th style="width: 30%;">Description</th>
+                <th style="width: 10%;">Status</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var task in @taskService.getAllTasks())
+            {
                 <tr>
-                    <th style="width: 5%;">ID</th>
-                    <th style="width: 15%;">Image</th>
-                    <th style="width: 15%;">Name Services</th>
-                    <th style="width: 10%;">Price</th>
-                    <th style="width: 30%;">Description</th>
-                    <th style="width: 10%;">Status</th>
-                    <th>Action</th>
-                </tr>
-               @foreach (var task in @taskService.getAllTasks())
-                {
-                    <tr>
-                        <td>@task.taskID</td>
-                        <td><img src="~/img/@task.img" alt="Engine Repair"></td>
-                        <td>@task.taskName</td>
-                        <td>@task.price</td>
-                        <td>
-                            @task.Description
-                        </td>
-                        <td>
-                            @if (task.active)
-                            {
-                                <div class="active-status">
-                                    Active
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="inactive-status">
-                                    In-Active
-                                </div>
-                            }
-                        </td>
-                        <td>
-                            <div class="action-button">
-                                <div class="edit-button">
-                                    <a href="EditService?task_id=@task.taskID">Edit</a>
-                                </div>
-                                <div class="delete-button" onclick="cfDelete('@task.taskID')">
-                                    <button>Delete</button>
-                                </div>
+                    <td>@task.taskID</td>
+                    <td><img src="~/img/@task.img" alt="Engine Repair"></td>
+                    <td>@task.taskName</td>
+                    <td>@task.price</td>
+                    <td>
+                        @task.Description
+                    </td>
+                    <td>
+                        @if (task.active)
+                        {
+                            <div class="active-status">
+                                Active
                             </div>
-                        </td>
-                    </tr>
-                }
+                        }
+                        else
+                        {
+                            <div class="inactive-status">
+                                In-Active
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        <div class="action-button">
+                            <div class="edit-button">
+                                <a href="EditService?task_id=@task.taskID">Edit</a>
+                            </div>
+                            <div class="delete-button" onclick="cfDelete('@task.taskID')">
+                                <button>Delete</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
         </table>
     </div>
     <div class="delete-message" style="display: none;">
