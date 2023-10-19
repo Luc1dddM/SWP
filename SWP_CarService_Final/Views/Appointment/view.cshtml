@@ -37,8 +37,8 @@
             <div class="row list-appointment__item">
                 <p class="col-2 list-appointment__item--id">@appointment.appointmentID</p>
                 <p class="col-2 list-appointment__item--description">@appointment.description</p>
-                <p class="col-2 list-appointment__item--time-arrived">@appointment.timeArrived</p>
-                <p class="col-2 list-appointment__item--created">@appointment.createdAt</p>
+                <p class="col-2 list-appointment__item--time-arrived">@appointment.timeArrived.ToString("dd/MM/yyyy")</p>
+                <p class="col-2 list-appointment__item--created">@appointment.createdAt.ToString("dd/MM/yyyy")</p>
                 <p class="col-2 list-appointment__item--customer">@appointment.status</p>
                 <a class="col-2" onclick="deleteService('@appointment.appointmentID.Trim()')">Cancel</a>
             </div>

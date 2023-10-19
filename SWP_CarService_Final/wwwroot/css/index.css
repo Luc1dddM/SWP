@@ -41,17 +41,88 @@ body {
     margin: 0 auto;
 }
 
-    .appointment-detail__item img {
-        width: 50px;
-        height: 50px;
-        margin-right: 24px;
-    }
+.appointment-detail__item img {
+    width: 50px;
+    height: 50px;
+    margin-right: 24px;
+}
 
     .appointment-detail__item p {
         margin: 0;
     }
 
 /*End CSS View Appoiment List _ Nguyen Son Lam*/
+
+
+/*CSS View Work Order List _ Nguyen Son Lam*/
+.work-order {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 14px;
+}
+
+.work-order__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.work-order__title {
+    padding: 12px 0;
+    border-top: 1.5px solid #ccc;
+    border-bottom: 1.5px solid #ccc;
+    text-align: center;
+    font-weight: bold;
+}
+
+.work-order__item {
+    border-bottom: 1.5px solid #ccc;
+    text-align: center;
+    padding: 12px 0;
+}
+
+.work-order__item--Status span {
+    color: white;
+    margin: 0 auto;
+    padding: 4px 0;
+    display: block;
+    width: 80%;
+    border-radius: 2px;
+    background-color: red;
+}
+
+.work-order__item--Status.active span {
+    background-color: green;
+}
+
+.work-order__item--Action {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.work-order__item--Action a {
+    width: 45%;
+    padding: 2px 0;
+    display: block;
+    color: #fff;
+    border-radius: 2px;
+}
+
+
+.work-order__item--Action a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.work-order__Action--Edit {
+    background-color: green;
+}
+
+.work-order__Action--Detail {
+    background-color: navy;
+}
+/*End CSS View Work Order List _ Nguyen Son Lam*/
 
 
 
@@ -784,15 +855,15 @@ h3 {
 
 /*CSS List Of Team Members_Bui Chau Sao*/
 
-    .table-user-account- th {
+.table-user-account- th {
     font-size: 20px;
     border-bottom: 4px solid #5bb3fb;
-    }
+}
 
-    .table-user-account {
+.table-user-account {
     padding: 20px;
     text-align: center;
-    }
+}
 
     .table-user-account th, td {
         padding: 18px;
@@ -823,7 +894,7 @@ h3 {
     border-radius: 4px;
 }
 
-.add-member-account-button a {
+    .add-member-account-button a {
         color: white;
         text-decoration: none;
- }
+    }
