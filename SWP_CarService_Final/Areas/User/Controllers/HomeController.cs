@@ -107,7 +107,7 @@ namespace Areas.Controllers
         public async Task<IActionResult> Logout()
         {
             _context.HttpContext.Session.Remove("role");
-            Console.WriteLine(_context.HttpContext.Session.GetString("role"));
+            _context.HttpContext.Session.Remove("cUser");
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("Login");
         }

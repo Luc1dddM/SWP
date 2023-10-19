@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "view";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewData["direction"] = "Appointment List";
@@ -9,7 +8,6 @@
 <div class="list-appointment__container">
     <div class="row list-appointment__header">
         <h2 class="header__title">Appointment List</h2>
-        <a style="background-color: white" href="/Appointment/create" class="">Add New</a>
     </div>
 
     <div class="row list-appointment__title--container">
@@ -27,9 +25,12 @@
                 <p class="col-2 list-appointment__item--id">@appointment.appointmentID</p>
                 <p class="col-2 list-appointment__item--description">@appointment.description</p>
                 <p class="col-2 list-appointment__item--time-arrived">@appointment.timeArrived</p>
-                <p class="col-2 list-appointment__item--created">@appointment.createdAt</p>
+                <p class="col-2 list-appointment__item--created">@appointment.createdAt.ToString("dd/MM/yyyy")</p>
                 <p class="col-2 list-appointment__item--customer">@appointment.status</p>
-                <a class="col-2" href="/user/order/create?ApmID=@appointment.appointmentID">Create Order</a>
+                @if (ViewBag.role != "admin")
+                {
+                    <a class="col-2" href="/user/order/create?ApmID=@appointment.appointmentID">Create Order</a>
+                }
             </div>
             <div class="row appointment-detail__container">
 

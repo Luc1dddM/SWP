@@ -5,7 +5,8 @@ namespace SWP_CarService_Final.Services
 {
     public class AccountService : DBContext
     {
-        public Models.Customer GetCustomerByUsername(string username)
+       /* readonly string rootFolder = @"D:\FPT\SWP391\Garage\SWP_CarService_Final\wwwroot\img";*/
+        public Models.Customer GetCustomerByUsername (string username)
         {
             Models.Customer customer = null;
             try
@@ -67,5 +68,38 @@ namespace SWP_CarService_Final.Services
             }
         }
 
+        public void editProfile (Customer customer)
+        {
+            Customer cus = new Customer();
+            try
+            {
+                cus = GetCustomerByUsername(customer.user_name);
+                connection.Open();
+                if (cus != null)
+                {
+                    SqlCommand command = new SqlCommand("UPDATE [dbo].[Customer] SET [fullname] = @fullname," +
+                        "[email] = @email," +
+                        "[phone_number] = @phone_number, " +
+                        "[account_status] = @account_status, " +
+                        "[image] = @image " +
+                        "WHERE [user_name] = @user_name", connection);
+                    command.Parameters.AddWithValue("user_name", customer.user_name);
+                    command.Parameters.AddWithValue("fullname", customer.fullName);
+                    /*command.Parameters.AddWithValue("password", customer.password);*/
+                    command.Parameters.AddWithValue("email", customer.email);
+                    command.Parameters.AddWithValue("phone_number", customer.phone_number);
+                    command.Parameters.AddWithValue("account_status", customer.account_status);
+                    command.Parameters.AddWithValue("image", customer.img);
+
+                    command.ExecuteNonQuery();
+                }
+                else
+                {
+                    throw new Exception("This user does not already exsist.");
+                }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            finally { connection.Close(); }
+        }
     }
 }
