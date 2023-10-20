@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SWP_CarService_Final.Areas.User.Models;
 using SWP_CarService_Final.Services;
 using User = SWP_CarService_Final.Areas.User.Models.User;
 
@@ -28,11 +30,12 @@ namespace Areas
         public IActionResult EditAccount(string UserName)
         {
             ViewBag.username = UserName;
+            
             return View();
         }
 
         [HttpPost]
-        public IActionResult CreateAccount(string username, string fullname, string password, string email, string phonenumber, string status)
+        public IActionResult CreateAccount(string username, string fullname, string password, string email, string phonenumber, string status, string roleId)
         {
             try
             {
@@ -46,7 +49,8 @@ namespace Areas
                     account_status = status == "active" ? true : false,
                     created = DateTime.Now,
                 };
-                _userAccount.createAccount(user);
+                _userAccount.createAccount(user, roleId);
+                _userAccount.setUserRoleByUsername(username, roleId);
             }
             catch (Exception ex)
             {
@@ -56,7 +60,7 @@ namespace Areas
         }
 
         [HttpPost]
-        public IActionResult EditAccount(string username, string fullname, string password, string email, string phonenumber, string status)
+        public IActionResult EditAccount(string username, string fullname, string password, string email, string phonenumber, string status, string roleId)
         {
             try
             {
@@ -70,7 +74,8 @@ namespace Areas
                     account_status = status == "active" ? true : false,
                     created = DateTime.Now,
                 };
-                _userAccount.editAccount(user);
+                _userAccount.editAccount(user, roleId);
+                _userAccount.EditUserRoleByUserName(username, roleId);
             }
             catch (Exception ex)
             {
@@ -81,6 +86,7 @@ namespace Areas
 
         public IActionResult DeleteAccount(string UserName)
         {
+            _userAccount.deleteUserRole(UserName);
             _userAccount.deleteAccount(UserName);
             return Redirect("ListOfTeamMembers");
         }

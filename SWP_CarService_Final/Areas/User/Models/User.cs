@@ -1,4 +1,6 @@
-﻿namespace SWP_CarService_Final.Areas.User.Models
+﻿using SWP_CarService_Final.Models;
+
+namespace SWP_CarService_Final.Areas.User.Models
 {
     public class User
     {
@@ -10,5 +12,7 @@
         public Boolean account_status { get; set; }
         public DateTime created { get; set; }
         public string role_name { get; set; }
+
+        
     }
 }
