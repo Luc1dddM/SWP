@@ -115,7 +115,10 @@ namespace SWP_CarService_Final.Services
         {
             try
             {
-                connection.Open();
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
                 SqlCommand cmd = new SqlCommand("INSERT INTO User_Role (userName, role_id) VALUES (@UserName, @RoleId)", connection);
                 cmd.Parameters.AddWithValue("UserName", userName.Trim());
                 cmd.Parameters.AddWithValue("RoleId", roleId.Trim());
@@ -148,8 +151,8 @@ namespace SWP_CarService_Final.Services
                     command.Parameters.AddWithValue("password", user.password.Trim());
                     command.Parameters.AddWithValue("account_status", user.account_status);
                     command.Parameters.AddWithValue("created", user.created);
-
                     command.ExecuteNonQuery();
+                    setUserRoleByUsername(user.UserName, roleId);
                 }
             }
             catch (Exception ex)
@@ -188,12 +191,15 @@ namespace SWP_CarService_Final.Services
             try
             {
                 User user = getUserByUserName(UserName.Trim());
-                connection.Open();
+                
                 if (user != null)
                 {
+                    deleteUserRole(UserName.Trim());
+                    connection.Open();
                     SqlCommand command = new SqlCommand("DELETE FROM [User] WHERE UserName = @UserName", connection);
                     command.Parameters.AddWithValue("UserName", UserName.Trim());
                     command.ExecuteNonQuery();
+                    
                 }
                 else
                 {
@@ -214,7 +220,10 @@ namespace SWP_CarService_Final.Services
         {
             try
             {
-                connection.Open();
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
                 SqlCommand cmd = new SqlCommand("UPDATE User_role SET role_id = @RoleId WHERE userName = @UserName", connection);
                 cmd.Parameters.AddWithValue("UserName", userName.Trim());
                 cmd.Parameters.AddWithValue("RoleId", roleId.Trim());
@@ -249,9 +258,10 @@ namespace SWP_CarService_Final.Services
                     command.Parameters.AddWithValue("email", uName.email.Trim());
                     command.Parameters.AddWithValue("password", uName.password.Trim());
                     command.Parameters.AddWithValue("account_status", uName.account_status);
-                    command.Parameters.AddWithValue("created", user.created);
+                    command.Parameters.AddWithValue("created", uName.created);
 
                     command.ExecuteNonQuery();
+                    EditUserRoleByUserName(uName.UserName, roleId);
 
 
                 }

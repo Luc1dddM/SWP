@@ -50,7 +50,6 @@ namespace Areas
                     created = DateTime.Now,
                 };
                 _userAccount.createAccount(user, roleId);
-                _userAccount.setUserRoleByUsername(username, roleId);
             }
             catch (Exception ex)
             {
@@ -75,7 +74,6 @@ namespace Areas
                     created = DateTime.Now,
                 };
                 _userAccount.editAccount(user, roleId);
-                _userAccount.EditUserRoleByUserName(username, roleId);
             }
             catch (Exception ex)
             {
@@ -86,7 +84,6 @@ namespace Areas
 
         public IActionResult DeleteAccount(string UserName)
         {
-            _userAccount.deleteUserRole(UserName);
             _userAccount.deleteAccount(UserName);
             return Redirect("ListOfTeamMembers");
         }
