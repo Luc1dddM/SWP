@@ -39,6 +39,32 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             return Redirect("ViewAllTeam");
         }
 
+        public IActionResult DeleteTeam(string team_id)
+        {
+            _teamService.DeleteTeam(team_id);
+            return Redirect("ViewAllTeam");
+        }
 
+        public IActionResult EditTeam(string team_id)
+        {
+            ViewBag.teamId = team_id;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult EditTeam(string teamId, string teamName)
+        {
+            try
+            {
+                Team team = new Team()
+                {
+                    team_id = teamId,
+                    team_name = teamName,
+                };
+                _teamService.Edit_Team(team);
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            return Redirect("ViewAllteam");
+        }
     }
 }

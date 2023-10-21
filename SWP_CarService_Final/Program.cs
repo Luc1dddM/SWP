@@ -29,6 +29,7 @@ namespace SWP_CarService_Final
             builder.Services.AddScoped<UserAccountServices>();
             builder.Services.AddScoped<CustomerAccountService>();
             builder.Services.AddScoped<TeamService>();
+            builder.Services.AddScoped<TeamMemberService>();
 
 
 

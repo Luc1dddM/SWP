@@ -4,7 +4,7 @@
     ViewData["Title"] = "EditAccount";
     Layout = null;
     UserAccountServices userAccount = new UserAccountServices();
-    User user = userAccount.getUserByUserName(ViewBag.username);
+    User user = userAccount.getUserAndRoleNameByUserName(ViewBag.username);
 }
 
 <!DOCTYPE html>
@@ -83,15 +83,34 @@
                         else
                         {
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="choice1" value="active" >
+                                <input class="form-check-input" type="radio" name="status" id="choice1" value="active">
                                 <label class="form-check-label" for="choice1">Active</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="status" id="choice2" value="inactive" checked>
                                 <label class="form-check-label" for="choice2">In-active</label>
                             </div>
+
                         }
                     </div>
+
+                    <label>Role Name</label>
+
+                    @if (user.role_name == "leader")
+                    {
+                        <select name="roleId">
+                            <option value="1" selected>leader</option>
+                            <option value="2">member</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select name="roleId">
+                            <option value="2" selected>member</option>
+                            <option value="1">leader</option>
+                        </select>
+                    }
+
                     <div class="d-flex justify-content-center">
                         <button type="submit" onclick="submitEditUserAccount()" class="btn btn-primary">
                             Submit
