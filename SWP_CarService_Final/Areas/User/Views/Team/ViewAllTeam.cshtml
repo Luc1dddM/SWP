@@ -1,8 +1,13 @@
 ﻿@using SWP_CarService_Final.Services;
+@using SWP_CarService_Final.Areas.User.Models;
+
 @{
     ViewData["Title"] = "ViewAllTeam";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     TeamService teamService = new TeamService();
+    TeamMemberService teamMemberService = new TeamMemberService();
+    UserAccountServices userAccountServices = new UserAccountServices();
+    IHttpContextAccessor contx = new HttpContextAccessor();
 }
 
 <!DOCTYPE html>
@@ -20,37 +25,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
 
 </head>
-    <nav>
-        <div class="icon-content">
-            <span><i class="fa-solid fa-people-group"></i>Team</span>
+<nav>
+    <div class="icon-content">
+        <span><i class="fa-solid fa-people-group"></i>Team</span>
+    </div>
+    <div class="link-content">
+        <span><a href="./dashboard.html">Dashboard</a><i class="fa-solid fa-angle-right"></i>Team</span>
+    </div>
+</nav>
+<div class="main-container content">
+    <div class="content-search">
+        <div>
+            <h3>Team</h3>
         </div>
-        <div class="link-content">
-            <span><a href="./dashboard.html">Dashboard</a><i class="fa-solid fa-angle-right"></i>Team</span>
+        @* <div class="search-container-team">
+        <form action="">
+        <input type="text" placeholder="Search.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+        </div> *@
+        <div class="add-team-button">
+            <a href="CreateTeam">Add New Team</a>
         </div>
-    </nav>
-    <div class="main-container content">
-        <div class="content-search">
-            <div>
-                <h3>Team</h3>
-            </div>
-            @* <div class="search-container-team">
-                <form action="">
-                    <input type="text" placeholder="Search.." name="search">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
-            </div> *@
-            <div class="add-team-button">
-                <a href="CreateTeam">Add New Team</a>
-            </div>
-        </div>
-        @foreach (var team in @teamService.GetAllTeam())
-        {
+    </div>
+    @foreach (var team in @teamService.GetAllTeam())
+    {
         <div class="table-team-management mt-4">
             <div class="ateam">
                 <div class="p-3 mb-0 bg-primary text-white m-2 row d-flex align-items-center justify-content-center">
                     <h4 class="col-md-9 m-0">@team.team_name</h4>
                     <div class=" col-md-3 d-flex align-items-center justify-content-center">
-                        <a href="add-member.html">
+                        <a href="/user/TeamMember/AddMember?teamId=@team.team_id">
                             <button type="button" class="btn btn-light p-2 text-primary" data-toggle="modal"
                                     data-target="#exampleModal">
                                 Add Member
@@ -72,75 +77,80 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>John Davies</td>
-                        <td>0548544242</td>
-                        <td>johndavies@gmail.com</td>
-                        <td>
-                            <div class="action-button-team">
-                                <div class="edit-button-team">
-                                    <a href="./edit-member-team.html">Edit</a>
+                    @foreach (var user in teamMemberService.GetMemberByTeamID(team.team_id))
+                    {
+                        <tr>
+
+                            <td>@user.User_fullname</td>
+                            <td>@user.phone_number</td>
+                            <td>@user.email</td>
+                            <td>
+                                <div class="action-button-team">
+                                    <div class="edit-button-team">
+                                        <a href="-------------">Edit</a>
+                                    </div>
+                                    <div class="delete-button-team" onclick="deleteMemberInTeam()">
+                                        <button>Delete</button>
+                                    </div>
                                 </div>
-                                <div class="delete-button-team" onclick="deleteMemberInTeam()">
-                                    <button>Delete</button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+                    }
+
                 </tbody>
             </table>
         </div>
-        }
+    }
+</div>
     </div>
-    </div>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            // jQuery for toggle sub menus
-            $('.sub-btn').click(function () {
-                $(this).next('.sub-menu').slideToggle();
-                $(this).find('.dropdown').toggleClass('rotate');
-            });
-
-            $('.sub-btn-avatar').click(function () {
-                $(this).next('.sub-menu-avatar').slideToggle();
-                $(this).find('.dropup').toggleClass('flip');
-            });
-
-            // jQuery for expand and collapse the sidebar
-            $('.menu-bar').click(function () {
-                $('.side-bar').addClass('active');
-                $('.menu-bar').css("visibility", "hidden");
-            });
-
-            $('.close-btn').click(function () {
-                $('.side-bar').removeClass('active');
-                $('.menu-bar').css("visibility", "visible");
-            });
+<script type="text/javascript">
+    $(document).ready(function () {
+        // jQuery for toggle sub menus
+        $('.sub-btn').click(function () {
+            $(this).next('.sub-menu').slideToggle();
+            $(this).find('.dropdown').toggleClass('rotate');
         });
 
-        function menuToggle() {
-            const toggleMenu = document.querySelector('.menu-profile');
-            toggleMenu.classList.toggle('active');
+        $('.sub-btn-avatar').click(function () {
+            $(this).next('.sub-menu-avatar').slideToggle();
+            $(this).find('.dropup').toggleClass('flip');
+        });
+
+        // jQuery for expand and collapse the sidebar
+        $('.menu-bar').click(function () {
+            $('.side-bar').addClass('active');
+            $('.menu-bar').css("visibility", "hidden");
+        });
+
+        $('.close-btn').click(function () {
+            $('.side-bar').removeClass('active');
+            $('.menu-bar').css("visibility", "visible");
+        });
+    });
+
+    function menuToggle() {
+        const toggleMenu = document.querySelector('.menu-profile');
+        toggleMenu.classList.toggle('active');
+    }
+    function deleteMemberInTeam() {
+        let text = "Are you sure you want to delete this service?";
+        if (confirm(text) == true) {
+            alert("Service is deleted!!");
+        } else {
+            alert("You canceled!");
         }
-        function deleteMemberInTeam() {
-            let text = "Are you sure you want to delete this service?";
-            if (confirm(text) == true) {
-                alert("Service is deleted!!");
-            } else {
-                alert("You canceled!");
-            }
-        }
+    }
     function deleteTeam(key) {
-        let text = "Are you want to delete this team?";
+        let text = "Do you want to delete this team?";
         if (confirm(text)) {
             window.location = "/user/Team/DeleteTeam?team_id=" + key;
             alert("Team is deleted!!");
         } else {
-            alert("Canceled!");
+            alert("Deleted Canceled!");
         }
     }
-    </script>
+</script>
 
 </html>
 

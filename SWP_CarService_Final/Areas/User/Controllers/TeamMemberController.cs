@@ -10,6 +10,7 @@ namespace Areas
     public class TeamMemberController : Controller
     {
         private readonly UserAccountServices _userAccount;
+        private readonly TeamMemberService _teamMemberService = new TeamMemberService();
 
         public IActionResult ListOfTeamMembers()
         {
@@ -84,6 +85,27 @@ namespace Areas
             _userAccount.deleteAccount(UserName);
             return Redirect("ListOfTeamMembers");
         }
+
+/*---------------Begin CRUD Team Member _ Tu Quoc Phat---------------*/
+        
+        public IActionResult AddMember(string teamId)
+        {
+            ViewBag.teamID = teamId;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddMember(string teamId, List<string> username)
+        {
+            _teamMemberService.AddTeamMember(teamId, username);
+            return Redirect("/user/team/ViewAllTeam");
+        }
+
+
+
+        /*---------------End CRUD Team Member _ Tu Quoc Phat---------------*/
+
+
 
     }
 }
