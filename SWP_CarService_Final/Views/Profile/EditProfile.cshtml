@@ -1,7 +1,9 @@
-﻿
+﻿@using SWP_CarService_Final.Models;
+@using SWP_CarService_Final.Services;
 @{
-    
+
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+
 }
 
 <!DOCTYPE html>
@@ -53,11 +55,11 @@
                             <div class="text-center mt-3">
                                 <img style="max-width: 190px;" class="rounded-circle border img-fluid" src="~/img/@Model.img" alt="">
                             </div>
-                            <div class="input-group">
-                                <div class="custom-file m-3">
-                                    <input type="file" name="fileImg" class="upload-box custom-file-input" >
-                                    <label class="custom-file-label" for="">Choose file</label>
-                                </div>
+                            
+                        </div>
+                        <div class="input-group">
+                            <div class="form-group border p-1">
+                                <input type="file" class="form-control-file" id="exampleFormControlFile1">
                             </div>
                         </div>
                     </div>

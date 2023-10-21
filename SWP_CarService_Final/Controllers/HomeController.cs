@@ -17,10 +17,10 @@ namespace SWP_CarService_Final.Controllers
         private readonly IHttpContextAccessor _contx;
         private readonly ILogger<HomeController> _logger;
         private readonly UserServices _userService;
-        private readonly AccountService _createAccount;
+        private readonly CustomerAccountService _createAccount;
 
 
-        public HomeController(ILogger<HomeController> logger, UserServices userService, IHttpContextAccessor contx, AccountService createAccount)
+        public HomeController(ILogger<HomeController> logger, UserServices userService, IHttpContextAccessor contx, CustomerAccountService createAccount)
         {
             _logger = logger;
             _userService = userService;

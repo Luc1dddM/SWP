@@ -316,3 +316,39 @@
         color: white;
     }
 /*End CSS Form Team Management_Tu Quoc Phat*/
+
+
+/*CSS View List of Customers _ Bui Ngoc Minh Tam*/
+.table-customerlist- th {
+    font-size: 22px;
+    border-bottom: 4px solid #5bb3fb;
+}
+
+.table-customerlist {
+    padding: 20px;
+    text-align: center;
+}
+
+    .table-customerlist th {
+        padding: 14px;
+        font-size: 18px;
+    }
+
+    .table-customerlist tr {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .table-customerlist .inactive-status {
+        background-color: rgb(216, 27, 27);
+        padding: 8px;
+        border-radius: 4px;
+        color: white;
+    }
+
+    .table-customerlist .active-status {
+        background-color: rgb(0, 145, 12);
+        padding: 8px;
+        border-radius: 4px;
+        color: white;
+    }
+/*End CSS View List of Customerst _ Bui Ngoc Minh Tam*/
