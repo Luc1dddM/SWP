@@ -77,14 +77,14 @@ namespace SWP_CarService_Final.Services
             finally { connection.Close(); }
         }
 
-        public Team GetTeamByID(string teamId)
+        public Team GetTeamByID(string teamID)
         {
             Team team = new Team();
             try
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand("select * from [Team] where [Team].[team_id] = @team_id", connection);
-                command.Parameters.AddWithValue("team_id", teamId);
+                SqlCommand command = new SqlCommand("select * from [Team] where [Team].[team_id] = @team_Id", connection);
+                command.Parameters.AddWithValue("team_Id", teamID);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())

@@ -54,7 +54,7 @@
                         <label for="exampleFormControlSelect2">Member Not In Team</label>
                         <select name="username" multiple class="form-control" id="exampleFormControlSelect2">
                             
-                            @foreach (var member in teamMemberService.GetAllTeamMember())
+                            @foreach (var member in teamMemberService.GetAllTeamMemberNotInTeam())
                             {
                                 <option value="@member.UserName">@member.UserName</option>
                             }

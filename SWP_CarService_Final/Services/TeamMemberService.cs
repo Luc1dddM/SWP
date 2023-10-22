@@ -17,7 +17,7 @@ namespace SWP_CarService_Final.Services
             return users;
         }*/
 
-        public List<User> GetAllTeamMember()
+        public List<User> GetAllTeamMemberNotInTeam()
         {
             List<User> userlist = new List<User>();
             try
@@ -26,7 +26,9 @@ namespace SWP_CarService_Final.Services
                 SqlCommand cmd = new SqlCommand("select * from [User] " +
                     "join [User_role] on [User_role].[userName] = [User].[UserName] " +
                     "join [Role] on [Role].[role_id] = [User_role].[role_id] " +
-                    "where [Role].[role_name] = 'member' khhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", connection);
+                    "left join [Team_Members] on [Team_Members].[userName] = [User].[UserName] " +
+                    "left join [Team] on [Team].[team_id] = [Team_Members].[team_id] " +
+                    "where [Role].[role_name] = 'member' and [Team_Members].[team_id] is null", connection);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

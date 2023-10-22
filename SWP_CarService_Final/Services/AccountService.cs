@@ -5,8 +5,8 @@ namespace SWP_CarService_Final.Services
 {
     public class AccountService : DBContext
     {
-       /* readonly string rootFolder = @"D:\FPT\SWP391\Garage\SWP_CarService_Final\wwwroot\img";*/
-        public Models.Customer GetCustomerByUsername (string username)
+        /* readonly string rootFolder = @"D:\FPT\SWP391\Garage\SWP_CarService_Final\wwwroot\img";*/
+        public Models.Customer GetCustomerByUsername(string username)
         {
             Models.Customer customer = null;
             try
@@ -22,8 +22,8 @@ namespace SWP_CarService_Final.Services
                         customer = new Models.Customer()
                         {
                             user_name = reader.GetString(0),
-                            password = reader.GetString(1),
-                            fullName = reader.GetString(2),
+                            fullName = reader.GetString(1),
+                            password = reader.GetString(2),
                             email = reader.GetString(3),
                             phone_number = reader.GetString(4),
                             account_status = reader.GetBoolean(5),
@@ -68,7 +68,7 @@ namespace SWP_CarService_Final.Services
             }
         }
 
-        public void editProfile (Customer customer)
+        public void editProfile(Customer customer)
         {
             Customer cus = new Customer();
             try
