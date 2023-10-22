@@ -26,12 +26,13 @@
             <thead>
                 <tr>
                     <th style="width: 10%;">User Name</th>
-                    <th style="width: 15%;">Full Name</th>
+                    <th style="width: 10%;">Full Name</th>
                     <th style="width: 10%;">Password</th>
                     <th style="width: 15%;">Email</th>
-                    <th style="width: 15%;">Phone Number</th>
+                    <th style="width: 13%;">Phone Number</th>
                     <th style="width: 10%;"> Status</th>
                     <th style="width: 10%;">Created</th>
+                    <th style="width: 10%;">Role Name</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -59,8 +60,9 @@
                             }
                         </td>
                         <td>@user.created.ToString("dd/MM/yyyy")</td>
-                        <td>
-                            <a href="/user/TeamMember/EditAccount?UserName=@user.UserName"><button type="button" class="btn btn-primary">Edit</button></a>
+                        <td>@user.role_name</td>
+                        <td class="d-flex">
+                            <a class="mr-2" href="/user/TeamMember/EditAccount?UserName=@user.UserName"><button type="button" class="btn btn-primary">Edit</button></a>
                             <button type="button" class="btn btn-danger" onclick="cfDelete('@user.UserName')">Delete</button>
                         </td>
                     </tr>

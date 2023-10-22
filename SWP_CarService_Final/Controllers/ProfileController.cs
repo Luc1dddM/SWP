@@ -8,11 +8,11 @@ namespace SWP_CarService_Final.Controllers
     public class ProfileController : Controller
     {
         readonly string rootFolder = @"D:\SE1702\SWP code\SWP_CarService_Final\wwwroot\img";
-        private readonly AccountService _accountService;
+        private readonly CustomerAccountService _accountService;
         private readonly IHttpContextAccessor _contx;
 
 
-        public ProfileController(AccountService accountService, IHttpContextAccessor contx)
+        public ProfileController(CustomerAccountService accountService, IHttpContextAccessor contx)
         {
             _accountService = accountService;
             _contx = contx;
@@ -23,11 +23,11 @@ namespace SWP_CarService_Final.Controllers
             string cCustomerString = _contx.HttpContext.Session.GetString("cCus");
             Customer cCustomer = JsonConvert.DeserializeObject<Customer>(cCustomerString);
             /*ViewBag.Customer = cCustomer;*/
-            return View(cCustomer);
+            return View();
         }
 
         [HttpPost]
-        public IActionResult EditProfile(string user_name, string fullname, string email, string phone_number, IFormFile fileImg, bool account_status)
+        public IActionResult EditProfile(string user_name, string fullname, string email, string phone_number, IFormFile fileImg, string account_status)
         {
             string ImgName = "";
             try
@@ -55,7 +55,7 @@ namespace SWP_CarService_Final.Controllers
                         fullName = fullname,
                         email = email,
                         phone_number = phone_number,
-                        account_status = true,
+                        account_status = account_status == "active" ? true : false,
                         img = ImgName
                     };
                     _accountService.editProfile(cus);
