@@ -33,7 +33,17 @@
                     <a class="sub-btn-avatar"> <i class="fa-solid fa-angle-down dropup"></i></a>
                     <div class="menu-profile">
                         <ul>
-                            <li><a href="/Profile/EditProfile"><i class="fa-solid fa-user"></i>Profile</a></li>
+                            @if (contx.HttpContext.Session.GetString("role") == "admin" ||
+                                 contx.HttpContext.Session.GetString("role") == "leader" ||
+                                 contx.HttpContext.Session.GetString("role") == "member")
+                            {
+                                <li><a href="/user/UserProfile/EditProfileUser"><i class="fa-solid fa-user"></i>Profile</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="/Profile/EditProfile"><i class="fa-solid fa-user"></i>Profile</a></li>
+                            }
+                            
                             <hr>
                              @if (contx.HttpContext.Session.GetString("role") == "admin" ||
                                  contx.HttpContext.Session.GetString("role") == "leader" ||
