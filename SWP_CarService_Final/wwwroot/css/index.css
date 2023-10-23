@@ -109,6 +109,122 @@
 }
 /*End CSS View Work Order List _ Nguyen Son Lam*/
 
+/*CSS View Work Order Detail _ Nguyen Son Lam*/
+.work-order-detail {
+    padding: 20px;
+    background-color: #fff;
+}
+
+.work-order-detail__container {
+    margin-top: 20px;
+}
+
+.work-order-detail-task__header {
+    padding: 12px 0;
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    text-align: center;
+}
+
+.work-order-detail-task-item__container {
+    text-align: center;
+    padding: 12px 0;
+}
+
+.work-order-detail-task__item {
+    padding: 12px 0;
+}
+
+.work-order-detail-task__item--service {
+    justify-content: space-evenly;
+    align-items: center;
+    display: flex;
+}
+
+    .work-order-detail-task__item--service img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .work-order-detail-task__item--service p {
+        margin: 0;
+    }
+
+.work-order-detail-task__item--status span {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    padding: 2px 0;
+    color: white;
+    border-radius: 2px;
+    background-color: red;
+}
+
+.work-order-detail-task__item--status.active span {
+    background-color: green;
+}
+
+.work-order-detail-task__item--Action {
+    display: flex;
+    justify-content: space-evenly;
+    color: #fff;
+}
+
+    .work-order-detail-task__item--Action a:nth-child(2) {
+        background-color: rgb(45, 45, 237);
+        display: block;
+        width: 40%;
+        border-radius: 2px;
+    }
+
+.work-order-detail-component-item__container {
+    text-align: center;
+    padding: 12px 0;
+}
+
+.work-order-detail-component__item {
+    padding: 12px 0;
+}
+
+.work-order-detail-Component__item--service {
+    justify-content: space-evenly;
+    align-items: center;
+    display: flex;
+}
+
+    .work-order-detail-Component__item--service img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .work-order-detail-Component__item--service p {
+        margin: 0;
+    }
+
+.work-order-detail-component__item--Action {
+    display: flex;
+    justify-content: space-evenly;
+    color: #fff;
+}
+
+    .work-order-detail-component__item--Action a:nth-child(2) {
+        background-color: rgb(45, 45, 237);
+        display: block;
+        width: 40%;
+        border-radius: 2px;
+    }
+
+.work-order-detail-total {
+    width: 100%;
+    padding: 12px;
+    font-size: 32px;
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    text-align: right;
+}
+/*End CSS View Work Order Detail_Nguyen Son Lam*/
+
+
 
 
 /*CSS Garagemanagement+Service_Hoang Vu Thai*/

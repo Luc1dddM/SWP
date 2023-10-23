@@ -8,7 +8,7 @@ namespace SWP_CarService_Final.Services
 
         public DBContext() { 
             connection = new SqlConnection();
-            connection.ConnectionString = "Data Source=DESKTOP-IBRTGQQ\\PT_LAP;Initial Catalog=SWP;Integrated Security=True;Trusted_Connection=true;MultipleActiveResultSets=True;";
+            connection.ConnectionString = "Data Source=LAPTOP-NAU21EPV;Initial Catalog=SWP;Integrated Security=True;Trusted_Connection=true";
         }
 
         public SqlConnection _connection()

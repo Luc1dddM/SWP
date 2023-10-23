@@ -18,6 +18,7 @@ namespace SWP_CarService_Final.Services
         public List<WorkOrder> getAllWorkOrders()
         {
             List<WorkOrder> workOrders = new List<WorkOrder>();
+            TaskDetailService TDservice = new TaskDetailService();
             try
             {
                 connection.Open();
@@ -33,7 +34,8 @@ namespace SWP_CarService_Final.Services
                             Total = reader.GetDecimal(2),
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
-                            createdAt = reader.GetDateTime(5)
+                            createdAt = reader.GetDateTime(5),
+                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
                         });
                     }
                 }
@@ -48,6 +50,8 @@ namespace SWP_CarService_Final.Services
         public List<WorkOrder> getAllWorkOrdersCreatedByUser(string createdBy)
         {
             List<WorkOrder> workOrders = new List<WorkOrder>();
+            TaskDetailService TDservice = new TaskDetailService();
+
             try
             {
                 connection.Open();
@@ -64,7 +68,8 @@ namespace SWP_CarService_Final.Services
                             Total = reader.GetDecimal(2),
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
-                            createdAt = reader.GetDateTime(5)
+                            createdAt = reader.GetDateTime(5),
+                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
                         });
                     }
                 }
@@ -79,6 +84,8 @@ namespace SWP_CarService_Final.Services
         public List<WorkOrder> getAllWorkOrdersOfOwner(string owner)
         {
             List<WorkOrder> workOrders = new List<WorkOrder>();
+            TaskDetailService TDservice = new TaskDetailService();
+
             try
             {
                 connection.Open();
@@ -95,7 +102,8 @@ namespace SWP_CarService_Final.Services
                             Total = reader.GetDecimal(2),
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
-                            createdAt = reader.GetDateTime(5)
+                            createdAt = reader.GetDateTime(5),
+                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
                         });
                     }
                 }
@@ -108,9 +116,11 @@ namespace SWP_CarService_Final.Services
         }
 
 
-        public WorkOrder getAllWorkOrderById(string id)
+        public WorkOrder getWorkOrderById(string id)
         {
             WorkOrder WorkOrder = null;
+            TaskDetailService TDservice = new TaskDetailService();
+
             try
             {
                 connection.Open();
@@ -127,7 +137,8 @@ namespace SWP_CarService_Final.Services
                             Total = reader.GetDecimal(2),
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
-                            createdAt = reader.GetDateTime(5)
+                            createdAt = reader.GetDateTime(5),
+                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
                         };
                     }
                 }

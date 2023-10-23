@@ -1,0 +1,82 @@
+﻿@using SWP_CarService_Final.Models
+@{
+    ViewData["Title"] = "view";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    @model WorkOrder
+
+}
+
+<div class="work-order-detail">
+    <div class="work-order-detail__header">
+        <h4>Work Order Detail</h4>
+    </div>
+    <div class="work-order-detail__container">
+        <div class="work-order-detail-task__container">
+            <div class="row work-order-detail-header__container">
+                <h5 class="col-1 work-order-detail-task__header">ID</h5>
+                <h5 class="col-3 work-order-detail-task__header">Services</h5>
+                <h5 class="col work-order-detail-task__header">Quantity</h5>
+                <h5 class="col work-order-detail-task__header">Amount</h5>
+                <h5 class="col work-order-detail-task__header">Status</h5>
+                <h5 class="col work-order-detail-task__header">Worker</h5>
+                <h5 class="col work-order-detail-task__header">Action</h5>
+            </div>
+
+            <div class="work-order-detail-task-item__container">
+                @foreach (var WorkOrder in Model.taskDetails)
+                {
+                    <div class="row work-order-detail-task__item">
+                        <div class="col-1 work-order-detail-task__item--ID">@WorkOrder.wod_id</div>
+                        <div class="col-3 work-order-detail-task__item--service">
+                            <img src="./img/@WorkOrder.task.img" alt="">
+                            <p>@WorkOrder.task.taskName</p>
+                        </div>
+                        <div class="col work-order-detail-task__item--quantity">@WorkOrder.quantity</div>
+                        <div class="col work-order-detail-task__item--amount">@WorkOrder.price</div>
+                        <div class="col work-order-detail-task__item--status active"><span>@WorkOrder.status</span></div>
+                        <div class="col work-order-detail-task__item--member"><span>@WorkOrder.userName</span></div>
+                        <div class="col work-order-detail-task__item--Action">
+                            <a>Trash can</a>
+                            <a href="/user/TaskDetail/edit?wodID=@WorkOrder.wod_id">Edit</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="work-order-detail-component__container">
+            <div class="row work-order-detail-component-header__container">
+                <h5 class="col-1 work-order-detail-task__header">ID</h5>
+                <h5 class="col-3 work-order-detail-task__header">Product</h5>
+                <h5 class="col work-order-detail-task__header">Quantity</h5>
+                <h5 class="col work-order-detail-task__header">Amount</h5>
+                <h5 class="col work-order-detail-task__header"></h5>
+                <h5 class="col work-order-detail-task__header">Add By</h5>
+                <h5 class="col work-order-detail-task__header">Action</h5>
+            </div>
+
+            <div class="work-order-detail-component-item__container">
+                <div class="row work-order-detail-component__item">
+                    <div class="col-1 work-order-detail-Component__item--ID">01</div>
+                    <div class="col-3 work-order-detail-Component__item--service">
+                        <img src="" alt="">
+                        <p>Brake system repair</p>
+                    </div>
+                    <div class="col work-order-detail-component__item--quantity">Quantity</div>
+                    <div class="col work-order-detail-component__item--amount">Amount</div>
+                    <div class="col work-order-detail-component__item--status"></div>
+                    <div class="col work-order-detail-component__item--status">Lam</div>
+                    <div class="col work-order-detail-component__item__item--Action">
+                        <a>Trash can</a>
+                        <a href="">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="work-order-detail-total">
+            Total: 13.000.000
+        </div>
+    </div>
+</div>
+
