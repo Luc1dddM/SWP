@@ -93,7 +93,7 @@ namespace Areas
         
         public IActionResult AddMember(string teamId)
         {
-            ViewBag.teamID = teamId;
+            ViewBag.teamId = teamId;
             return View();
         }
 
@@ -105,6 +105,24 @@ namespace Areas
         }
 
 
+        public IActionResult EditTeamMember(string Username)
+        {
+            ViewBag.user_name = Username;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult EditTeamMember()
+        {
+            return Redirect("/user/team/ViewAllTeam");
+        }
+
+
+        public IActionResult DeteleMemberFromTeam(string Username)
+        {
+            _teamMemberService.DeteleMemberFromTeam(Username);
+            return Redirect("/user/team/ViewAllTeam");
+        }
 
         /*---------------End CRUD Team Member _ Tu Quoc Phat---------------*/
 
