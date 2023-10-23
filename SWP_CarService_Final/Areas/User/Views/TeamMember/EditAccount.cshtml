@@ -5,6 +5,7 @@
     Layout = null;
     UserAccountServices userAccount = new UserAccountServices();
     User user = userAccount.getUserAndRoleNameByUserName(ViewBag.username);
+    RoleService leadermemberrole = new RoleService();
 }
 
 <!DOCTYPE html>
@@ -93,23 +94,14 @@
 
                         }
                     </div>
+                    <div><label>Role Name</label></div>
 
-                    <label>Role Name</label>
-
-                    @if (user.role_name == "leader")
-                    {
-                        <select name="roleId">
-                            <option value="1" selected>leader</option>
-                            <option value="2">member</option>
-                        </select>
-                    }
-                    else
-                    {
-                        <select name="roleId">
-                            <option value="2" selected>member</option>
-                            <option value="1">leader</option>
-                        </select>
-                    }
+                    <select name="roleId">
+                        @foreach (var role in @leadermemberrole.getLeaderAndMemberRoleId())
+                        {
+                            <option value="@role.role_id" @(role.role_name == user.role_name ? "selected" : "")>@user.role_name</option>
+                        }
+                    </select>
 
                     <div class="d-flex justify-content-center">
                         <button type="submit" onclick="submitEditUserAccount()" class="btn btn-primary">
