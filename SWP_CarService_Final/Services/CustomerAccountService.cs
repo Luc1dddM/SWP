@@ -3,10 +3,10 @@ using System.Data.SqlClient;
 
 namespace SWP_CarService_Final.Services
 {
-    public class AccountService : DBContext
+    public class CustomerAccountService : DBContext
     {
-       /* readonly string rootFolder = @"D:\FPT\SWP391\Garage\SWP_CarService_Final\wwwroot\img";*/
-        public Models.Customer GetCustomerByUsername (string username)
+        /* readonly string rootFolder = @"D:\FPT\SWP391\Garage\SWP_CarService_Final\wwwroot\img";*/
+        public Models.Customer GetCustomerByUsername(string username)
         {
             Models.Customer customer = null;
             try
@@ -22,8 +22,8 @@ namespace SWP_CarService_Final.Services
                         customer = new Models.Customer()
                         {
                             user_name = reader.GetString(0),
-                            password = reader.GetString(1),
-                            fullName = reader.GetString(2),
+                            fullName = reader.GetString(1),
+                            password = reader.GetString(2),
                             email = reader.GetString(3),
                             phone_number = reader.GetString(4),
                             account_status = reader.GetBoolean(5),
@@ -68,7 +68,7 @@ namespace SWP_CarService_Final.Services
             }
         }
 
-        public void editProfile (Customer customer)
+        public void editProfile(Customer customer)
         {
             Customer cus = new Customer();
             try
@@ -85,7 +85,6 @@ namespace SWP_CarService_Final.Services
                         "WHERE [user_name] = @user_name", connection);
                     command.Parameters.AddWithValue("user_name", customer.user_name);
                     command.Parameters.AddWithValue("fullname", customer.fullName);
-                    /*command.Parameters.AddWithValue("password", customer.password);*/
                     command.Parameters.AddWithValue("email", customer.email);
                     command.Parameters.AddWithValue("phone_number", customer.phone_number);
                     command.Parameters.AddWithValue("account_status", customer.account_status);
@@ -100,6 +99,67 @@ namespace SWP_CarService_Final.Services
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
             finally { connection.Close(); }
+        }
+
+        public List<Customer> GetAllCustomer()
+        {
+            List<Customer> customers = new List<Customer>();
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("select * from [Customer]", connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var customer = new Customer()
+                        {
+                            user_name = reader.GetString(0),
+                            fullName = reader.GetString(1),
+                            password = reader.GetString(2),
+                            email = reader.GetString(3),
+                            phone_number = reader.GetString(4),
+                            account_status = reader.GetBoolean(5),
+                            img = (!reader.IsDBNull(6)) ? reader.GetString(6) : "",
+                        };
+                        customers.Add(customer);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally { connection.Close(); }
+            return customers;
+        }
+
+        public void DeleteCustomer(string user_name)
+        {
+            try
+            {
+                Customer customer = GetCustomerByUsername(user_name);
+                connection.Open();
+                if (user_name != null)
+                {
+
+                    SqlCommand command = new SqlCommand("DELETE FROM [dbo].[Customer] WHERE user_name = @user_name", connection);
+                    command.Parameters.AddWithValue("user_name", user_name);
+                    command.ExecuteNonQuery();
+                }
+                else
+                {
+                    throw new Exception("The customer does not already exist.");
+                }
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception(ex.Message);
+            }
+           finally
+            {
+                connection.Close();
+            }
         }
     }
 }
