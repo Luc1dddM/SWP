@@ -24,22 +24,22 @@ namespace SWP_CarService_Final.Services
             {
                 connection.Open();
                 SqlCommand cmd = new SqlCommand("select * from [User] " +
-                    "join [User_role] on [User_role].[userName] = [User].[UserName] " +
-                    "join [Role] on [Role].[role_id] = [User_role].[role_id] " +
-                    "left join [Team_Members] on [Team_Members].[userName] = [User].[UserName] " +
-                    "left join [Team] on [Team].[team_id] = [Team_Members].[team_id] " +
-                    "where [Role].[role_name] = 'member' and [Team_Members].[team_id] is null", connection);
+                                                "join [User_role] on [User_role].[userName] = [User].[UserName] " +
+                                                "join [Role] on [Role].[role_id] = [User_role].[role_id] " +
+                                                "left join [Team_Members] on [Team_Members].[userName] = [User].[UserName] " +
+                                                "left join [Team] on [Team].[team_id] = [Team_Members].[team_id] " +
+                                                "where [Role].[role_name] in ('member', 'leader') and [Team_Members].[team_id] is null", connection);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         var user = new User()
                         {
-                            UserName = reader.GetString(0),
-                            User_fullname = reader.GetString(1),
-                            phone_number = reader.GetString(2),
-                            email = reader.GetString(3),
-                            password = reader.GetString(4),
+                            UserName = reader.GetString(0).Trim(),
+                            User_fullname = reader.GetString(1).Trim(),
+                            phone_number = reader.GetString(2).Trim(),
+                            email = reader.GetString(3).Trim(),
+                            password = reader.GetString(4).Trim(),
                             account_status = reader.GetBoolean(5),
                             created = reader.GetDateTime(6)
                         };
@@ -79,11 +79,11 @@ namespace SWP_CarService_Final.Services
                     {
                         var user = new User()
                         {
-                            UserName = reader.GetString(0),
-                            User_fullname = reader.GetString(1),
-                            phone_number = reader.GetString(2),
-                            email = reader.GetString(3),
-                            password = reader.GetString(4),
+                            UserName = reader.GetString(0).Trim(),
+                            User_fullname = reader.GetString(1).Trim(),
+                            phone_number = reader.GetString(2).Trim(),
+                            email = reader.GetString(3).Trim(),
+                            password = reader.GetString(4).Trim(),
                             account_status = reader.GetBoolean(5),
                             created = reader.GetDateTime(6),
                         };
@@ -99,25 +99,71 @@ namespace SWP_CarService_Final.Services
             return users;
         }
 
-
-
-        /*public int GetNumberOfMember()
+        public User GetTeamMemberByUserName(string username)
         {
-            User user = null;
-            connection.Open();
-            SqlCommand cmd = new SqlCommand("select top 1 * from [User] order by [team_id] desc");
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            User user = new User();
+            try
             {
-                if (reader.Read())
+                connection.Open();
+                SqlCommand command = new SqlCommand("select [User].*, [Role].[role_name] " +
+                                                    "from [User] " +
+                                                    "join [User_role] on [User_role].[userName] = [User].[UserName] " +
+                                                    "join [Role] on [Role].[role_id] = [User_role].[role_id] " +
+                                                    "where [User].[UserName] = @Username", connection);
+                command.Parameters.AddWithValue("Username", username);
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    user = new User()
+                    if (reader.Read())
                     {
-
-                    };
+                        user = new User()
+                        {
+                            UserName = reader.GetString(0).Trim(),
+                            User_fullname = reader.GetString(1).Trim(),
+                            phone_number = reader.GetString(2).Trim(),
+                            email = reader.GetString(3).Trim(),
+                            password = reader.GetString(4).Trim(),
+                            account_status = reader.GetBoolean(5),
+                            created = reader.GetDateTime(6),
+                            role_name = reader.GetString(7).Trim(),
+                        };
+                    }
                 }
             }
-        }*/
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            finally { connection.Close(); }
+            return user;
+        }
 
+        public List<User> GetAllUserRole()
+        {
+            List<User> users = new List<User>();
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("select distinct [Role].[role_name] " +
+                                                    "from [User] " +
+                                                    "join [User_role] on [User_role].[userName] = [User].[UserName] " +
+                                                    "join [Role] on [Role].[role_id] = [User_role].[role_id] " +
+                                                    "where [Role].[role_name] in ('leader', 'member')", connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var user = new User()
+                        {
+                            role_name = reader.GetString(0).Trim(),
+                        };
+                        users.Add(user);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally { connection.Close(); }
+            return users;
+        }
 
         public void AddTeamMember(string teamId, List<string> username)
         {
@@ -126,10 +172,7 @@ namespace SWP_CarService_Final.Services
                 try
                 {
                     connection.Open();
-                    /*SqlCommand command = new SqlCommand("INSERT INTO Team_Members (userName, team_id, created) " +
-                                                        "VALUES ((SELECT U.UserName FROM [User] U WHERE U.[UserName] = @UserName), " +
-                                                                "(SELECT T.team_id FROM Team T WHERE T.[team_id] = @team_id), " +
-                                                                "@created");*/
+
                     SqlCommand command = new SqlCommand("insert into [Team_Members] ([userName], [team_id], [created]) " +
                                                                             "values (@userName, @team_id, @created)", connection);
                     
@@ -146,6 +189,29 @@ namespace SWP_CarService_Final.Services
             }
         }
 
+        public void DeteleMemberFromTeam(string username)
+        {
+            try
+            {
 
+                User user = GetTeamMemberByUserName(username);
+                if (user != null)
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand("delete " +
+                                                        "from [Team_Members] " +
+                                                        "where [Team_Members].[userName] = @username", connection);
+                    command.Parameters.AddWithValue("username", username);
+                    command.ExecuteNonQuery();
+                }
+                else { throw new Exception("Member with username: " + username + " is not existe");}
+            } catch (Exception ex) { throw new Exception(ex.Message);}
+            finally { connection.Close(); }
+        }
+
+        public void EditTeamMemberInfo(User user)
+        {
+
+        }
     }
 }
