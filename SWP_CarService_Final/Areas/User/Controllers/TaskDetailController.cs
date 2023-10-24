@@ -18,10 +18,10 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             return View();
         }
 
-        public IActionResult Edit(string wodID)
+        /*public IActionResult Edit(string wodID)
         {
             TaskDetail detail = _taskDetailService.getTaskDetailByID(wodID);
             return View(detail);
-        }
+        }*/
     }
 }

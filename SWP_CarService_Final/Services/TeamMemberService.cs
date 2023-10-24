@@ -67,10 +67,13 @@ namespace SWP_CarService_Final.Services
                                                            "[User].[email], " +
                                                            "[User].[password], " +
                                                            "[User].[account_status], " +
-                                                           "[User].[created] " +
+                                                           "[User].[created], " +
+                                                           "[Role].[role_name] " +
                                                     "from [Team_Members] " +
                                                     "join [Team] on [Team].[team_id] = [Team_Members].[team_id] " +
                                                     "join [User] on [User].[UserName] = [Team_Members].[userName] " +
+                                                    "join [User_role] on [User_role].[userName] = [User].[UserName] " +
+                                                    "join [Role] on [Role].[role_id] = [User_role].[role_id]" +
                                                     "where [Team_Members].[team_id] = @team_id", connection);
                 command.Parameters.AddWithValue("team_id", teamId);
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -86,6 +89,7 @@ namespace SWP_CarService_Final.Services
                             password = reader.GetString(4).Trim(),
                             account_status = reader.GetBoolean(5),
                             created = reader.GetDateTime(6),
+                            role_name = reader.GetString(7).Trim(),
                         };
                         users.Add(user);
                     }
@@ -134,7 +138,7 @@ namespace SWP_CarService_Final.Services
             return user;
         }
 
-        public List<User> GetAllUserRole()
+        /*public List<User> GetAllUserRole()
         {
             List<User> users = new List<User>();
             try
@@ -163,7 +167,7 @@ namespace SWP_CarService_Final.Services
             }
             finally { connection.Close(); }
             return users;
-        }
+        }*/
 
         public void AddTeamMember(string teamId, List<string> username)
         {
@@ -175,7 +179,7 @@ namespace SWP_CarService_Final.Services
 
                     SqlCommand command = new SqlCommand("insert into [Team_Members] ([userName], [team_id], [created]) " +
                                                                             "values (@userName, @team_id, @created)", connection);
-                    
+
                     command.Parameters.AddWithValue("team_id", teamId);
                     command.Parameters.AddWithValue("userName", member);
                     command.Parameters.AddWithValue("created", DateTime.Now);
@@ -204,14 +208,50 @@ namespace SWP_CarService_Final.Services
                     command.Parameters.AddWithValue("username", username);
                     command.ExecuteNonQuery();
                 }
-                else { throw new Exception("Member with username: " + username + " is not existe");}
-            } catch (Exception ex) { throw new Exception(ex.Message);}
+                else { throw new Exception("Member with username: " + username + " is not exist."); }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
             finally { connection.Close(); }
         }
 
-        public void EditTeamMemberInfo(User user)
+        public void EditTeamMemberRoleByUserName(string username, string role_id)
         {
-
+            try
+            {
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                SqlCommand command = new SqlCommand("UPDATE [User_role] SET [User_role].[role_id] = @role_id " +
+                                                    "from [User_role] " +
+                                                    "WHERE [User_role].[userName] = @username", connection);
+                command.Parameters.AddWithValue("@role_id", role_id);
+                command.Parameters.AddWithValue("@username", username);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            finally { connection.Close(); }
         }
+
+        public void EditMemberTeam(string username, string team_id)
+        {
+            try
+            {
+
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                SqlCommand command = new SqlCommand("UPDATE [Team_Members] SET [team_id] = @team_id " +
+                                                    "from [Team_Members] " +
+                                                    "WHERE [Team_Members].userName = @username", connection);
+                command.Parameters.AddWithValue("@team_id", team_id);
+                command.Parameters.AddWithValue("@username", username);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            finally { connection.Close(); }
+        }
+
     }
 }

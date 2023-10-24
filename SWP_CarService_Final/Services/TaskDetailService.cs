@@ -42,15 +42,16 @@ namespace SWP_CarService_Final.Services
             return result;
         }
 
-        public TaskDetail getTaskDetailByID(string wodID)
+        /*public TaskDetail getTaskDetailByID(string wodID)
         {
             TaskService taskService = new TaskService();
             TaskDetail taskDetail = null;
-            try {
+            try
+            {
                 connection.Open();
                 SqlCommand cmd = new SqlCommand("select * from task_detail where wod_id = @wod_id", connection);
                 cmd.Parameters.AddWithValue("wod_id", wodID);
-                using(SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     if (reader.Read())
                     {
@@ -69,6 +70,6 @@ namespace SWP_CarService_Final.Services
                     }
                 }
             }
-        }
+        }*/
     }
 }

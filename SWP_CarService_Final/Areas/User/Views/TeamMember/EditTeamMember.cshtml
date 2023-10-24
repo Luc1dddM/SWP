@@ -1,5 +1,6 @@
 ﻿@using SWP_CarService_Final.Areas.User.Models;
 @using SWP_CarService_Final.Services;
+@using SWP_CarService_Final.Models;
 
 @{
     ViewData["Title"] = "EditTeamMember";
@@ -7,7 +8,7 @@
     TeamService teamService = new TeamService();
     TeamMemberService teamMemberService = new TeamMemberService();
     User user = teamMemberService.GetTeamMemberByUserName(ViewBag.user_name);
-
+    RoleService roleService = new RoleService();
 }
 
 <!DOCTYPE html>
@@ -57,7 +58,7 @@
                             <div class="p-2 bg-primary text-white text-center">User Detail</div>
                             <div class="p-4 border">
                                 <div class="form-group">
-                                    <input type="hidden" class="form-control" id="" value="@user.UserName" name="user_name">
+                                    <input type="hidden" class="form-control" id="" value="@user.UserName" name="username">
                                 </div>
                                 @* <div class="form-group">
                                     <label for="username">Full Name</label>
@@ -66,16 +67,16 @@
                                 <div class="form-group">
                                     <label for="role name">Role name</label>
                                     @* <input type="text" class="form-control" id="" value="" placeholder="@user.role_name"> *@
-                                    <select class="form-control">
-                                        @foreach (var user_role in teamMemberService.GetAllUserRole())
+                                    <select name="role_id" class="form-control">
+                                        @foreach (var role in roleService.getLeaderAndMemberRoleId())
                                         {
-                                            <option value="@user_role.role_name">@user_role.role_name</option>
+                                            <option value="@role.role_id">@role.role_name</option>
                                         }
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="choose team">Team</label>
-                                    <select class="form-control">
+                                    <select name="team_id" class="form-control">
                                         @foreach (var teams in teamService.GetAllTeam())
                                         {
                                             <option value="@teams.team_id">@teams.team_name</option>
