@@ -42,7 +42,7 @@ namespace SWP_CarService_Final.Services
             return result;
         }
 
-        public TaskDetail getTaskDetailByID(string wodID)
+       /* public TaskDetail getTaskDetailByID(string wodID)
         {
             TaskService taskService = new TaskService();
             TaskDetail taskDetail = null;
@@ -69,6 +69,6 @@ namespace SWP_CarService_Final.Services
                     }
                 }
             }
-        }
+        }*/
     }
 }
