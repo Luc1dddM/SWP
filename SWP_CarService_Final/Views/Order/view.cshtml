@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "view";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    @model List<WorkOrder>
+}
+<div class="work-order">
+    <div class="work-order__header">
+        <div>
+            <h3>Work Order</h3>
+        </div>
+        <div class="add-member-account-button">
+            <a href="./add-member-account.html">Add New Account</a>
+        </div>
+    </div>
+    <div class="row work-order__title--container">
+        <div class="col work-order__title">ID</div>
+        <div class="col work-order__title">Status</div>
+        <div class="col work-order__title">Customer</div>
+        <div class="col work-order__title">Vehicle Type</div>
+        <div class="col work-order__title">Total Amount</div>
+        <div class="col work-order__title">Created</div>
+        <div class="col work-order__title">Action</div>
+    </div>
+    <div class="work-order__container">
+        @foreach (var @order in @Model)
+        {
+            <div class="row work-order__item">
+                <div class="col work-order__item--ID">@order.WorkOrderID</div>
+                <div class="col work-order__item--Status"><span>Pending</span></div>
+                <div class="col work-order__item--Customer">@order.CustomerName</div>
+                <div class="col work-order__item--Vehicle">@order.VehicleType</div>
+                <div class="col work-order__item--Amount">@order.Total</div>
+                <div class="col work-order__item--Created">@order.createdAt.ToString("dd/MM/yyyy")</div>
+                <div class="col work-order__item--Action">
+                    <a href="#" class="work-order__Action--Edit">Edit</a>
+                    <a href="/OrderDetail/view?WorkOrderID=@order.WorkOrderID" class="work-order__Action--Detail">Detail</a>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+

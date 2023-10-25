@@ -13,19 +13,18 @@ body {
     display: flex;
     padding: 10px 10px 0;
     right: 14px;
-
 }
 
 .avatar {
     padding: 4px;
 }
 
-.avatar img {
-    width: 40px;
-    border-radius: 50%;
-    padding: 4px;
-    background-color: #E4EBFE;
-}
+    .avatar img {
+        width: 40px;
+        border-radius: 50%;
+        padding: 4px;
+        background-color: #E4EBFE;
+    }
 
 .menu-bar {
     display: flex;
@@ -46,7 +45,6 @@ body {
     text-align: center;
     padding: 12px 0px;
     position: relative;
-
 }
 
 .dashboard {
@@ -121,10 +119,10 @@ body {
     transition-property: left;
 }
 
-.side-bar .menu .brand {
-    padding-top: 10px;
-    padding-left: 10px;
-}
+    .side-bar .menu .brand {
+        padding-top: 10px;
+        padding-left: 10px;
+    }
 
 .brand img {
     width: 56px;
@@ -137,7 +135,6 @@ body {
     font-weight: lighter;
     text-decoration: none;
     font-weight: bold;
-
 }
 
 
@@ -146,26 +143,26 @@ body {
     cursor: pointer;
 }
 
-.side-bar .menu .item i {
-    color: rgb(44, 44, 44);
-    font-size: 25px;
-    padding: 6px;
-    padding-left: 28px;
-    padding-right: 18px;
-}
+    .side-bar .menu .item i {
+        color: rgb(44, 44, 44);
+        font-size: 25px;
+        padding: 6px;
+        padding-left: 28px;
+        padding-right: 18px;
+    }
 
-.side-bar .menu .item a {
-    color: black;
-    scroll-behavior: smooth;
-    text-decoration: none;
-    font-size: 18px;
-    line-height: 60px;
-}
+    .side-bar .menu .item a {
+        color: black;
+        scroll-behavior: smooth;
+        text-decoration: none;
+        font-size: 18px;
+        line-height: 60px;
+    }
 
-.side-bar .menu .item:hover {
-    background-color: #54c3f7;
-    transition: 0.3s ease;
-}
+    .side-bar .menu .item:hover {
+        background-color: #54c3f7;
+        transition: 0.3s ease;
+    }
 
 /* width */
 ::-webkit-scrollbar {
@@ -182,14 +179,15 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #4b4949;
-}
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #4b4949;
+    }
 
 .side-bar .menu .item a .dropdown {
     position: absolute;
     right: 0;
+    bottom: -10px;
     margin: 20px 0;
     transition: 0.3s ease;
 }
@@ -209,20 +207,19 @@ body {
     transition: 0.3s ease;
 }
 
-.small-menu:hover {
-    background-color: #c0edff;
-    transition: 1s;
-}
+    .small-menu:hover {
+        background-color: #c0edff;
+        transition: 1s;
+    }
 
 .side-bar .menu .item .sub-menu {
     background: rgba(255, 255, 255, 0.1);
     display: none;
-
 }
 
-.side-bar .menu .item .sub-menu a {
-    padding-left: 20px;
-}
+    .side-bar .menu .item .sub-menu a {
+        padding-left: 20px;
+    }
 
 .sub-item {
     display: block;
@@ -259,32 +256,31 @@ body {
     opacity: 0;
 }
 
-.menu-profile.active {
-    visibility: visible;
-    opacity: 1;
-}
+    .menu-profile.active {
+        visibility: visible;
+        opacity: 1;
+    }
 
-.menu-profile ul {
-    margin: 0;
-    padding: 0 20px;
-    text-decoration: none;
-}
+    .menu-profile ul {
+        margin: 0;
+        padding: 0 20px;
+        text-decoration: none;
+    }
 
-.menu-profile a {
-    color: #444444;
-    text-decoration: none;
-    transition: 0.3s;
-}
+    .menu-profile a {
+        color: #444444;
+        text-decoration: none;
+        transition: 0.3s;
+    }
 
-.menu-profile li {
-    padding: 10px 0;
-    list-style: none;
+    .menu-profile li {
+        padding: 10px 0;
+        list-style: none;
+    }
 
-}
-
-.menu-profile i {
-    padding-right: 20px;
-}
+    .menu-profile i {
+        padding-right: 20px;
+    }
 
 hr {
     margin: 10px;
@@ -304,18 +300,18 @@ hr {
     padding: 18px;
 }
 
-.header-page a {
-    text-decoration: none;
-}
+    .header-page a {
+        text-decoration: none;
+    }
 
-.header-page i {
-    padding: 0 10px;
-}
+    .header-page i {
+        padding: 0 10px;
+    }
 
-.header-page h6 {
-    padding: 10px 10px 0;
-    margin: 0;
-}
+    .header-page h6 {
+        padding: 10px 10px 0;
+        margin: 0;
+    }
 
 nav a {
     text-decoration: none;
@@ -363,7 +359,3 @@ h3 {
 .title-container {
     flex: 1;
 }
-
-
-
-

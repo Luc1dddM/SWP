@@ -1,18 +1,3 @@
-/*CSS Register New Account _ Bui Ngoc Minh Tam*/
-body {
-    background: linear-gradient(109.6deg, rgb(0, 149, 203) 11.2%, rgb(38, 78, 209) 91.1%);
-    user-select: none;
-    height: 100vh;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-/*End CSS Register New Account _ Bui Ngoc Minh Tam*/
-
 /*CSS View Appoiment List _ Nguyen Son Lam*/
 .list-appointment__container {
     padding: 40px;
@@ -41,17 +26,204 @@ body {
     margin: 0 auto;
 }
 
-    .appointment-detail__item img {
-        width: 50px;
-        height: 50px;
-        margin-right: 24px;
-    }
+.appointment-detail__item img {
+    width: 50px;
+    height: 50px;
+    margin-right: 24px;
+}
 
     .appointment-detail__item p {
         margin: 0;
     }
 
 /*End CSS View Appoiment List _ Nguyen Son Lam*/
+
+
+/*CSS View Work Order List _ Nguyen Son Lam*/
+.work-order {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 14px;
+}
+
+.work-order__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.work-order__title {
+    padding: 12px 0;
+    border-top: 1.5px solid #ccc;
+    border-bottom: 1.5px solid #ccc;
+    text-align: center;
+    font-weight: bold;
+}
+
+.work-order__item {
+    border-bottom: 1.5px solid #ccc;
+    text-align: center;
+    padding: 12px 0;
+}
+
+.work-order__item--Status span {
+    color: white;
+    margin: 0 auto;
+    padding: 4px 0;
+    display: block;
+    width: 80%;
+    border-radius: 2px;
+    background-color: red;
+}
+
+.work-order__item--Status.active span {
+    background-color: green;
+}
+
+.work-order__item--Action {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.work-order__item--Action a {
+    width: 45%;
+    padding: 2px 0;
+    display: block;
+    color: #fff;
+    border-radius: 2px;
+}
+
+
+.work-order__item--Action a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.work-order__Action--Edit {
+    background-color: green;
+}
+
+.work-order__Action--Detail {
+    background-color: navy;
+}
+/*End CSS View Work Order List _ Nguyen Son Lam*/
+
+/*CSS View Work Order Detail _ Nguyen Son Lam*/
+.work-order-detail {
+    padding: 20px;
+    background-color: #fff;
+}
+
+.work-order-detail__container {
+    margin-top: 20px;
+}
+
+.work-order-detail-task__header {
+    padding: 12px 0;
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    text-align: center;
+}
+
+.work-order-detail-task-item__container {
+    text-align: center;
+    padding: 12px 0;
+}
+
+.work-order-detail-task__item {
+    padding: 12px 0;
+}
+
+.work-order-detail-task__item--service {
+    justify-content: space-evenly;
+    align-items: center;
+    display: flex;
+}
+
+    .work-order-detail-task__item--service img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .work-order-detail-task__item--service p {
+        margin: 0;
+    }
+
+.work-order-detail-task__item--status span {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    padding: 2px 0;
+    color: white;
+    border-radius: 2px;
+    background-color: red;
+}
+
+.work-order-detail-task__item--status.active span {
+    background-color: green;
+}
+
+.work-order-detail-task__item--Action {
+    display: flex;
+    justify-content: space-evenly;
+    color: #fff;
+}
+
+    .work-order-detail-task__item--Action a:nth-child(2) {
+        background-color: rgb(45, 45, 237);
+        display: block;
+        width: 40%;
+        border-radius: 2px;
+    }
+
+.work-order-detail-component-item__container {
+    text-align: center;
+    padding: 12px 0;
+}
+
+.work-order-detail-component__item {
+    padding: 12px 0;
+}
+
+.work-order-detail-Component__item--service {
+    justify-content: space-evenly;
+    align-items: center;
+    display: flex;
+}
+
+    .work-order-detail-Component__item--service img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .work-order-detail-Component__item--service p {
+        margin: 0;
+    }
+
+.work-order-detail-component__item--Action {
+    display: flex;
+    justify-content: space-evenly;
+    color: #fff;
+}
+
+    .work-order-detail-component__item--Action a:nth-child(2) {
+        background-color: rgb(45, 45, 237);
+        display: block;
+        width: 40%;
+        border-radius: 2px;
+    }
+
+.work-order-detail-total {
+    width: 100%;
+    padding: 12px;
+    font-size: 32px;
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    text-align: right;
+}
+/*End CSS View Work Order Detail_Nguyen Son Lam*/
+
 
 
 
@@ -136,174 +308,19 @@ body {
 }
 /*End CSS Garagemanagement+Service_Hoang Vu Thai*/
 
-/*CSS Form for ServiceManagement_Hoang Vu Thai*/
 
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.centered-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    max-width: 600px;
-    width: 100%;
-}
-
-.header-form {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    padding-bottom: 30px;
-}
-
-
-.center-content {
-    flex-grow: 1;
-    text-align: center;
-}
-
-.upload-name {
-    display: flex;
-    justify-content: space-around;
-    margin: 0 58px;
-    padding: 10px 0;
-}
-
-
-
-    .upload-name input {
-        width: 300px;
-    }
-
-.upload-image {
-    display: flex;
-    justify-content: space-around;
-    margin: 0 40px;
-    padding: 10px 0;
-}
-
-    .upload-image label {
-        text-align: center;
-        padding-top: 4px;
-        margin: 0;
-    }
-
-    .upload-image input {
-        border: 1px solid rgb(105, 105, 105);
-        padding: 4px;
-        border-radius: 2px;
-        font-size: 13px;
-        width: 300px;
-        margin-left: 10px;
-    }
-
-.upload-price {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    margin: 0 44px;
-}
-
-    .upload-price label {
-        margin-bottom: 0;
-        margin-right: 30px;
-    }
-
-    .upload-price input {
-        width: 300px;
-    }
-
-.upload-description {
-    display: flex;
-    justify-content: space-around;
-    margin: 0 50px;
-    padding: 10px 0;
-}
-
-    .upload-description label {
-        margin: 0;
-        text-align: center;
-    }
-
-    .upload-description input {
-        width: 300px;
-    }
-
-.upload-status {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    margin: 0 38px;
-}
-
-    .upload-status label {
-        margin: 0;
-    }
-
-.active-option {
-    margin-left: 10px;
-}
-
-.inactive-option {
-    margin-right: 90px;
-}
-
-.success-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    font-size: 18px;
-    text-align: center;
-    color: black;
-    border: 1px solid black;
-}
-
-    .success-message p {
-        padding: 16px;
-    }
-
-.close-button {
-    cursor: pointer;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    margin-top: 0;
-}
-
-.btn-close {
-    background-color: rgb(216, 27, 27);
-    display: inline;
-    padding: 6px 12px 8px;
-    border-radius: 4px;
-}
-
-.btn-submit {
-    text-align: center;
-}
-/*End CSS Form for ServiceManagement_Hoang Vu Thai*/
 
 /*CSS List Of Team Members_Bui Chau Sao*/
 
-    .table-user-account- th {
+.table-user-account- th {
     font-size: 20px;
     border-bottom: 4px solid #5bb3fb;
-    }
+}
 
-    .table-user-account {
+.table-user-account {
     padding: 20px;
     text-align: center;
-    }
+}
 
     .table-user-account th, td {
         padding: 18px;
@@ -334,7 +351,120 @@ body {
     border-radius: 4px;
 }
 
-.add-member-account-button a {
+    .add-member-account-button a {
         color: white;
         text-decoration: none;
  }
+
+
+/*CSS Form Team Management_Tu Quoc Phat*/
+.add-team-button {
+    margin-left: 18px;
+    padding: 8px 10px;
+    background-color: #008cff;
+    border-radius: 4px;
+}
+
+    .add-team-button a {
+        color: white;
+        text-decoration: none;
+    }
+
+.table-team-management {
+    border: 2px solid #ccc;
+}
+
+    .table-team-management .ateam h4 {
+        text-align: center;
+        font-weight: bold;
+        /* background-color: #1ba2fc;
+    color: white; */
+    }
+
+.table-team-management {
+    padding: 20px;
+    text-align: center;
+    margin: 0 280px;
+}
+
+    .table-team-management th, td {
+        padding: 8px;
+        text-align: center;
+    }
+
+    .table-team-management th {
+        font-size: 18px;
+    }
+
+    .table-team-management td {
+        font-size: 16px;
+    }
+
+
+    .table-team-management tr {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .table-team-management .action-button-team {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .table-team-management .edit-button-team a {
+        background-color: rgb(25, 167, 25);
+        padding: 8px 22px;
+        border-radius: 4px;
+        text-decoration: none;
+        margin: 0 5px;
+    }
+
+    .table-team-management .action-button-team a {
+        color: white;
+    }
+
+    .table-team-management .delete-button-team button {
+        background-color: rgb(216, 27, 27);
+        padding: 8px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        border: none;
+        color: white;
+    }
+/*End CSS Form Team Management_Tu Quoc Phat*/
+
+
+/*CSS View List of Customers _ Bui Ngoc Minh Tam*/
+.table-customerlist- th {
+    font-size: 22px;
+    border-bottom: 4px solid #5bb3fb;
+}
+
+.table-customerlist {
+    padding: 20px;
+    text-align: center;
+}
+
+    .table-customerlist th {
+        padding: 14px;
+        font-size: 18px;
+    }
+
+    .table-customerlist tr {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .table-customerlist .inactive-status {
+        background-color: rgb(216, 27, 27);
+        padding: 8px;
+        border-radius: 4px;
+        color: white;
+    }
+
+    .table-customerlist .active-status {
+        background-color: rgb(0, 145, 12);
+        padding: 8px;
+        border-radius: 4px;
+        color: white;
+    }
+/*End CSS View List of Customerst _ Bui Ngoc Minh Tam*/

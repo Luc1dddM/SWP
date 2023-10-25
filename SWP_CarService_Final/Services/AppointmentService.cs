@@ -69,21 +69,24 @@ namespace SWP_CarService_Final.Services
                 {
                     connection.Open();
                 }
-                SqlCommand cmd = new SqlCommand("Select * from appointment_Details where appointment_id = @APMID", connection);
+
+
+                SqlCommand cmd = new SqlCommand("Select * from Appointment_Details where appointment_id = @APMID", connection);
                 cmd.Parameters.AddWithValue("APMID", APMID);
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlDataReader reader1 = cmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    while (reader1.Read())
                     {
                         var detail = new AppointmentDetail()
                         {
-                            appointmentID = reader.GetString(0),
-                            task = _taskService.getTaskByIDForAppointment(reader.GetString(1)),
+                            appointmentID = reader1.GetString(0),
+                            task = _taskService.getTaskByIDForAppointment(reader1.GetString(1)),
                         };
                         details.Add(detail);
                     }
                 }
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -96,7 +99,12 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("Select * from Appointment where user_name = @userName", connection);
+                SqlCommand cmd = new SqlCommand("select Appointment.appointment_id, Appointment.vehical_type, Appointment.[description], " +
+                    "Appointment.time_arrived, Appointment.created_at, Appointment.[status], Appointment.[user_name], Work_order.WorkOrder_id " +
+                    "from Appointment " +
+                    "left join Appointment_WorkOrder on Appointment.appointment_id = Appointment_WorkOrder.Appointment_ID " +
+                    "left join Work_order on Appointment_WorkOrder.WorkOrder_ID = Work_order.WorkOrder_id " +
+                    " where user_name = @userName", connection);
                 cmd.Parameters.AddWithValue("userName", cCustomer.user_name);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -110,6 +118,7 @@ namespace SWP_CarService_Final.Services
                             timeArrived = reader.GetDateTime(3),
                             createdAt = reader.GetDateTime(4),
                             status = reader.GetString(5),
+                            WorkOrderID = (!reader.IsDBNull(7)) ? reader.GetString(7) : "",
                             customer = cCustomer,
                             details = getAppointmentDetailByAPMID(reader.GetString(0)),
                         };

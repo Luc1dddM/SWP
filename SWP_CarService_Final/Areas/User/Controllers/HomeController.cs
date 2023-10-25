@@ -39,13 +39,13 @@ namespace Areas.Controllers
             ClaimsPrincipal claimUser = HttpContext.User;
             if (claimUser.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index");
+                return Redirect("Index");
             }
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(String userName, String password, bool rememberMe)
+        public async Task<IActionResult> Login(String userName, String password)
         {
 
             User user = _userService.UserLogin(userName, password);
@@ -107,9 +107,9 @@ namespace Areas.Controllers
         public async Task<IActionResult> Logout()
         {
             _context.HttpContext.Session.Remove("role");
-            Console.WriteLine(_context.HttpContext.Session.GetString("role"));
+            _context.HttpContext.Session.Remove("cUser");
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+            return Redirect("Login");
         }
     }
 }

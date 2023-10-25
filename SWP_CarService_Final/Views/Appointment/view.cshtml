@@ -17,6 +17,15 @@
 }
 }
 
+<nav>
+    <div class="icon-content">
+        <span><i class="fa-solid fa-people-group"></i>Appointment List</span>
+    </div>
+    <div class="link-content">
+        <span><a href="./dashboard.html">Dashboard</a><i class="fa-solid fa-angle-right"></i>Appointment List</span>
+    </div>
+</nav>
+
 <div class="list-appointment__container">
     <div class="row list-appointment__header">
         <h2 class="header__title">Appointment List</h2>
@@ -37,10 +46,18 @@
             <div class="row list-appointment__item">
                 <p class="col-2 list-appointment__item--id">@appointment.appointmentID</p>
                 <p class="col-2 list-appointment__item--description">@appointment.description</p>
-                <p class="col-2 list-appointment__item--time-arrived">@appointment.timeArrived</p>
-                <p class="col-2 list-appointment__item--created">@appointment.createdAt</p>
+                <p class="col-2 list-appointment__item--time-arrived">@appointment.timeArrived.ToString("dd/MM/yyyy")</p>
+                <p class="col-2 list-appointment__item--created">@appointment.createdAt.ToString("dd/MM/yyyy")</p>
                 <p class="col-2 list-appointment__item--customer">@appointment.status</p>
-                <a class="col-2" onclick="deleteService('@appointment.appointmentID.Trim()')">Cancel</a>
+                @if (@appointment.WorkOrderID.Trim().Equals(""))
+                {
+                    <a class="col-2" onclick="deleteService('@appointment.appointmentID.Trim()')">Cancel</a>
+                }
+                else
+                {
+                    <a class="col-2" href="/OrderDetail/view/?WorkOrderID=@appointment.WorkOrderID">View Work Order</a>
+                }
+               
             </div>
             <div class="row appointment-detail__container">
 

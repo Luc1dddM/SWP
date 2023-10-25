@@ -80,7 +80,10 @@ namespace SWP_CarService_Final.Services
             Task task = null;
         try
             {
-                connection.Open();
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
                 string SQLSelect = "SELECT * FROM [SWP].[dbo].[Task] WHERE task_id = @task_id";
                 SqlCommand command = new SqlCommand(SQLSelect, connection);
                 command.Parameters.AddWithValue("task_id", taskID);

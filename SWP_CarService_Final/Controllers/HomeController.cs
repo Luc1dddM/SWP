@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using SWP_CarService_Final.Services;
 using Newtonsoft.Json;
+using System.Security.Principal;
 using SWP_CarService_Final.Areas.User.Models;
 
 namespace SWP_CarService_Final.Controllers
@@ -16,10 +17,10 @@ namespace SWP_CarService_Final.Controllers
         private readonly IHttpContextAccessor _contx;
         private readonly ILogger<HomeController> _logger;
         private readonly UserServices _userService;
-        private readonly AccountService _createAccount;
+        private readonly CustomerAccountService _createAccount;
 
 
-        public HomeController(ILogger<HomeController> logger, UserServices userService, IHttpContextAccessor contx, AccountService createAccount)
+        public HomeController(ILogger<HomeController> logger, UserServices userService, IHttpContextAccessor contx, CustomerAccountService createAccount)
         {
             _logger = logger;
             _userService = userService;
@@ -107,8 +108,6 @@ namespace SWP_CarService_Final.Controllers
         [HttpPost]
         public IActionResult register(string user_name, string password, string fullName, string email, string phone_number, bool account_status)
         {
-          /*  string cCustomerString = _contx.HttpContext.Session.GetString("cCus");
-            Customer cCustomer = JsonConvert.DeserializeObject<Customer>(cCustomerString);  */
             Customer newAccount = new Customer()
             {
                 user_name = user_name,
@@ -120,6 +119,9 @@ namespace SWP_CarService_Final.Controllers
                 /*img = null*/
             };
             _createAccount.CreateCustomer(newAccount);
+            string currentCustomer = JsonConvert.SerializeObject(newAccount);
+            _contx.HttpContext.Session.SetString("cCus", currentCustomer);
+
             return View("Index");
         }
     }

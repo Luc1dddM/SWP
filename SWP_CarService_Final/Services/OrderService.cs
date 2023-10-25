@@ -18,6 +18,7 @@ namespace SWP_CarService_Final.Services
         public List<WorkOrder> getAllWorkOrders()
         {
             List<WorkOrder> workOrders = new List<WorkOrder>();
+            TaskDetailService TDservice = new TaskDetailService();
             try
             {
                 connection.Open();
@@ -30,9 +31,11 @@ namespace SWP_CarService_Final.Services
                         {
                             WorkOrderID = reader.GetString(0),
                             VehicleType = reader.GetString(1),
-                            CustomerName = reader.GetString(2),
-                            CreatedBy = reader.GetString(3),
-                            createdAt = reader.GetDateTime(4)
+                            Total = reader.GetDecimal(2),
+                            CustomerName = reader.GetString(3),
+                            CreatedBy = reader.GetString(4),
+                            createdAt = reader.GetDateTime(5),
+                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
                         });
                     }
                 }
@@ -44,9 +47,80 @@ namespace SWP_CarService_Final.Services
             return workOrders;
         }
 
-        public WorkOrder getAllWorkOrderById(string id)
+        public List<WorkOrder> getAllWorkOrdersCreatedByUser(string createdBy)
+        {
+            List<WorkOrder> workOrders = new List<WorkOrder>();
+            TaskDetailService TDservice = new TaskDetailService();
+
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("Select * from Work_order where [user] = @CreatedBy", connection);
+                cmd.Parameters.AddWithValue("CreatedBy", createdBy);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        workOrders.Add(new WorkOrder()
+                        {
+                            WorkOrderID = reader.GetString(0),
+                            VehicleType = reader.GetString(1),
+                            Total = reader.GetDecimal(2),
+                            CustomerName = reader.GetString(3),
+                            CreatedBy = reader.GetString(4),
+                            createdAt = reader.GetDateTime(5),
+                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return workOrders;
+        }
+
+        public List<WorkOrder> getAllWorkOrdersOfOwner(string owner)
+        {
+            List<WorkOrder> workOrders = new List<WorkOrder>();
+            TaskDetailService TDservice = new TaskDetailService();
+
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("Select * from Work_order where customer = @owner", connection);
+                cmd.Parameters.AddWithValue("owner", owner);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        workOrders.Add(new WorkOrder()
+                        {
+                            WorkOrderID = reader.GetString(0),
+                            VehicleType = reader.GetString(1),
+                            Total = reader.GetDecimal(2),
+                            CustomerName = reader.GetString(3),
+                            CreatedBy = reader.GetString(4),
+                            createdAt = reader.GetDateTime(5),
+                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return workOrders;
+        }
+
+
+        public WorkOrder getWorkOrderById(string id)
         {
             WorkOrder WorkOrder = null;
+            TaskDetailService TDservice = new TaskDetailService();
+
             try
             {
                 connection.Open();
@@ -60,9 +134,11 @@ namespace SWP_CarService_Final.Services
                         {
                             WorkOrderID = reader.GetString(0),
                             VehicleType = reader.GetString(1),
-                            CustomerName = reader.GetString(2),
-                            CreatedBy = reader.GetString(3),
-                            createdAt = reader.GetDateTime(4)
+                            Total = reader.GetDecimal(2),
+                            CustomerName = reader.GetString(3),
+                            CreatedBy = reader.GetString(4),
+                            createdAt = reader.GetDateTime(5),
+                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
                         };
                     }
                 }
