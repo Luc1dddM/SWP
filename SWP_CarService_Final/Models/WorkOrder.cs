@@ -7,7 +7,6 @@
         public decimal Total {  get; set;}
         public string CustomerName { get; set;}
         public string CreatedBy { get; set; }
-        public string CreatedOn { get; set;}
         public DateTime createdAt { get; set; }
         public List<TaskDetail> taskDetails { get; set; }
     }

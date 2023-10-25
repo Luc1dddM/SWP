@@ -233,6 +233,43 @@ namespace SWP_CarService_Final.Services
             finally { connection.Close(); }
         }
 
+        public List<User> getMembersOfLeader(string UserName)
+        {
+            var users = new List<User>();
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("select * from [user] " +
+                    "join Team_Members on [user].UserName = Team_Members.userName where Team_Members.team_id = " +
+                    "(select team_id from Team_Members join [user] on [user].UserName = Team_Members.userName where [User].UserName = @username) " +
+                    "and [user].UserName not in " +
+                    "(select [user].UserName from [user] join User_role on [user].UserName = User_role.userName join [Role] on User_role.role_id = [Role].role_id " +
+                    "where [Role].role_name = 'leader')", connection);
+                command.Parameters.AddWithValue("username", UserName);
+                using(SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        User user = new User()
+                        {
+                            UserName = reader.GetString(0),
+                            User_fullname = reader.GetString(1),
+                            phone_number = reader.GetString(2),
+                            email = reader.GetString(3),
+                            password = reader.GetString(4),
+                            account_status = reader.GetBoolean(5),
+                            created = reader.GetDateTime(6),
+                        };
+                        users.Add(user);
+                    }
+                }
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }finally { connection.Close(); }
+            return users;
+        }
+
         public void EditMemberTeam(string username, string team_id)
         {
             try
