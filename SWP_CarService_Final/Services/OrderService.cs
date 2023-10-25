@@ -5,7 +5,11 @@ namespace SWP_CarService_Final.Services
 {
     public class OrderService : DBContext
     {
-
+        private readonly TaskDetailService _taskDetailService;
+        public OrderService()
+        {
+            _taskDetailService = new TaskDetailService();
+        }
         public int getNumberOfWorkOrder()
         {
             connection.Open();
@@ -18,7 +22,7 @@ namespace SWP_CarService_Final.Services
         public List<WorkOrder> getAllWorkOrders()
         {
             List<WorkOrder> workOrders = new List<WorkOrder>();
-            TaskDetailService TDservice = new TaskDetailService();
+       
             try
             {
                 connection.Open();
@@ -35,7 +39,7 @@ namespace SWP_CarService_Final.Services
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
-                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
+                            taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),
                         });
                     }
                 }
@@ -43,18 +47,19 @@ namespace SWP_CarService_Final.Services
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }
+            }finally { connection.Close(); }
             return workOrders;
         }
 
         public List<WorkOrder> getAllWorkOrdersCreatedByUser(string createdBy)
         {
             List<WorkOrder> workOrders = new List<WorkOrder>();
-            TaskDetailService TDservice = new TaskDetailService();
-
             try
             {
-                connection.Open();
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
                 SqlCommand cmd = new SqlCommand("Select * from Work_order where [user] = @CreatedBy", connection);
                 cmd.Parameters.AddWithValue("CreatedBy", createdBy);
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -69,7 +74,7 @@ namespace SWP_CarService_Final.Services
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
-                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
+                            taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),
                         });
                     }
                 }
@@ -77,14 +82,14 @@ namespace SWP_CarService_Final.Services
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }
+            }finally { connection.Close(); }
             return workOrders;
         }
 
         public List<WorkOrder> getAllWorkOrdersOfOwner(string owner)
         {
             List<WorkOrder> workOrders = new List<WorkOrder>();
-            TaskDetailService TDservice = new TaskDetailService();
+      
 
             try
             {
@@ -103,7 +108,7 @@ namespace SWP_CarService_Final.Services
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
-                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
+                            taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),
                         });
                     }
                 }
@@ -111,7 +116,7 @@ namespace SWP_CarService_Final.Services
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }
+            }finally { connection.Close(); }
             return workOrders;
         }
 
@@ -119,11 +124,13 @@ namespace SWP_CarService_Final.Services
         public WorkOrder getWorkOrderById(string id)
         {
             WorkOrder WorkOrder = null;
-            TaskDetailService TDservice = new TaskDetailService();
 
             try
             {
-                connection.Open();
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
                 SqlCommand cmd = new SqlCommand("Select * from Work_order where WorkOrder_id = @id", connection);
                 cmd.Parameters.AddWithValue("id", id);
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -138,7 +145,7 @@ namespace SWP_CarService_Final.Services
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
-                            taskDetails = TDservice.GetTaskDetailsByWOID(reader.GetString(0)),
+                            taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),
                         };
                     }
                 }
@@ -165,14 +172,40 @@ namespace SWP_CarService_Final.Services
                 }
                 else
                 {
-                    connection.Open();
+                    if (connection.State == System.Data.ConnectionState.Closed)
+                    {
+                        connection.Open();
+                    }
+                    WorkOrder workOrder = new WorkOrder()
+                    {
+                        WorkOrderID = id,
+                        VehicleType = appointment.vehicalType,
+                        Total = 0,
+                        CustomerName = appointment.customer.user_name,
+                        CreatedBy = createdBy,
+                        createdAt = DateTime.Now,
+                    };
                     SqlCommand cmd = new SqlCommand("Insert into Work_order values(@id, @vehicleType, @total, @customerName, @CreatedBy, current_timestamp)", connection);
-                    cmd.Parameters.AddWithValue("id", id);
-                    cmd.Parameters.AddWithValue("vehicleType", appointment.vehicalType);
-                    cmd.Parameters.AddWithValue("total", 0);
-                    cmd.Parameters.AddWithValue("customerName", appointment.customer.user_name);
-                    cmd.Parameters.AddWithValue("CreatedBy", createdBy);
+                    cmd.Parameters.AddWithValue("id", workOrder.WorkOrderID);
+                    cmd.Parameters.AddWithValue("vehicleType", workOrder.VehicleType);
+                    cmd.Parameters.AddWithValue("total", workOrder.Total);
+                    cmd.Parameters.AddWithValue("customerName", workOrder.CustomerName);
+                    cmd.Parameters.AddWithValue("CreatedBy", workOrder.CreatedBy);
                     cmd.ExecuteNonQuery();
+                    TaskDetail detail;
+                    foreach (var taskDetail in appointment.details)
+                    {
+                        detail = new TaskDetail()
+                        {
+                            quantity = 0,
+                            price = taskDetail.task.price,
+                            task = taskDetail.task,
+                            status = "Process",
+                            userName = createdBy,
+                            WorkOrder = workOrder,
+                        };
+                        _taskDetailService.createTaskDetail(detail);
+                    }
                 }
             }
             catch (Exception ex) { throw new Exception(ex.Message); }

@@ -1,0 +1,43 @@
+﻿@using SWP_CarService_Final.Models
+@{
+    ViewData["Title"] = "view";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    @model List<TaskDetail>
+}
+<div class="main-container content">
+    <div class="table-Request_Complete_Task ml-2 mr-2">
+        <table class="" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">ID</th>
+                    <th style="width: 15%;">Service</th>
+                    <th style="width: 10%;">Quantity</th>
+                    <th style="width: 15%;">Vehicle</th>
+                    <th style="width: 15%;">Status</th>
+                    <th style="width: 20%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model)
+                {
+                    <tr>
+                        <td>@task.wod_id</td>
+                        <td>@task.task.taskName</td>
+                        <td>@task.quantity</td>
+                        <td>@task.WorkOrder.VehicleType</td>
+                        <td>
+                            <div class="active-status">
+                                @task.status
+                            </div>
+                        </td>
+                        @if(task.status.Trim() != "Request Complete")
+                        {
+                            <td> <a class="mr-2" href="/test/TaskDetail/RequestComplete?wodID=@task.wod_id"><button type="button" class="btn btn-primary btn-complete">Complete</button></a></td>
+                        }else{
+                            <td> <a class="mr-2" href="#"><button type="button" class="btn btn-primary btn-complete">Waiting</button></a></td>
+                        }
+                    </tr>
+                }
+            </tbody>
+    </div>
+</div>

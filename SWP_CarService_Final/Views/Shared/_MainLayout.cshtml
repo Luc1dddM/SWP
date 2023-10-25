@@ -110,15 +110,17 @@
 
                     <div class="item"><i class="fa-solid fa-file-signature"></i><a href="/user/appointment/view">Appointments</a></div>
 
-                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="#">Work Order</a></div>
+                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="/user/Order/view">Work Order</a></div>
 
-                    <div class="item"><i class="fa-solid fa-user"></i><a href="#">Team</a></div>
+                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="/user/Order/view">Work Order</a></div>
+
+                    <div class="item"><i class="fa-solid fa-user"></i><a href="/user/TaskDetail/ViewListRequest">Request Complete</a></div>
 
                 }
 
                 else if (contx.HttpContext.Session.GetString("role") == "member")
                 {
-                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="#">Work Order</a></div>
+                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="/user/TaskDetail/view">Work Order</a></div>
 
                     <div class="item"><i class="fa-solid fa-user"></i><a href="#">Team</a></div>
                 }
