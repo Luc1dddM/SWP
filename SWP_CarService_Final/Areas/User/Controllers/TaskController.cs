@@ -21,7 +21,6 @@ namespace SWP_CarService_Final.Areas.User.Controllers
         {
             _taskService = taskService;
         }
-        readonly string rootFolder = @"D:\FPT\SWP391\Garage\SWP_CarService_Final\wwwroot\img";
 
 
         public IActionResult ListOfServices()
@@ -47,10 +46,10 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             {
                 if (fileImg != null)
                 {
-                    if (System.IO.File.Exists(Path.Combine(rootFolder, fileImg.FileName)))
+                    if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", fileImg.FileName)))
                     {
                         // If file found, delete it
-                        System.IO.File.Delete(Path.Combine(rootFolder, fileImg.FileName));
+                        System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", fileImg.FileName));
                     }
                     ImgName = Path.GetFileName(fileImg.FileName);
                     string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", ImgName);
@@ -91,14 +90,14 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             {
                 if (fileImg != null)
                 {
-                    if (System.IO.File.Exists(Path.Combine(rootFolder, fileImg.FileName)))
+                    if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", fileImg.FileName)))
                     {
                         // If file found, delete it
-                        System.IO.File.Delete(Path.Combine(rootFolder, fileImg.FileName));
+                        System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", fileImg.FileName));
                     }
                     if (_taskService.GetTaskByID(ServiceId).img != null)
                     {
-                        System.IO.File.Delete(Path.Combine(rootFolder, _taskService.GetTaskByID(ServiceId).img));
+                        System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", _taskService.GetTaskByID(ServiceId).img));
                     }
                     ImgName = Path.GetFileName(fileImg.FileName);
                     string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", ImgName);

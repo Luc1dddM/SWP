@@ -31,7 +31,7 @@ namespace Areas
         public IActionResult EditAccount(string UserName)
         {
             ViewBag.username = UserName;
-            
+
             return View();
         }
 
@@ -89,11 +89,11 @@ namespace Areas
             return Redirect("ListOfTeamMembers");
         }
 
-/*---------------Begin CRUD Team Member _ Tu Quoc Phat---------------*/
-        
+        /*---------------Begin CRUD Team Member _ Tu Quoc Phat---------------*/
+
         public IActionResult AddMember(string teamId)
         {
-            ViewBag.teamID = teamId;
+            ViewBag.teamId = teamId;
             return View();
         }
 
@@ -105,6 +105,36 @@ namespace Areas
         }
 
 
+        public IActionResult EditTeamMember(string Username)
+        {
+            ViewBag.user_name = Username;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult EditTeamMember(string username, string role_id, string team_id)
+        {
+            try
+            {
+                User user = new User()
+                {
+                    UserName = username,
+                };
+
+                _teamMemberService.EditTeamMemberRoleByUserName(username, role_id);
+                _teamMemberService.EditMemberTeam(username, team_id);
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+
+            return Redirect("/user/team/ViewAllTeam");
+        }
+
+
+        public IActionResult DeteleMemberFromTeam(string Username)
+        {
+            _teamMemberService.DeteleMemberFromTeam(Username);
+            return Redirect("/user/team/ViewAllTeam");
+        }
 
         /*---------------End CRUD Team Member _ Tu Quoc Phat---------------*/
 
