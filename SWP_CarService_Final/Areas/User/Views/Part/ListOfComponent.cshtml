@@ -1,8 +1,14 @@
-﻿
+﻿@using SWP_CarService_Final.Services;
+@using SWP_CarService_Final.Models;
+
 @{
     ViewData["Title"] = "ListOfComponent";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    PartService partService = new PartService();
+    @model List<Part>
 }
+
+
 
 <div class="main-container content">
     <div class="content-search">
@@ -14,135 +20,90 @@
     <div class="container-fluid">
         <div class="row">
             <!-- BEGIN FILTERS -->
-            <div class="col-md-3 p-4 mt-5 border">
-                <h4 class="grid-title">
-                    <i style="font-size: 18px;" class="fa fa-filter"></i> Filters
-                </h4>
-                <hr>
+            <div class="col-md-3 mt-5">
+                <div class="border p-4">
+                    <h4 class="grid-title">
+                        <i style="font-size: 18px;" class="fa fa-filter"></i> Filters
+                    </h4>
+                    <hr>
 
-                <!-- BEGIN FILTER BY CATEGORY -->
-                <form action="">
-                    <h4>By category:</h4>
-                    <div class="checkbox">
-                        <label><input type="checkbox" class="icheck"> Application</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox" class="icheck"> Design</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox" class="icheck"> Desktop</label>
-                    </div>
-                    <!-- END FILTER BY CATEGORY -->
-                    <!-- BEGIN FILTER BY BRAND -->
-                    <h4>By Brand:</h4>
-                    <div class="checkbox">
-                        <label><input type="checkbox" class="icheck"> Application</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox" class="icheck"> Design</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox" class="icheck"> Desktop</label>
-                    </div>
-                    <!-- END FILTER BY BRAND -->
+                    <!-- BEGIN FILTER BY CATEGORY -->
+                    <form action="">
+                        <h4>By category:</h4>
+                        <div class="checkbox">
+                            <label><input type="checkbox" class="icheck"> Application</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" class="icheck"> Design</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" class="icheck"> Desktop</label>
+                        </div>
+                        <!-- END FILTER BY CATEGORY -->
+                        <!-- BEGIN FILTER BY BRAND -->
+                        <h4>By Brand:</h4>
+                        <div class="checkbox">
+                            <label><input type="checkbox" class="icheck"> Application</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" class="icheck"> Design</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" class="icheck"> Desktop</label>
+                        </div>
+                        <!-- END FILTER BY BRAND -->
 
 
-                    <div class="padding"></div>
+                        <div class="padding"></div>
 
-                    <!-- BEGIN FILTER BY PRICE -->
-                    <h4>By Price:</h4>
-                    <div class="">
-                        <div class="m-2 mt-4" id="slider-range"></div>
-                        <div class="row d-flex justify-content-between">
-                            <div>
-                                <strong>Min:</strong> <span id="slider-range-value1"></span>
-                            </div>
-                            <div>
-                                <strong>Max:</strong> <span id="slider-range-value2"></span>
+                        <!-- BEGIN FILTER BY PRICE -->
+                        <h4>By Price:</h4>
+                        <div class="filter-content">
+                            <div class="form-row">
+                                <div class="form-group col-md-6 pr-3">
+                                    <label>Min</label>
+                                    <input type="number" class="form-control" id="inputEmail4" placeholder="0">
+                                </div>
+                                <div class="form-group col-md-6 pl-3 text-right">
+                                    <label>Max</label>
+                                    <input type="number" class="form-control" placeholder="10,000,000">
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <form>
-                                    <input type="hidden" name="min-value" value="">
-                                    <input type="hidden" name="max-value" value="">
-                                </form>
-                            </div>
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Filter
+                            </button>
                         </div>
-                    </div>
-                    <div class="d-flex justify-content-center mt-4">
-                        <button type="submit"
-                                class="btn btn-primary">
-                            Filter
-                        </button>
-                    </div>
-                    <!-- END FILTER BY PRICE -->
-                </form>
+                        <!-- END FILTER BY PRICE -->
+                    </form>
+                </div>
             </div>
             <!-- END FILTERS -->
 
             <div class="col-md-9 pl-2">
                 <!-- Products Section -->
-                <div class="row mt-4 ">
-                    <div class="col-6 col-lg-3 mb-5 mb-lg-0 mt-4">
-                        <!-- Card -->
-                        <div class="card d-block">
-                            <img style="height: 230px;" class="card-img-top p-3" src="./img/brake.png"
-                                 alt="Image Description">
-                            <div class="card-footer text-center py-4">
-                                <h3 class="h5 mb-1">Product</h3>
-                                <span class="d-block text-muted font-size-1 mb-3">1.000.000$</span>
-                                <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
-                                   href="#">Edit</a>
+                <div class="row mt-4">
+                    @foreach (var part in Model)
+                    {
+                        <div class="col-6 col-lg-3 mb-5 mb-lg-0 mt-4">
+                            <!-- Card -->
+                            <div class="card d-block">
+                                <img style="height: 230px;" class="card-img-top p-3" src="~/img/@part.img"
+                                     alt="Image Description">
+                                <div class="card-footer text-center py-4">
+                                    <h3 class="h5 mb-1">@part.part_name</h3>
+                                    <span class="d-block text-muted font-size-1 mb-1">@part.price VNĐ</span>
+                                    <span class="d-block text-muted font-size-1 mb-3">Quantity: @part.quantity</span>
+                                    <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
+                                       href="#">Edit</a>
+                                </div>
                             </div>
+                            <!-- End Card -->
                         </div>
-                        <!-- End Card -->
-                    </div>
+                    }
 
-                    <div class="col-6 col-lg-3 mb-5 mb-lg-0 mt-4">
-                        <!-- Card -->
-                        <div class="card d-block">
-                            <img style="height: 230px;" class="card-img-top p-3" src="./img/cooling-system.png"
-                                 alt="Image Description">
-                            <div class="card-footer text-center py-4">
-                                <h3 class="h5 mb-1">Product</h3>
-                                <span class="d-block text-muted font-size-1 mb-3">1.000.000$</span>
-                                <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
-                                   href="#">Edit</a>
-                            </div>
-                        </div>
-                        <!-- End Card -->
-                    </div>
-
-                    <div class="col-6 col-lg-3 mb-5 mb-lg-0 mt-4">
-                        <!-- Card -->
-                        <div class="card d-block">
-                            <img style="height: 230px;" class="card-img-top p-3" src="./img/engine-repair.png"
-                                 alt="Image Description">
-                            <div class="card-footer text-center py-4">
-                                <h3 class="h5 mb-1">Product</h3>
-                                <span class="d-block text-muted font-size-1 mb-3">1.000.000$</span>
-                                <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
-                                   href="#">Edit</a>
-                            </div>
-                        </div>
-                        <!-- End Card -->
-                    </div>
-
-                    <div class="col-6 col-lg-3 mb-5 mb-lg-0 mt-4">
-                        <!-- Card -->
-                        <div class="card d-block">
-                            <img style="height: 230px;" class="card-img-top p-3"
-                                 src="./img/Periodic_Maintenance.png" alt="Image Description">
-                            <div class="card-footer text-center py-4">
-                                <h3 class="h5 mb-1">Product</h3>
-                                <span class="d-block text-muted font-size-1 mb-3">1.000.000$</span>
-                                <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
-                                   href="#">Edit</a>
-                            </div>
-                        </div>
-                        <!-- End Card -->
-                    </div>
 
                 </div>
             </div>
@@ -160,15 +121,17 @@
                                 <span class="sr-only">Previous</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        @for(int i=1; partService.GetNumberOfPage()>=i;i++)
+                        {
+                            <li class="page-item"><a class="page-link" href="listOfComponent?pageNumber=@i">@i</a></li>
+                        }  
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span>
                             </a>
                         </li>
+
                     </ul>
                 </nav>
                 <!-- END PAGINATION -->
@@ -178,8 +141,4 @@
         <!-- END RESULT -->
     </div>
     <!-- Products Section -->
-
-
-</div>
-<script src="src/filter.js"></script>
 
