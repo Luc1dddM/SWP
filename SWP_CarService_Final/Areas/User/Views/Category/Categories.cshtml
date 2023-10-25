@@ -1,0 +1,62 @@
+﻿@using SWP_CarService_Final.Services;
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    CategoryServices categoryServices = new CategoryServices();
+}
+
+<nav>
+    <div class="icon-content">
+        <span><i style="font-size: 20px;" class="fa-solid fa-warehouse"></i>Category</span>
+    </div>
+    <div class="link-content">
+        <span><a href="./dashboard.html">Dashboard</a><i class="fa-solid fa-angle-right"></i>Category</span>
+    </div>
+</nav>
+<div class="main-container content">
+    <div class="content-search">
+        <div>
+            <h3>Category</h3>
+        </div>
+        <a href="CategoryAdd"><button type="button" class="btn btn-primary">Add New Category</button></a>
+    </div>
+    <div class="table-customerlist ml-5 mr-5 d-flex justify-content-center">
+        <table style="width: 70%;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">ID</th>
+                    <th style="width: 15%;">Category Name</th>
+                    <th style="width: 15%;">Category Type</th>
+                    <th style="width: 10%;">Status</th>
+                    <th style="width: 15%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var category in categoryServices.getAllCategory())
+                {
+                <tr>
+                    <td>@category.category_id</td>
+                    <td>@category.category_name</td>
+                    <td>@category.category_type</td>
+                    <td>
+                            @if (category.active)
+                            {
+                                <div class="active-status">
+                                    Active
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="inactive-status">
+                                    In-Active
+                                </div>
+                            }
+                    </td>
+                    <td> <a class="mr-2" href="CategoryEdit?id=@category.category_id"><button type="button" class="btn btn-primary">Edit</button></a>
+
+                </tr>
+                }
+            </tbody>
+    </div>
+</div>
+

@@ -14,7 +14,6 @@ namespace SWP_CarService_Final.Services
     {
 
         
-        readonly string rootFolder = @"D:\FPT\SWP391\Garage\SWP_CarService_Final\wwwroot\img";
         public List<Task> getAllTasks()
         {
             List<Task> tasks = new List<Task>();
@@ -128,10 +127,10 @@ namespace SWP_CarService_Final.Services
                     {
                         imgFile = task.img;
                         // Check if file exists with its full path
-                        if (File.Exists(Path.Combine(rootFolder, imgFile)))
+                        if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", imgFile)))
                         {
                             // If file found, delete it
-                            File.Delete(Path.Combine(rootFolder, imgFile));
+                            File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", imgFile));
                             string SQLDelete = "DELETE FROM [SWP].[dbo].[Task] WHERE task_id = @task_id";
                             SqlCommand command = new SqlCommand(SQLDelete, connection);
                             command.Parameters.AddWithValue("task_id", taskId);
