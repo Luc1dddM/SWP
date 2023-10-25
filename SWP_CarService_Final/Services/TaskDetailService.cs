@@ -70,6 +70,9 @@ namespace SWP_CarService_Final.Services
                     }
                 }
             }
+            catch(Exception ex) { throw new Exception(ex.Message, ex); } 
+            finally { connection.Close(); };
+            return taskDetail;
         }
     }
 }
