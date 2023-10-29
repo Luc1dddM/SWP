@@ -5,7 +5,9 @@
     ViewData["Title"] = "ListOfComponent";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     PartService partService = new PartService();
+    CategoryServices categoryServices = new CategoryServices();
     @model List<Part>
+    bool onChange = false;
 }
 
 
@@ -15,7 +17,15 @@
         <div>
             <h3>Components</h3>
         </div>
-        <a href="./add-component.html"><button type="button" class="btn btn-primary">Add New Component</button></a>
+        <div class="search-container">
+            <form action="ListOfComponent" method="get">
+                <input name="pageNumber" value="1" type="hidden" class="icheck">
+                <input name="onChange" value="true" type="hidden" class="icheck">
+                <input type="text" placeholder="Search.." name="SearchText">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        <a href="AddComponent"><button type="button" class="btn btn-primary">Add New Component</button></a>
     </div>
     <div class="container-fluid">
         <div class="row">
@@ -28,32 +38,26 @@
                     <hr>
 
                     <!-- BEGIN FILTER BY CATEGORY -->
-                    <form action="">
+                    <form action="ListOfComponent" method="get">
+                        <input name="pageNumber" value="1" type="hidden" class="icheck">
+                        <input name="onChange" value="true" type="hidden" class="icheck">
                         <h4>By category:</h4>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"> Application</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"> Design</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"> Desktop</label>
-                        </div>
+                        @foreach(var category in categoryServices.getComponentCategory())
+                        {
+                            <div class="checkbox">
+                                <label><input name="filterString" value="@category.category_id.Trim()" type="checkbox" class="icheck" > @category.category_name</label>
+                            </div>
+                        }
                         <!-- END FILTER BY CATEGORY -->
                         <!-- BEGIN FILTER BY BRAND -->
                         <h4>By Brand:</h4>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"> Application</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"> Design</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"> Desktop</label>
-                        </div>
+                        @foreach(var category in categoryServices.getBrandCategory())
+                        {
+                            <div class="checkbox">
+                                <label><input name="filterString" value="@category.category_id.Trim()" type="checkbox" class="icheck" > @category.category_name</label>
+                            </div>
+                        }
                         <!-- END FILTER BY BRAND -->
-
-
                         <div class="padding"></div>
 
                         <!-- BEGIN FILTER BY PRICE -->
@@ -62,11 +66,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6 pr-3">
                                     <label>Min</label>
-                                    <input type="number" class="form-control" id="inputEmail4" placeholder="0">
+                                    <input type="number" name="StartPrice" class="form-control" id="inputEmail4" placeholder="0">
                                 </div>
                                 <div class="form-group col-md-6 pl-3 text-right">
                                     <label>Max</label>
-                                    <input type="number" class="form-control" placeholder="10,000,000">
+                                    <input type="number" name="EndPrice" class="form-control" placeholder="10,000,000">
                                 </div>
                             </div>
                         </div>
@@ -115,22 +119,30 @@
                 <!-- BEGIN PAGINATION -->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        @for(int i=1; partService.GetNumberOfPage()>=i;i++)
+                        @if (ViewBag.CurrentPage > 1)
                         {
-                            <li class="page-item"><a class="page-link" href="listOfComponent?pageNumber=@i">@i</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="listOfComponent?pageNumber=@(ViewBag.CurrentPage-1)&onChange=@onChange" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        }
+
+                        @for (int i = 1; partService.GetNumberOfPage(ViewBag.ListComponetRaw) >= i; i++)
+                        {
+                            <li class="page-item"><a class="page-link" href="listOfComponent?pageNumber=@i&onChange=@onChange">@i</a></li>
                         }  
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
+                        @if (partService.GetNumberOfPage(ViewBag.ListComponetRaw) > ViewBag.CurrentPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="listOfComponent?pageNumber=@(ViewBag.CurrentPage+1)&onChange=@onChange" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        }
+
 
                     </ul>
                 </nav>
@@ -142,3 +154,49 @@
     </div>
     <!-- Products Section -->
 
+<script>
+        @section Javascript{
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the parameter value from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramValue = urlParams.get('filterString');
+            console.log(paramValue);
+
+            // Check if a gender parameter is present in the URL and store it in localStorage
+            if (paramValue) {
+                localStorage.setItem(paramValue, true);
+            }
+
+            // Retrieve the scroll position from localStorage and scroll the window accordingly
+            var scrollPos = localStorage.getItem('scrollPosition');
+            if (scrollPos) {
+                window.scrollTo(0, scrollPos);
+            }
+
+            // Retrieve all checkboxes and set their state based on localStorage
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                var checked = localStorage.getItem(checkbox.id);
+                checkbox.checked = checked === 'true';
+            });
+
+            // Add an event listener to each checkbox to save their state in localStorage
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('click', function () {
+                    checkboxes.forEach(function (checkbox) {
+                        localStorage.setItem(checkbox.id, checkbox.checked);
+                    });
+
+                    // Save the current scroll position in localStorage
+                    localStorage.setItem('scrollPosition', window.pageYOffset);
+
+                    // Submit the form
+                    document.querySelector("#myForm").submit();
+                });
+            });
+
+            // Any additional code or modifications can be added here
+
+        });
+        }
+</script>
