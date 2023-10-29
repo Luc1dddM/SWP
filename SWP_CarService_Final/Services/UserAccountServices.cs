@@ -13,9 +13,9 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("SELECT [User].*, [Role].role_name " +
-                    "FROM [User], User_role,[Role] WHERE [User].UserName = User_role.userName " +
-                    "AND User_role.role_id = [Role].role_id", connection);
+                SqlCommand cmd = new SqlCommand("SELECT [User].*, [Role].role_name FROM [User], " +
+                    "User_role,[Role] WHERE [User].UserName = User_role.userName AND User_role.role_id = [Role].role_id" +
+                    " Order by [User].created desc", connection);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

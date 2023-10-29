@@ -32,6 +32,58 @@ namespace SWP_CarService_Final.Services
             return categories;
         }
 
+        public List<Category> getComponentCategory()
+        {
+            List<Category> categories = new List<Category>();
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM [SWP].[dbo].[Category] where category_type = 'component'", connection);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var category = new Category()
+                        {
+                            category_id = reader.GetString(0),
+                            category_name = reader.GetString(1),
+                            category_type = reader.GetString(2),
+                            active = reader.GetBoolean(3)
+                        };
+                        categories.Add(category);
+                    }
+                }
+            }
+            finally { connection.Close(); }
+            return categories;
+        }
+
+        public List<Category> getBrandCategory()
+        {
+            List<Category> categories = new List<Category>();
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM [SWP].[dbo].[Category] where category_type = 'Brand'", connection);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var category = new Category()
+                        {
+                            category_id = reader.GetString(0),
+                            category_name = reader.GetString(1),
+                            category_type = reader.GetString(2),
+                            active = reader.GetBoolean(3)
+                        };
+                        categories.Add(category);
+                    }
+                }
+            }
+            finally { connection.Close(); }
+            return categories;
+        }
+
         public Category GetCategoryByID(string id) 
         {
             Category category = null;

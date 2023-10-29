@@ -108,6 +108,12 @@ namespace Areas.Controllers
         {
             _context.HttpContext.Session.Remove("role");
             _context.HttpContext.Session.Remove("cUser");
+            _context.HttpContext.Session.Remove("cFil");
+            _context.HttpContext.Session.Remove("cStart");
+            _context.HttpContext.Session.Remove("cEnd");
+            _context.HttpContext.Session.Remove("cSText");
+
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("Login");
         }

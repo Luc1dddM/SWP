@@ -1,7 +1,9 @@
-﻿
+﻿@using SWP_CarService_Final.Services;
+
 @{
-    ViewData["Title"] = "CategoryAdd";
+    ViewData["Title"] = "AddComponent";
     Layout = null;
+    CategoryServices categoryServices = new CategoryServices();
 }
 
 <!DOCTYPE html>
@@ -10,10 +12,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Category</title>
+    <title>Add A New Team </title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/styleform.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
@@ -34,37 +36,44 @@
         <div class="p-3 mb-2 bg-white text-dark rounded">
             <div class="header-form">
                 <div>
-                    <a href="Categories" class="back-link text-reset">
+                    <a href="ListOfComponent?pageNumber=1" class="back-link text-reset">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
                 </div>
                 <div class="pl-5 pr-5 pt-2">
-                    <h3>Add New Category</h3>
+                    <h3>Add New Component</h3>
                 </div>
             </div>
             <div class="p-4">
-                <form action="CategoryAdd" method="post">
+                <form action="AddComponent" enctype="multipart/form-data" method="post">
+
                     <div class="form-group">
-                        <label for="fullname">Category Name</label>
-                        <input type="text" name="name" class="form-control" id="" placeholder="Enter Category Name">
+                        <label>Component Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Enter your Component Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Component Image</label>
+                        <div class="form-group border rounded p-1">
+                            <input type="file" name="img" class="form-control-file" id="exampleFormControlFile1">
+                        </div>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label>Price</label>
+                        <input type="number" name="price" class="form-control" id="" placeholder="Enter your Price">
+                    </div>
+                    <div class="form-group mb-4">
+                        <label>Quantity</label>
+                        <input type="number" name="quantity" class="form-control" id="" placeholder="Enter your Quantity">
                     </div>
                     <div class="form-group">
-                        <label for="fullname">Category Type</label>
-                        <input type="text" name="type" class="form-control" id="" placeholder="Enter Category Type">
-                    </div>
-                    </div>
-                    <div class="mb-3">
-                        <div>
-                            <label >Status Category</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="Active" checked>
-                            <label class="form-check-label" for="inlineRadio1">Active</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="status" id="inlineRadio2" value="In-active">
-                            <label class="form-check-label" for="inlineRadio2">In-active</label>
-                        </div>
+                        <label for="exampleFormControlSelect2">Category</label>
+                        <select multiple name="categories" class="form-control" id="exampleFormControlSelect2">
+                            @foreach(var category in categoryServices.getAllCategory())
+                            {
+                                <option value="@category.category_id" >@category.category_name</option>
+                            }
+                        </select>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">
@@ -78,4 +87,3 @@
 </body>
 
 </html>
-
