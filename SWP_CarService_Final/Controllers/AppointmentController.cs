@@ -36,6 +36,31 @@ namespace SWP_CarService_Final.Controllers
         [HttpPost]
         public IActionResult create(string vehicleType, string description, DateTime timeArrived, List<string> servicesIDs)
         {
+            if (servicesIDs == null || servicesIDs.Count == 0)
+            {
+                ModelState.AddModelError("servicesIDs", "Please select at least one service.");
+            }
+
+            if (string.IsNullOrEmpty(vehicleType))
+            {
+                ModelState.AddModelError("vehicleType", "The Vehicle Type field is required.");
+            }
+
+            if (string.IsNullOrEmpty(description))
+            {
+                ModelState.AddModelError("description", "The Description field is required.");
+            }
+
+            if (timeArrived == DateTime.MinValue || timeArrived < DateTime.Today)
+            {
+                ModelState.AddModelError("timeArrived", "Please select a valid date and make sure it is not in the past.");
+            }
+            Console.WriteLine(timeArrived);
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             string cCustomerString = _contx.HttpContext.Session.GetString("cCus");
             Customer cCustomer = JsonConvert.DeserializeObject<Customer>(cCustomerString);
             Appointment newAppointment = new Appointment()
