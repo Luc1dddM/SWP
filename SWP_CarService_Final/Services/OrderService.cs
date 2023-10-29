@@ -6,9 +6,12 @@ namespace SWP_CarService_Final.Services
     public class OrderService : DBContext
     {
         private readonly TaskDetailService _taskDetailService;
+        private readonly AppointmentService _appointmentService;
         public OrderService()
         {
-            _taskDetailService = new TaskDetailService();
+            TaskService taskService = new TaskService();
+            _taskDetailService= new TaskDetailService();
+            _appointmentService= new AppointmentService(taskService);
         }
         public int getNumberOfWorkOrder()
         {
@@ -206,10 +209,41 @@ namespace SWP_CarService_Final.Services
                         };
                         _taskDetailService.createTaskDetail(detail);
                     }
+                    createOrderAppointment(appointment.appointmentID, id);
+                    _appointmentService.updateStatus(appointment.appointmentID, "Done");
                 }
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
             finally { connection.Close(); }
+        }
+
+        public void createOrderAppointment(string appointmentId, string workOrderId)
+        {
+            try
+            {
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                SqlCommand cmd = new SqlCommand("insert into Appointment_WorkOrder values(@apmId, @WOID)", connection);
+                cmd.Parameters.AddWithValue("apmId", appointmentId);
+                cmd.Parameters.AddWithValue("WOID", workOrderId);
+                cmd.ExecuteNonQuery();
+            }catch (Exception ex) { throw new Exception(ex.Message); }
+            finally { connection.Close(); }
+        }
+
+        public void updateTotalWordOrder(string workOrderID)
+        {
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("Update Work_order set Total = ( SELECT COALESCE(SUM(quantity * amount), 0) FROM task_detail WHERE WorkOrder_id = @WorkOrderID) " +
+                    "+ (SELECT COALESCE(SUM(quantity * price), 0) FROM part_detail WHERE WorkOrder_id = @WorkOrderID and part_detail.[status] = 'Approve') where WorkOrder_id = @WorkOrderID", connection);
+                cmd.Parameters.AddWithValue("WorkOrderID", workOrderID);
+                cmd.ExecuteNonQuery();
+            }catch(Exception ex) { throw new Exception(ex.Message);
+            }finally { connection.Close(); }
         }
     }
 }

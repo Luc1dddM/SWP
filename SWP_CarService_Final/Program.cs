@@ -32,7 +32,6 @@ namespace SWP_CarService_Final
             builder.Services.AddScoped<TaskDetailService>();
             builder.Services.AddScoped<TeamMemberService>();
             builder.Services.AddScoped<UserProfileServices>();
-            builder.Services.AddScoped<AccountService>();
             builder.Services.AddScoped<CategoryServices>();
 
 
@@ -76,7 +75,7 @@ namespace SWP_CarService_Final
 
             app.UseSession();
 
-            app.UseAuthentication();
+            app.UseAuthentication();    
 
             app.UseAuthorization();
 
