@@ -27,10 +27,8 @@ namespace Areas
         {
             string cUserString = _contx.HttpContext.Session.GetString("cUser");
             User cUser = JsonConvert.DeserializeObject<User>(cUserString);
-            Console.WriteLine(cUser.role_name + "test");
             if(cUser.role_name.Trim().Equals("admin"))
             {
-                Console.Write("true");
                 ViewBag.role = "admin";
             }
             List<Appointment> appointments = _appointmentService.getAllApppointments();

@@ -12,6 +12,7 @@ namespace SWP_CarService_Final.Services
         
 
 
+
         public Customer CustomerLogin(string username, string password)
         {
 
@@ -65,64 +66,46 @@ namespace SWP_CarService_Final.Services
                     connection.Close();
                     return user;
                 }
-
             }
 
             return null;
         }
 
-        public Customer GetCustomerByUserName(string username)
+        public Customer getCustomerByUserName(string userName)
         {
-            Customer cus = new Customer();
             try
             {
-                connection.Open();
-                SqlCommand cmd = new SqlCommand("select * from [Customer] " +
-                                                "where [Customer].[user_name]  = @username", connection);
-                cmd.Parameters.AddWithValue("@username", username);
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                if (connection.State == System.Data.ConnectionState.Closed)
                 {
-                    if (reader.Read())
+                    connection.Open();
+                }
+                SqlCommand command = new SqlCommand("select * from [Customer] where [user_name] = @username", connection);
+                command.Parameters.AddWithValue("username", userName);
+                using(SqlDataReader reader = command.ExecuteReader())
+                {
+                    if(reader.Read())
                     {
-                        cus = new Customer()
-                        {
-                            user_name = reader.GetString(0),
-                            fullName = reader.GetString(1),
-                            password = reader.GetString(2),
-                            email = reader.GetString(3),
-                            phone_number = reader.GetString(4),
-                            account_status = reader.GetBoolean(5),
-                            img = reader.GetString(6)
-                        };
+                        Customer customer = new Customer();
+                        customer.user_name = reader.GetString(0);
+                        customer.fullName = reader.GetString(1);
+                        customer.password = reader.GetString(2);
+                        customer.email = reader.GetString(3);
+                        customer.phone_number = reader.GetString(4);
+                        customer.account_status = reader.GetBoolean(5);
+                        customer.img = (!reader.IsDBNull(6)) ? reader.GetString(6) : "";
+                        connection.Close();
+                        return customer;
                     }
                 }
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
-            finally { connection.Close(); }
-            return cus;
-        }
-
-
-        public void ResetCustomerPassword(string password, string username)
-        {
-            Customer customer = new Customer();
-            try
+            catch (Exception ex)
             {
-                customer = GetCustomerByUserName(username);
-                connection.Open();
-                if (customer != null)
-                {
-                    SqlCommand command = new SqlCommand("update [Customer] " +
-                                                        "set [Customer].[password] = @password " +
-                                                        "where [Customer].[user_name] = @username");
-                    command.Parameters.AddWithValue("@username", username);
-                    command.Parameters.AddWithValue("@password", password);
-                    command.ExecuteNonQuery();
-                }
-                else { throw new Exception("Customer with Username: " + username + " is not exist."); }
+                throw new Exception(ex.Message);
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
-            finally { connection.Close(); }
+            finally {
+                connection.Close();
+            }
+            return null;
         }
     }
 }

@@ -13,12 +13,14 @@ namespace Areas
     {
         private readonly TaskDetailService _taskDetailService;
         private readonly IHttpContextAccessor _context;
+        private readonly OrderService _orderService;
 
 
-        public TaskDetailController(TaskDetailService taskDetailService, IHttpContextAccessor context)
+        public TaskDetailController(TaskDetailService taskDetailService, IHttpContextAccessor context, OrderService orderService)
         {
             _taskDetailService = taskDetailService;
             _context = context;
+            _orderService = orderService;
         }
         public IActionResult Index()
         {
@@ -53,6 +55,7 @@ namespace Areas
         public IActionResult Edit(string wodID)
         {
             TaskDetail detail = _taskDetailService.getTaskDetailByID(wodID);
+            _orderService.updateTotalWordOrder(wodID);
             return View(detail);
         }
 
@@ -63,8 +66,9 @@ namespace Areas
             newTaskDetail.quantity = quantity;
             newTaskDetail.userName = member;
             _taskDetailService.updateTaskDetail(newTaskDetail);
+            _orderService.updateTotalWordOrder(newTaskDetail.WorkOrder.WorkOrderID);
             Console.WriteLine(newTaskDetail.WorkOrder.WorkOrderID);
-            return RedirectToAction("view", "OrderDetail", new { WorkOrderID = newTaskDetail.WorkOrder.WorkOrderID });
+            return Redirect($"/user/OrderDetail/view?WorkOrderID={newTaskDetail.WorkOrder.WorkOrderID}");
         }
 
         public IActionResult ResponseRequest(string wodID, string Response)

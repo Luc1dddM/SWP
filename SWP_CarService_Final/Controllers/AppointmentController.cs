@@ -92,7 +92,7 @@ namespace SWP_CarService_Final.Controllers
 
         public IActionResult cancel(string id)
         {
-            _appointmentService.cancelAppointment(id);
+            _appointmentService.updateStatus(id, "Cancel");
             return RedirectToAction("view");
         }
     }
