@@ -6,16 +6,6 @@ namespace SWP_CarService_Final.Services
 {
     public class TeamMemberService : DBContext
     {
-        /*private UserAccountServices userAccountServices;
-        public TeamMemberService()
-        {
-            userAccountServices = new UserAccountServices();
-        }
-        public List<User> GetAllUser()
-        {
-            List<User> users = userAccountServices.getAllListUserAccounts();
-            return users;
-        }*/
 
         public List<User> GetAllTeamMemberNotInTeam()
         {
@@ -138,36 +128,6 @@ namespace SWP_CarService_Final.Services
             return user;
         }
 
-        /*public List<User> GetAllUserRole()
-        {
-            List<User> users = new List<User>();
-            try
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand("select distinct [Role].[role_name] " +
-                                                    "from [User] " +
-                                                    "join [User_role] on [User_role].[userName] = [User].[UserName] " +
-                                                    "join [Role] on [Role].[role_id] = [User_role].[role_id] " +
-                                                    "where [Role].[role_name] in ('leader', 'member')", connection);
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var user = new User()
-                        {
-                            role_name = reader.GetString(0).Trim(),
-                        };
-                        users.Add(user);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            finally { connection.Close(); }
-            return users;
-        }*/
 
         public void AddTeamMember(string teamId, List<string> username)
         {
