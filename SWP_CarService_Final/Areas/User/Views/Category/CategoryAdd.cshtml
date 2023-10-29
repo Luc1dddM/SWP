@@ -1,11 +1,7 @@
-﻿@using SWP_CarService_Final.Models
-@using SWP_CarService_Final.Services
-@using SWP_CarService_Final.Areas.User.Models
+﻿
 @{
+    ViewData["Title"] = "CategoryAdd";
     Layout = null;
-    @model TaskDetail;
-    TeamMemberService teamService = new TeamMemberService();
-    List<User> users = teamService.getMembersOfLeader(Model.userName);
 }
 
 <!DOCTYPE html>
@@ -14,9 +10,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register New Account</title>
+    <title>Add Category</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/styleform.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
@@ -30,55 +27,55 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
-
 </head>
 
 <body>
     <div class="container">
         <div class="p-3 mb-2 bg-white text-dark rounded">
-            <div class="pl-5 pr-5 pt-2 ">
-                <h3>Edit Task Detail</h3>
+            <div class="header-form">
+                <div>
+                    <a href="Categories" class="back-link text-reset">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                </div>
+                <div class="pl-5 pr-5 pt-2">
+                    <h3>Add New Category</h3>
+                </div>
             </div>
             <div class="p-4">
-                <form method="post">
+                <form action="CategoryAdd" method="post">
                     <div class="form-group">
-                        <input hidden type="text" value="@Model.wod_id" name="id">
+                        <label for="fullname">Category Name</label>
+                        <input type="text" name="name" class="form-control" id="" placeholder="Enter Category Name">
                     </div>
                     <div class="form-group">
-                        <label for="quantity">Quantity</label>
-                        <input type="text" class="form-control" value="@Model.quantity" name="quantity" id="quantity">
+                        <label for="fullname">Category Type</label>
+                        <input type="text" name="type" class="form-control" id="" placeholder="Enter Category Type">
                     </div>
-                    <div class="form-group">
-                        <label for="fullname">Member</label>
-                        <select type="select" class="form-control" name="member">
-                            @foreach (var mem in users)
-                            {
-                                <option value="@mem.UserName">@mem.User_fullname</option>
-                            }
-                           
-                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <div>
+                            <label >Status Category</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="Active" checked>
+                            <label class="form-check-label" for="inlineRadio1">Active</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="status" id="inlineRadio2" value="In-active">
+                            <label class="form-check-label" for="inlineRadio2">In-active</label>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary"
-                                onclick="submitRegister()">
+                        <button type="submit" class="btn btn-primary">
                             Submit
                         </button>
                     </div>
-
                 </form>
             </div>
         </div>
     </div>
-    <script>
-        function submitRegister() {
-            let text = "Do you want to submit this form?";
-            if (confirm(text) == true) {
-                alert("your submit successfully");
-            } else {
-                alert("You canceled!");
-            }
-        }
-    </script>
 </body>
 
 </html>
+

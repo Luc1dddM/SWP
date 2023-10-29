@@ -10,6 +10,6 @@
         public DateTime updatedAt { get; set; }
         public string userName {  get; set; }
         public Task task { get; set; }
-        public string WorkOrderID { get; set; }
+        public WorkOrder WorkOrder { get; set; }
     }
 }
