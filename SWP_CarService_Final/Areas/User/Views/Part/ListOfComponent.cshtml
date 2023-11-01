@@ -17,14 +17,20 @@
         <div>
             <h3>Components</h3>
         </div>
-        <div class="search-container">
-            <form action="ListOfComponent" method="get">
+
+
+        <form action="ListOfComponent" method="get">
+            <div class="input-group">
                 <input name="pageNumber" value="1" type="hidden" class="icheck">
                 <input name="onChange" value="true" type="hidden" class="icheck">
-                <input type="text" placeholder="Search.." name="SearchText">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
+                <input type="text" class="form-control" placeholder="Search" name="SearchText">
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+
+
         <a href="AddComponent"><button type="button" class="btn btn-primary">Add New Component</button></a>
     </div>
     <div class="container-fluid">
@@ -101,7 +107,7 @@
                                     <span class="d-block text-muted font-size-1 mb-1">@part.price VNĐ</span>
                                     <span class="d-block text-muted font-size-1 mb-3">Quantity: @part.quantity</span>
                                     <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
-                                       href="#">Edit</a>
+                                       href="EditComponent?part_id=@part.part_id">Edit</a>
                                 </div>
                             </div>
                             <!-- End Card -->
@@ -154,49 +160,4 @@
     </div>
     <!-- Products Section -->
 
-<script>
-        @section Javascript{
-        document.addEventListener('DOMContentLoaded', function () {
-            // Get the parameter value from the URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const paramValue = urlParams.get('filterString');
-            console.log(paramValue);
 
-            // Check if a gender parameter is present in the URL and store it in localStorage
-            if (paramValue) {
-                localStorage.setItem(paramValue, true);
-            }
-
-            // Retrieve the scroll position from localStorage and scroll the window accordingly
-            var scrollPos = localStorage.getItem('scrollPosition');
-            if (scrollPos) {
-                window.scrollTo(0, scrollPos);
-            }
-
-            // Retrieve all checkboxes and set their state based on localStorage
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(function (checkbox) {
-                var checked = localStorage.getItem(checkbox.id);
-                checkbox.checked = checked === 'true';
-            });
-
-            // Add an event listener to each checkbox to save their state in localStorage
-            checkboxes.forEach(function (checkbox) {
-                checkbox.addEventListener('click', function () {
-                    checkboxes.forEach(function (checkbox) {
-                        localStorage.setItem(checkbox.id, checkbox.checked);
-                    });
-
-                    // Save the current scroll position in localStorage
-                    localStorage.setItem('scrollPosition', window.pageYOffset);
-
-                    // Submit the form
-                    document.querySelector("#myForm").submit();
-                });
-            });
-
-            // Any additional code or modifications can be added here
-
-        });
-        }
-</script>

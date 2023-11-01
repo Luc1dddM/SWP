@@ -6,7 +6,6 @@
         public string taskName { get; set; }
         public decimal price { get; set; }
         public bool active { get; set; }
-        public string img {  get; set; }
         public string Description { get; set; }
     }
 }

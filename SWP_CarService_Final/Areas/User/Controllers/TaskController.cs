@@ -28,44 +28,25 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             return View();
         }
 
-        public IActionResult Remove(string task_id)
+/*        public IActionResult Remove(string task_id)
         {
             _taskService.Remove(task_id);
             return Redirect("ListOfServices");
-        }
+        }*/
 
         public IActionResult AddService()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult AddService(string ServiceName, IFormFile fileImg, string Price, string description, string choice)
+        public IActionResult AddService(string ServiceName, string Price, string description, string choice)
         {
             string ImgName = "";
             try
             {
-                if (fileImg != null)
-                {
-                    if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", fileImg.FileName)))
-                    {
-                        // If file found, delete it
-                        System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", fileImg.FileName));
-                    }
-                    ImgName = Path.GetFileName(fileImg.FileName);
-                    string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", ImgName);
-                    var stream = new FileStream(uploadfilepath, FileMode.Create);
-                    fileImg.CopyToAsync(stream);
-                    stream.Close();
-                    ImgName = fileImg.FileName;
-                }
-                else
-                {
-                    ImgName = null;
-                }
                 Task service = new Task()
                 {
                     taskName = ServiceName,
-                    img = ImgName,
                     price = decimal.Parse(Price),
                     Description = description,
                     active = choice == "active" ? true : false
@@ -83,53 +64,21 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult EditService(string ServiceId, string ServiceName, IFormFile fileImg, string Price, string description, string choice)
+        public IActionResult EditService(string ServiceId, string ServiceName, string Price, string description, string choice)
         {
             string ImgName = "";
             try
             {
-                if (fileImg != null)
-                {
-                    if (System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", fileImg.FileName)))
-                    {
-                        // If file found, delete it
-                        System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", fileImg.FileName));
-                    }
-                    if (_taskService.GetTaskByID(ServiceId).img != null)
-                    {
-                        System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", _taskService.GetTaskByID(ServiceId).img));
-                    }
-                    ImgName = Path.GetFileName(fileImg.FileName);
-                    string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", ImgName);
-                    var stream = new FileStream(uploadfilepath, FileMode.Create);
-                    fileImg.CopyToAsync(stream);
-                    stream.Close();
+
                     Task service = new Task()
                     {
                         taskID = ServiceId,
                         taskName = ServiceName,
-                        img = ImgName,
                         price = decimal.Parse(Price),
                         Description = description,
                         active = choice == "active" ? true : false
                     };
                     _taskService.editService(service);
-                }
-                else
-                {
-                    Task service = new Task()
-                    {
-                        taskID = ServiceId,
-                        taskName = ServiceName,
-                        img = _taskService.GetTaskByID(ServiceId).img,
-                        price = decimal.Parse(Price),
-                        Description = description,
-                        active = choice == "active" ? true : false
-                    };
-                    _taskService.editService(service);
-                }
-
-
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
             return Redirect("ListOfServices");

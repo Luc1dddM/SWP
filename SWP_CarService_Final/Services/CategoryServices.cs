@@ -121,7 +121,7 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                string SQLSelect = "select TOP (1) * from Category order by category_id desc";
+                string SQLSelect = "SELECT top 1 * FROM Category ORDER BY CAST(SUBSTRING(category_id, PATINDEX('%[0-9]%', category_id), LEN(category_id)) AS INT) desc";
                 SqlCommand command = new SqlCommand(SQLSelect, connection);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -167,6 +167,7 @@ namespace SWP_CarService_Final.Services
         public void editCategory(Category ncategory)
         {
             Category category = new Category();
+            
             try
             {
                 category = GetCategoryByID(ncategory.category_id);
@@ -190,6 +191,42 @@ namespace SWP_CarService_Final.Services
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
             finally { connection.Close(); }
+        }
+
+        public List<Category> getCategoriesNotAdd(List<PartCategory> partCategories)
+        {
+            List<Category> categories = new List<Category>();
+            string except = null;
+            try
+            {
+                if(partCategories != null)
+                {
+                    foreach (PartCategory partCategory in partCategories)
+                    {
+                        except += " and category_id != '" + partCategory.category_id +"' ";
+                    }
+                }
+
+
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM [SWP].[dbo].[Category] where 1=1 "+except, connection);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var category = new Category()
+                        {
+                            category_id = reader.GetString(0),
+                            category_name = reader.GetString(1),
+                            category_type = reader.GetString(2),
+                            active = reader.GetBoolean(3)
+                        };
+                        categories.Add(category);
+                    }
+                }
+            }
+            finally { connection.Close(); }
+            return categories;
         }
 
 
