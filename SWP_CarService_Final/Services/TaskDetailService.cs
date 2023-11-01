@@ -166,11 +166,13 @@ namespace SWP_CarService_Final.Services
                 {
                     connection.Open();
                 }
-                SqlCommand cmd = new SqlCommand("Insert task_detail values(@id, @quantity, @amount, @status, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, @UserName, @task, @WorkOrder)", connection);
+                SqlCommand cmd = new SqlCommand("Insert task_detail values(@id, @quantity, @amount, @status, @created, @updated, @UserName, @task, @WorkOrder)", connection);
                 cmd.Parameters.AddWithValue("id", id);
                 cmd.Parameters.AddWithValue("quantity", taskDetail.quantity);
                 cmd.Parameters.AddWithValue("amount", taskDetail.price);
                 cmd.Parameters.AddWithValue("status", taskDetail.status);
+                cmd.Parameters.AddWithValue("created", taskDetail.createdAt);
+                cmd.Parameters.AddWithValue("updated", taskDetail.updatedAt);
                 cmd.Parameters.AddWithValue("UserName", taskDetail.userName);
                 cmd.Parameters.AddWithValue("task", taskDetail.task.taskID);
                 cmd.Parameters.AddWithValue("WorkOrder", taskDetail.WorkOrder.WorkOrderID);

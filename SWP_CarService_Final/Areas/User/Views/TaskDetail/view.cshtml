@@ -6,6 +6,7 @@
 
 }
 <div class="main-container content">
+    
     <div class="table-Request_Complete_Task ml-2 mr-2">
         <table class="" style="width: 100%;">
             <thead>
@@ -31,11 +32,11 @@
                                 @task.status
                             </div>
                         </td>
-                        @if (task.status.Trim() != "Request Complete")
+                        @if (task.status.Trim() == "Process")
                         {
-                            <td> <a class="mr-2" href="/test/TaskDetail/RequestComplete?wodID=@task.wod_id"><button type="button" class="btn btn-primary btn-complete">Complete</button></a></td>
+                            <td> <a class="mr-2" href="/test/TaskDetail/RequestComplete?wodID=@task.wod_id"><button type="button" class="btn btn-primary btn-complete">Request Complete</button></a></td>
                         }
-                        else if (task.status.Trim() != "Completed")
+                        else if (task.status.Trim() == "Completed")
                         {
                             <td> <a class="mr-2" href="#"><button type="button" class="btn btn-primary btn-complete">Done!</button></a></td>
                         }

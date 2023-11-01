@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace SWP_CarService_Final.Areas.User.Controllers
 {
     [Area("User")]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin, member")]
     public class PartController : Controller
     {
         private readonly PartService _partService;

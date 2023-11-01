@@ -8,6 +8,7 @@
         public string CustomerName { get; set;}
         public string CreatedBy { get; set; }
         public DateTime createdAt { get; set; }
-        public List<TaskDetail> taskDetails { get; set; }
+        public List<TaskDetail>? taskDetails { get; set; }
+        public List<PartDetail>? partDetails { get; set; }
     }
 }

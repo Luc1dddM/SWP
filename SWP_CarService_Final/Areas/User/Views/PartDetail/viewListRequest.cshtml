@@ -1,0 +1,44 @@
+﻿@using SWP_CarService_Final.Models
+@{
+    ViewData["Title"] = "viewListRequest";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    @model List<PartDetail>
+}
+
+<div class="main-container content">
+    <div class="table-Request_Complete_Task ml-2 mr-2">
+        <table class="" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">ID</th>
+                    <th style="width: 15%;">Part</th>
+                    <th style="width: 10%;">Quantity</th>
+                    <th style="width: 15%;">Member</th>
+                    <th style="width: 15%;">Status</th>
+                    <th style="width: 20%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var part in Model)
+                {
+                    <tr>
+                        <td>@part.ItemDetailId</td>
+                        <td>@part.part.part_name</td>
+                        <td>@part.quantity</td>
+                        <td>@part.user.User_fullname</td>
+                        <td>
+                            <div class="active-status">
+                                @part.status
+                            </div>
+                        </td>
+                        <td style="display: flex;">
+                            <a class="mr-2" href="/user/PartDetail/ResponseRequest?partDetailId=@part.ItemDetailId.Trim()&Response=Accepted"><button type="button" class="btn btn-primary btn-complete">Accept</button></a>
+                            <a class="mr-2" href="/user/PartDetail/ResponseRequest?partDetailId=@part.ItemDetailId.Trim()&Response=Cancel"><button type="button" class="btn btn-danger btn-complete">Cancel</button></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+    </div>
+</div>
+
+

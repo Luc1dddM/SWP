@@ -117,11 +117,17 @@
 
                     <div class="item"><i class="fa-solid fa-user"></i><a href="/user/TaskDetail/ViewListRequest">Request Complete</a></div>
 
+                    <div class="item"><i class="fa-solid fa-user"></i><a href="/user/PartDetail/ViewListRequest">Request Use Part</a></div>
                 }
 
                 else if (contx.HttpContext.Session.GetString("role") == "member")
                 {
                     <div class="item"><i class="fa-solid fa-briefcase"></i><a href="/user/TaskDetail/view">Work Order</a></div>
+
+                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="/user/PartDetail/view">Part Request</a></div>
+
+
+                    <div class="item"><i class="fa-solid fa-wrench"></i><a href="/user/part/ListOfComponent?pageNumber=1&onChange=true">Components</a></div>
 
                     <div class="item"><i class="fa-solid fa-user"></i><a href="#">Team</a></div>
                 }

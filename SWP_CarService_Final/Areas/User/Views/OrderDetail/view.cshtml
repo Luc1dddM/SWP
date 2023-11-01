@@ -32,7 +32,7 @@
                             <p>@WorkOrder.task.taskName</p>
                         </div>
                         <div class="col work-order-detail-task__item--quantity">@WorkOrder.quantity</div>
-                        <div class="col work-order-detail-task__item--amount">@string.Format("{0:C0}", @WorkOrder.price).Substring(1)</div>
+                        <div class="col work-order-detail-task__item--amount">@string.Format("{0:C0}", WorkOrder.price).Substring(1)</div>
                         <div class="col work-order-detail-task__item--status active"><span>@WorkOrder.status</span></div>
                         <div class="col work-order-detail-task__item--member"><span>@WorkOrder.userName</span></div>
                         <div class="col work-order-detail-task__item--Action">
@@ -50,27 +50,28 @@
                 <h5 class="col-3 work-order-detail-task__header">Product</h5>
                 <h5 class="col work-order-detail-task__header">Quantity</h5>
                 <h5 class="col work-order-detail-task__header">Amount</h5>
-                <h5 class="col work-order-detail-task__header"></h5>
                 <h5 class="col work-order-detail-task__header">Add By</h5>
                 <h5 class="col work-order-detail-task__header">Action</h5>
             </div>
 
             <div class="work-order-detail-component-item__container">
-                <div class="row work-order-detail-component__item">
-                    <div class="col-1 work-order-detail-Component__item--ID">01</div>
-                    <div class="col-3 work-order-detail-Component__item--service">
-                        <img src="" alt="">
-                        <p>Brake system repair</p>
+                @foreach(var component in Model.partDetails)
+                {
+                    <div class="row work-order-detail-component__item">
+                        <div class="col-1 work-order-detail-Component__item--ID">01</div>
+                        <div class="col-3 work-order-detail-Component__item--service">
+                            <img src="~/img/@component.part.img" alt="">
+                            <p>@component.part.part_name</p>
+                        </div>
+                        <div class="col work-order-detail-component__item--quantity">@component.quantity</div>
+                        <div class="col work-order-detail-component__item--amount">@string.Format("{0:C0}", component.price).Substring(1)</div>
+                        <div class="col work-order-detail-component__item--status">@component.userName</div>
+                        <div class="col work-order-detail-component__item__item--Action">
+                            <a>Trash can</a>
+                            <a href="">Edit</a>
+                        </div>
                     </div>
-                    <div class="col work-order-detail-component__item--quantity">Quantity</div>
-                    <div class="col work-order-detail-component__item--amount">Amount</div>
-                    <div class="col work-order-detail-component__item--status"></div>
-                    <div class="col work-order-detail-component__item--status">Lam</div>
-                    <div class="col work-order-detail-component__item__item--Action">
-                        <a>Trash can</a>
-                        <a href="">Edit</a>
-                    </div>
-                </div>
+                }
             </div>
         </div>
 

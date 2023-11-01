@@ -301,13 +301,13 @@ namespace SWP_CarService_Final.Services
                 {
                     SqlCommand command = new SqlCommand("UPDATE [SWP].[dbo].[Part] SET[part_name] = @part_name, " +
                                                         "[price] = @price, [quantity] = @quantity, " +
-                                                        "[img] = @img" +
+                                                        "[img] = @img " +
                                                         "WHERE[part_id] = @part_id", connection);
                     command.Parameters.AddWithValue("part_id", nPart.part_id);
                     command.Parameters.AddWithValue("part_name", nPart.part_name);
-                    command.Parameters.AddWithValue("price", nPart.quantity);
+                    command.Parameters.AddWithValue("price", nPart.price);
                     command.Parameters.AddWithValue("quantity", nPart.quantity);
-                    command.Parameters.AddWithValue("img", nPart.quantity);
+                    command.Parameters.AddWithValue("img", nPart.img);
                     command.ExecuteNonQuery();
 
                 }

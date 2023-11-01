@@ -95,7 +95,7 @@ namespace SWP_CarService_Final.Controllers
             return View();
         }
 
-        [HttpPost]
+       /* [HttpPost]
         public IActionResult ResetPassword(string Username, string Password)
         {
             try
@@ -109,7 +109,7 @@ namespace SWP_CarService_Final.Controllers
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
             return Redirect("login");
-        }
+        }*/
 
         public IActionResult Privacy()
         {

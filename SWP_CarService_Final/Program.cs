@@ -34,6 +34,7 @@ namespace SWP_CarService_Final
             builder.Services.AddScoped<UserProfileServices>();
             builder.Services.AddScoped<CategoryServices>();
             builder.Services.AddScoped<PartService>();
+            builder.Services.AddScoped<PartDetailService>();
 
 
 
