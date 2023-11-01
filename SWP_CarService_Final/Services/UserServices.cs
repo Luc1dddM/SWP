@@ -9,19 +9,15 @@ namespace SWP_CarService_Final.Services
     public class UserServices : DBContext
     {
 
-        private readonly DBContext _dbContext;
+        
 
-        public UserServices(DBContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
 
 
         public Customer CustomerLogin(string username, string password)
         {
 
-            _dbContext._connection().Open();
-            SqlCommand command = new SqlCommand("select * from [Customer] where [user_name] = @username and [password] = @password", _dbContext._connection());
+            connection.Open();
+            SqlCommand command = new SqlCommand("select * from [Customer] where [user_name] = @username and [password] = @password", connection);
             command.Parameters.AddWithValue("username", username);
             command.Parameters.AddWithValue("password", password);
             using (SqlDataReader reader = command.ExecuteReader())
@@ -37,7 +33,7 @@ namespace SWP_CarService_Final.Services
                     customer.phone_number = reader.GetString(4);
                     customer.account_status = reader.GetBoolean(5);
                     customer.img = (!reader.IsDBNull(6)) ? reader.GetString(6) : "";
-                    _dbContext._connection().Close();
+                    connection.Close();
                     return customer;
                 }
             }
@@ -46,12 +42,12 @@ namespace SWP_CarService_Final.Services
 
         public User UserLogin(string username, string password)
         {
-            _dbContext._connection().Open();
+            connection.Open();
 
             SqlCommand command = new SqlCommand("select * from [User] " +
                                                     "join [User_role] on [User_role].[userName] = [User].[UserName] " +
                                                     "join [Role] on [Role].[role_id] = [User_role].[role_id] " +
-                                                    "where [User].[UserName] = @username and [User].[password] = @password", _dbContext._connection());
+                                                    "where [User].[UserName] = @username and [User].[password] = @password", connection);
             command.Parameters.AddWithValue("@username", username);
             command.Parameters.AddWithValue("@password", password);
             using (SqlDataReader read = command.ExecuteReader())
@@ -67,15 +63,49 @@ namespace SWP_CarService_Final.Services
                     user.account_status = read.GetBoolean(5);
                     user.created = read.GetDateTime(6);
                     user.role_name = read.GetString(10);
-                    _dbContext._connection().Close();
+                    connection.Close();
                     return user;
                 }
-
             }
 
             return null;
         }
 
-
+        public Customer getCustomerByUserName(string userName)
+        {
+            try
+            {
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                SqlCommand command = new SqlCommand("select * from [Customer] where [user_name] = @username", connection);
+                command.Parameters.AddWithValue("username", userName);
+                using(SqlDataReader reader = command.ExecuteReader())
+                {
+                    if(reader.Read())
+                    {
+                        Customer customer = new Customer();
+                        customer.user_name = reader.GetString(0);
+                        customer.fullName = reader.GetString(1);
+                        customer.password = reader.GetString(2);
+                        customer.email = reader.GetString(3);
+                        customer.phone_number = reader.GetString(4);
+                        customer.account_status = reader.GetBoolean(5);
+                        customer.img = (!reader.IsDBNull(6)) ? reader.GetString(6) : "";
+                        connection.Close();
+                        return customer;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally {
+                connection.Close();
+            }
+            return null;
+        }
     }
 }

@@ -29,7 +29,7 @@
                 <div class="col work-order__item--Status"><span>Pending</span></div>
                 <div class="col work-order__item--Customer">@order.CustomerName</div>
                 <div class="col work-order__item--Vehicle">@order.VehicleType</div>
-                <div class="col work-order__item--Amount">@order.Total</div>
+                <div class="col work-order__item--Amount">@string.Format("{0:C0}", @order.Total).Substring(1)</div>
                 <div class="col work-order__item--Created">@order.createdAt.ToString("dd/MM/yyyy")</div>
                 <div class="col work-order__item--Action">
                     <a href="#" class="work-order__Action--Edit">Edit</a>

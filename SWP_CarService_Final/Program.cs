@@ -76,7 +76,7 @@ namespace SWP_CarService_Final
 
             app.UseSession();
 
-            app.UseAuthentication();
+            app.UseAuthentication();    
 
             app.UseAuthorization();
 
