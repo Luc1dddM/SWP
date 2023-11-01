@@ -54,15 +54,17 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             string cSearchText = _contx.HttpContext.Session.GetString("cSText");
             searchText = JsonConvert.DeserializeObject<string>(cSearchText);
 
-            ViewBag.ListComponetRaw = _partService.GetAllPartFilterRaw(pageNumber, myList, startPrice, endPrice, searchText);
             ViewBag.CurrentPage = pageNumber;
-            if(myList != null && startPrice != null && endPrice != null)
+            if(myList.Count != 0 || startPrice != null || endPrice != null)
             {
                 partList = _partService.GetAllPartFilter(pageNumber, myList, startPrice, endPrice, searchText);
+                ViewBag.ListComponetRaw = _partService.GetAllPartFilterRaw(pageNumber, myList, startPrice, endPrice, searchText);
+
             }
             else
             {
                 partList = _partService.GetAllPart(pageNumber,searchText);
+                ViewBag.ListComponetRaw = _partService.GetAllPartRaw(pageNumber, searchText);
             }
 
             return View(partList);
