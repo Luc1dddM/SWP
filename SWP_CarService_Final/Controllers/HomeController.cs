@@ -105,7 +105,7 @@ namespace SWP_CarService_Final.Controllers
                     user_name = Username,
                     password = Password
                 };
-            _userService.ResetCustomerPassword(Username, Password);
+     /*       _userService.ResetCustomerPassword(Username, Password);*/
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
             return Redirect("login");
