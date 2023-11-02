@@ -30,7 +30,7 @@
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
                 </div>
-                <div class="pl-5 pr-5 pt-2>
+                <div class="pl-5 pr-5 pt-2">
                     <h3>Edit Service</h3>
                 </div>
                 <div>
@@ -38,20 +38,20 @@
                 </div>
             </div>
             <div class="p-4 pt-0 pb-0">
-                <form asp-action="EditService" enctype="multipart/form-data" method="post">
+                <form id="editService" asp-action="EditService" enctype="multipart/form-data" method="post">
                     <input type="hidden" value="@task.taskID" name="ServiceId" />
                     <div class="form-group">
                         <label>Service name</label>
-                        <input class="form-control" type="text" value="@task.taskName.Trim()" name="ServiceName" />
+                        <input id="ServiceName" class="form-control" type="text" value="@task.taskName.Trim()" name="ServiceName" />
                     </div>
                     <div class="form-group">
                         <label>Price</label>
-                        <input class="form-control" type="text" value="@task.price" name="Price" />
+                        <input id="Price" class="form-control" type="number" value="@task.price" name="Price" />
                     </div>
 
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea class="form-control" rows="5" cols="38" name="description">@task.Description.Trim()</textarea>
+                        <textarea class="form-control" rows="5" cols="38" id="description" name="description">@task.Description.Trim()</textarea>
                     </div>
                     <div class="mb-3">
                         <div>
@@ -81,7 +81,7 @@
                         }
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">
+                        <button onclick="submitForm()" type="submit" class="btn btn-primary">
                             Submit
                         </button>
                     </div>
@@ -101,6 +101,39 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+    <script>
+        function submitForm() {
+            let servicename = document.getElementById("ServiceName").value;
+            let price = document.getElementById("Price").value;
+            let des = document.getElementById("description").value;
+
+            if (servicename === '' || price === '' || des === '') {
+                alert("Please fill in all fields");
+            }
+            else {
+                let text = "Do you want to submit this form?";
+                if (confirm(text)) {
+                } else {
+                    alert("You canceled!");
+                }
+            }
+        }
+    </script>
+    <div>
+        <style>
+            label.error {
+                color: red;
+                width: 100%;
+                text-align: left;
+                display: block;
+                padding-top: 5px;
+            }
+        </style>
+    </div>
+
+    <script src="~/lib/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/lib/jquery/jquery.validate.min.js"></script>
+    <script src="~/js/validateForm.js"></script>
 </body>
 
 

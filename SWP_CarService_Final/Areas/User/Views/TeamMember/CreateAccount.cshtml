@@ -1,4 +1,5 @@
-﻿@using SWP_CarService_Final.Services;
+﻿@using SWP_CarService_Final.Areas.User.Models;
+@using SWP_CarService_Final.Services;
 @{
     ViewData["Title"] = "CreateAccount";
     Layout = null;
@@ -16,15 +17,15 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="~/css/styleform.css" />
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  
+
 </head>
 
 <body>
     <div class="container">
-        <div class="p-3 mb-2 bg-white text-dark rounded" >
+        <div class="p-3 mb-2 bg-white text-dark rounded">
             <div class="header-form p-2 d-flex justify-content-between">
                 <div>
                     <a href="ListOfTeamMembers" class="back-link text-reset">
@@ -39,11 +40,11 @@
                 </div>
             </div>
             <div class="p-4 pb-0 row">
-                <form class="row" asp-action="CreateAccount" method="post">
-                   <div class="col-md-6">
+                <form id="createUserAcccount" class="row" asp-action="CreateAccount" method="post">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="@TempData["UsernameExist"]">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="@TempData["UserExist"]">
                             @if (TempData["ErrorMsg"] != null)
                             {
                                 <div class="text-danger" role="alert" id="errorMsg">
@@ -53,47 +54,52 @@
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="text" class="form-control" id="password" name="password" placeholder="Password">
+                            <input type="text" class="form-control" id="password" name="password" placeholder="Password" value="@(((User)TempData["InputValues"])?.password)">
                         </div>
                         <div class="form-group">
                             <label for="fullname">Full Name</label>
-                            <input type="text" class="form-control" id="" name="fullname" placeholder="Enter your Full Name">
+                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter your Full Name" value="@(((User)TempData["InputValues"])?.User_fullname)">
                         </div>
                         <div class="form-group">
                             <label for="phone number">Phone Number</label>
-                            <input type="text" class="form-control" id="" name="phonenumber" placeholder="Enter Phone Number">
+                            <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="Enter Phone Number" value="@(((User)TempData["InputValues"])?.phone_number)">
                         </div>
-                   </div>
-                    <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email">
                     </div>
-                    
-                    <div class="mb-3">
-                        <div>
-                            <label>Status Account</label>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" value="@(((User)TempData["InputValues"])?.email)">
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="status" id="choice1" value="active" checked>
-                            <label class="form-check-label" for="choice1">Active</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="status" id="choice2" value="inactive">
-                            <label class="form-check-label" for="choice2">In-active</label>
-                        </div>
+
+                        <div class="mb-3">
+                            <div>
+                                <label>Status Account</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="choice1" value="active" @(TempData["InputValues"] != null && ((User)TempData["InputValues"]).account_status ? "checked" : "")>
+                                <label class="form-check-label" for="choice1">Active</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="choice2" value="inactive" @(TempData["InputValues"] != null && !((User)TempData["InputValues"]).account_status ? "checked" : "")>
+                                <label class="form-check-label" for="choice2">In-active</label>
+                            </div>
                             <div class="pt-3"><label>Role Name</label></div>
                             <select name="roleId">
                                 @foreach (var role in @leadermemberrole.getLeaderAndMemberRoleId())
                                 {
-                                    <option value="@role.role_id">@role.role_name</option>
+                                    string selected = "";
+                                    if (TempData["InputRoleId"] != null && role.role_id == TempData["InputRoleId"].ToString())
+                                    {
+                                        selected = "selected";
+                                    }
+                                    <option value="@role.role_id" @selected>@role.role_name</option>
                                 }
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="pt-3 col-md-12 d-flex justify-content-center">
-                        <button onclick="submitform()" type="submit" class="btn btn-primary">
+                        <button onclick="submitForm()" type="submit" class="btn btn-primary">
                             Submit
                         </button>
                     </div>
@@ -102,23 +108,7 @@
             </div>
         </div>
     </div>
-    <script>
-        function submitform() {
-            let text = "Do you want to submit this form?";
-            if (confirm(text)) {
-                alert("Submitted successfully");
-            } else {
-                alert("Add canceled!");
-            }
-        }
-        $(document).ready(function () {
-            $("#username").on("input", function () {
-                $("#errorMsg").fadeOut(300, function () {
-                    $(this).remove();
-                });
-            });
-        });
-    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -127,6 +117,50 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+    <script>
+        function submitForm() {
+            let username = document.getElementById("username").value;
+            let fullname = document.getElementById("fullname").value;
+            let password = document.getElementById("password").value;
+            let email = document.getElementById("email").value;
+            let phonenumber = document.getElementById("phonenumber").value;
+
+            if (username === '' || fullname === '' || password === '' || email === '' || phonenumber === '') {
+                alert("Please fill in all fields");
+            } else {
+                let text = "Do you want to submit this form?";
+                if (confirm(text)) {
+                } else {
+                    alert("You canceled!");
+                }
+            }
+        }
+        var usernameInput = document.getElementById("username");
+        var errorMsg = document.getElementById("errorMsg");
+
+        usernameInput.addEventListener("input", function () {
+            if (errorMsg.style.display !== "none") {
+                errorMsg.style.display = "none";
+            }
+        });
+
+    </script>
+
+    <div>
+        <style>
+            label.error {
+                color: red;
+                width: 100%;
+                text-align: left;
+                display: block;
+                padding-top: 5px;
+            }
+        </style>
+    </div>
+
+    <script src="~/lib/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/lib/jquery/jquery.validate.min.js"></script>
+    <script src="~/js/validateForm.js"></script>
 </body>
 
 </html>

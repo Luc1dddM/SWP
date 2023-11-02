@@ -49,15 +49,18 @@ namespace Areas
                     phone_number = phonenumber,
                     account_status = status == "active" ? true : false,
                     created = DateTime.Now,
-                };  
+                };
                 User existingUser = _userAccount.getUserByUserName(username);
                 if (existingUser != null)
                 {
                     TempData["ErrorMsg"] = "Username already exists";
-                    TempData["UsernameExist"] = existingUser.UserName;
-                    return Redirect("CreateAccount");
+                    TempData["UserExist"] = existingUser.UserName;
+                    TempData["InputValues"] = user; // Save input values in TempData
+                    TempData["InputRoleId"] = roleId;
+                    return View();
                 }
-                    _userAccount.createAccount(user, roleId);
+                _userAccount.createAccount(user, roleId);
+
             }
             catch (Exception ex)
             {
