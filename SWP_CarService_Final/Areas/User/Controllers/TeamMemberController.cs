@@ -100,8 +100,17 @@ namespace Areas
         [HttpPost]
         public IActionResult AddMember(string teamId, List<string> username)
         {
-            _teamMemberService.AddTeamMember(teamId, username);
-            return Redirect("/user/team/ViewAllTeam");
+            var leader = _teamMemberService.GetLeaderExist(teamId);
+            if (leader != null && leader.role_name.Equals("leader"))
+            {
+                ViewBag.msg = "This Team Already Has A Leader";
+            }
+            else
+            {
+                _teamMemberService.AddTeamMember(teamId, username);
+                return Redirect("/user/team/ViewAllTeam");
+            }
+            return View();
         }
 
 

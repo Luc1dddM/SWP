@@ -19,8 +19,8 @@ namespace SWP_CarService_Final.Services
                     {
                         var team = new Team()
                         {
-                            team_id = reader.GetString(0),
-                            team_name = reader.GetString(1),
+                            team_id = reader.GetString(0).Trim(),
+                            team_name = reader.GetString(1).Trim(),
                             created = reader.GetDateTime(2)
                         };
                         teams.Add(team);
@@ -40,15 +40,15 @@ namespace SWP_CarService_Final.Services
         {
             Team team = null;
             connection.Open();
-            SqlCommand command = new SqlCommand("SELECT top 1 *  FROM [SWP].[dbo].[Team] order by team_id desc", connection);
+            SqlCommand command = new SqlCommand("SELECT top 1 *  FROM [Team] order by team_id desc", connection);
             using (SqlDataReader reader = command.ExecuteReader())
             {
                 if (reader.Read())
                 {
                     team = new Team()
                     {
-                        team_id = reader.GetString(0),
-                        team_name = reader.GetString(1),
+                        team_id = reader.GetString(0).Trim(),
+                        team_name = reader.GetString(1).Trim(),
                         created = reader.GetDateTime(2),
                     };
                 }
@@ -64,8 +64,8 @@ namespace SWP_CarService_Final.Services
                 connection.Open();
                 SqlCommand command = new SqlCommand("insert into [Team] ([Team].[team_id], [Team].[team_name], [Team].[created])" +
                                                                    "values (@team_id, @team_name, @created)", connection);
-                command.Parameters.AddWithValue("team_id", id);
-                command.Parameters.AddWithValue("team_name", team.team_name);
+                command.Parameters.AddWithValue("team_id", id.Trim());
+                command.Parameters.AddWithValue("team_name", team.team_name.Trim());
                 command.Parameters.AddWithValue("created", DateTime.Now);
 
                 command.ExecuteNonQuery();
@@ -84,15 +84,15 @@ namespace SWP_CarService_Final.Services
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand("select * from [Team] where [Team].[team_id] = @team_Id", connection);
-                command.Parameters.AddWithValue("team_Id", teamID);
+                command.Parameters.AddWithValue("team_Id", teamID.Trim());
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         team = new Team()
                         {
-                            team_id = reader.GetString(0),
-                            team_name = reader.GetString(1),
+                            team_id = reader.GetString(0).Trim(),
+                            team_name = reader.GetString(1).Trim(),
                             created = reader.GetDateTime(2),
                         };
                     }
@@ -112,7 +112,7 @@ namespace SWP_CarService_Final.Services
                 {
                     connection.Open();
                     SqlCommand command = new SqlCommand("delete from [Team] where [Team].[team_name] = @team_name", connection);
-                    command.Parameters.AddWithValue("team_name", team.team_name);
+                    command.Parameters.AddWithValue("team_name", team.team_name.Trim());
                     command.ExecuteNonQuery();
                 }
                 else
@@ -138,8 +138,8 @@ namespace SWP_CarService_Final.Services
                     SqlCommand command = new SqlCommand("update [Team]" +
                                                         "set [team_name] = @team_name " +
                                                         "where [team_id] = @team_id", connection);
-                    command.Parameters.AddWithValue("team_id", team.team_id);
-                    command.Parameters.AddWithValue("team_name", team.team_name);
+                    command.Parameters.AddWithValue("team_id", team.team_id.Trim());
+                    command.Parameters.AddWithValue("team_name", team.team_name.Trim());
                     command.Parameters.AddWithValue("created", DateTime.Now);
                     command.ExecuteNonQuery();
                 }

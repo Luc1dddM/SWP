@@ -48,7 +48,8 @@
                 </div>
             </div>
             <div class="p-4">
-                <form method="post" action="AddMember">
+                <h3>@ViewBag.msg</h3>
+                <form method="post" action="AddMember" @* onsubmit="return submitAddTeam() *@">
                     <div class="form-group">
                         <input type="hidden" name="teamId" value="@ViewBag.teamId">
                         <label for="exampleFormControlSelect2">Member Not In Team</label>
@@ -60,21 +61,23 @@
                             }
                         </select>
                     </div>
-                    <div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary" onclick="submitAddTeam()">Submit</button></div>
+                    <div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary" @* onclick="submitAddTeam() *@">Submit</button></div>
                 </form>
             </div>
         </div>
     </div>
-    <script>
+    @* <script>
         function submitAddTeam() {
             let text = "Do you want to add this member?";
             if (confirm(text)) {
                 alert("Submitted successfully");
+                return true;
             } else {
                 alert("Add canceled!");
+                return false;
             }
         }
-    </script>
+    </script> *@
 </body>
 
 </html>

@@ -88,9 +88,13 @@
                         <div><label for="timeArrived">Time Arrived</label></div>
                         <input name="timeArrived" type="datetime-local" id="timeArrived">
                     </div>
-                    @if (ViewData.ModelState.ContainsKey("timeArrived") && ViewData.ModelState["timeArrived"].Errors.Count > 0)
+                    @if (ViewData.ModelState.ContainsKey("timeArrived") && ViewData.ModelState["timeArrived"].Errors.Count > 1)
                     {
                         <span class="text-danger">@ViewData.ModelState["timeArrived"].Errors[1].ErrorMessage</span>
+                    }
+                    else if (ViewData.ModelState.ContainsKey("timeArrived") && ViewData.ModelState["timeArrived"].Errors.Count > 0)
+                    {
+                        <span class="text-danger">@ViewData.ModelState["timeArrived"].Errors[0].ErrorMessage</span>
                     }
 
                     <div class="d-flex justify-content-center p-2">

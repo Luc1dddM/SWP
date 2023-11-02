@@ -33,7 +33,7 @@ namespace SWP_CarService_Final.Areas.User.Controllers
         {
             Team newTeam = new Team()
             {
-                team_name = teamName,
+                team_name = teamName.Trim(),
             };
             _teamService.CreateTeam(newTeam);
             return Redirect("ViewAllTeam");

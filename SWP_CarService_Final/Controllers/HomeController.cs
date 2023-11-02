@@ -89,7 +89,7 @@ namespace SWP_CarService_Final.Controllers
             return RedirectToAction("login");
         }
 
-        public IActionResult ResetPassword(string Username)
+        /*public IActionResult ResetPassword(string Username)
         {
             ViewBag.username = Username;
             return View();
@@ -109,7 +109,7 @@ namespace SWP_CarService_Final.Controllers
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
             return Redirect("login");
-        }
+        }*/
 
         public IActionResult Privacy()
         {
