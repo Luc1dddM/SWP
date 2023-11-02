@@ -29,23 +29,36 @@
 <body>
     <div class="container">
         <div class="p-3 mb-2 bg-white text-dark rounded">
-            <div class="pl-5 pr-5 pt-2 ">
-                <h3>Register New Account</h3>
+            <div class="header-form p-2 d-flex justify-content-between">
+                <div>
+                    <a href="login" class="back-link text-reset">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                </div>
+                <div class="pl-5 pr-5 pt-2">
+                    <h3>Register</h3>
+                </div>
+                <div>
+                    <input value="example" type="text" hidden>
+                </div>
             </div>
             <div class="p-4">
-                <form method="post" action="/Home/register">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" name="user_name" class="form-control" id="" placeholder="Username">
-                    </div>
-                    <div class="form-group">
-                        <label for="fullname">Full Name</label>
-                        <input type="text" name="fullName" class="form-control" id="" placeholder="Enter your Full Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control" id="" placeholder="Password">
-                    </div>
+                <form class="row" method="post" action="/Home/register">
+                   <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="user_name" class="form-control" id="" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" name="fullName" class="form-control" id="" placeholder="Enter your Full Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" class="form-control" id="" placeholder="Password">
+                        </div>
+                   </div>
+                    <div class="col-md-6">
                     <div class="form-group">
                         <label for="confirm password">Confirm Password</label>
                         <input type="password" name="password" class="form-control" id="" placeholder="Confirm Password">
@@ -58,8 +71,12 @@
                         <label for="phone number">Phone Number</label>
                         <input type="text" name="phone_number" class="form-control" id="" placeholder="Enter Phone Number">
                     </div>
-                    <div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary" onclick="submitRegister()">Submit</button></div>
-
+                    </div>
+                    <div class="pt-3 col-md-12 d-flex justify-content-center">
+                        <button onclick="submitRegister()" type="submit" class="btn btn-primary">
+                            Submit
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

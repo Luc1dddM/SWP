@@ -13,9 +13,9 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("SELECT [User].*, [Role].role_name FROM [User], " +
-                    "User_role,[Role] WHERE [User].UserName = User_role.userName AND User_role.role_id = [Role].role_id" +
-                    " Order by [User].created desc", connection);
+                SqlCommand cmd = new SqlCommand("SELECT [User].*, [Role].role_name FROM [User], User_role, " +
+                    "[Role] WHERE [User].UserName = User_role.userName AND User_role.role_id = [Role].role_id AND " +
+                    "[Role].role_name IN ('leader', 'member') ORDER BY [User].created DESC", connection);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -69,7 +69,10 @@ namespace SWP_CarService_Final.Services
                     }
                 }
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex) 
+            { 
+                throw new Exception(ex.Message); 
+            }
             finally
             {
                 connection.Close();
@@ -154,6 +157,11 @@ namespace SWP_CarService_Final.Services
                     command.ExecuteNonQuery();
                     setUserRoleByUsername(user.UserName, roleId);
                 }
+                else
+                {
+                    throw new Exception("Username already exists.");
+                }
+
             }
             catch (Exception ex)
             {
