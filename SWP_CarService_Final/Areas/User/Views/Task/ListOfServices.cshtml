@@ -19,9 +19,9 @@
         <div>
             <h3>Services</h3>
         </div>
-        <div class="add-service-button">
-            <a href="AddService">Add Services</a>
-        </div>
+        <a href="AddService">
+            <button type="button" class="btn btn-primary">Add Services</button>
+        </a>
     </div>
     <div class="table-services">
         <table style="width: 100%;">
@@ -56,24 +56,14 @@
                             </div>
                         }
                     </td>
-                    <td>
-                        <div class="action-button">
-                            <div class="edit-button">
-                                <a href="EditService?task_id=@task.taskID">Edit</a>
-                            </div>
-                        </div>
+                    <td class="d-flex justify-content-center align-items-center">
+                        <a class="mr-2" href="EditService?task_id=@task.taskID"><button type="button" class="btn btn-warning">Edit</button></a>
                     </td>
                 </tr>
             }
         </table>
     </div>
-    <div class="delete-message" style="display: none;">
-        <span class="close-icon">&times;</span>
-        <p>Do you want to delete this service?</p>
-        <div class="btn-container">
-            <button class="confirm-button">Yes</button>
-            <button class="cancel-button">No</button>
-        </div>
-    </div>
+</div>
+
 
 

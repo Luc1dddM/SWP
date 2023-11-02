@@ -35,7 +35,7 @@
 <body>
     <div class="container">
         <div class="p-3 mb-2 bg-white text-dark rounded">
-            <div class="header-form">
+            <div class="header-form p-2 d-flex justify-content-between">
                 <div>
                     <a href="ListOfTeamMembers" class="back-link text-reset">
                         <i class="fa-solid fa-chevron-left"></i>
@@ -44,66 +44,77 @@
                 <div class="pl-5 pr-5 pt-2">
                     <h3>Edit Member Account</h3>
                 </div>
+                <div>
+                    <input value="example" type="text" hidden>
+                </div>
             </div>
-            <div class="p-4">
-                <form asp-action="EditAccount" method="post">
-                    <div class="form-group">
-                        <input type="hidden" class="form-control" id="username" name="username" placeholder="Username" value="@user.UserName">
-                    </div>
-                    <div class="form-group">
-                        <label for="fullname">Full Name</label>
-                        <input type="text" class="form-control" id="" name="fullname" placeholder="Enter your Full Name" value="@user.User_fullname">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone number">Phone Number</label>
-                        <input type="text" class="form-control" id="" name="phonenumber" placeholder="Enter Phone Number" value="@user.phone_number">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" value="@user.email">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="text" class="form-control" id="password" name="password" placeholder="Password" value="@user.password">
-                    </div>
-                    <div class="mb-3">
-                        <div>
-                            <label for="password">Status Account</label>
+            <div class="p-4 pb-0 row">
+                <form class="row" asp-action="EditAccount" method="post">
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input readonly class="form-control" id="username" name="username" placeholder="Username" value="@user.UserName">
                         </div>
-                        @if (user.account_status)
-                        {
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="choice1" value="active" checked>
-                                <label class="form-check-label" for="choice1">Active</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="choice2" value="inactive">
-                                <label class="form-check-label" for="choice2">In-active</label>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="choice1" value="active">
-                                <label class="form-check-label" for="choice1">Active</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="choice2" value="inactive" checked>
-                                <label class="form-check-label" for="choice2">In-active</label>
-                            </div>
-
-                        }
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="text" class="form-control" id="password" name="password" placeholder="Password" value="@user.password">
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" class="form-control" id="" name="fullname" placeholder="Enter your Full Name" value="@user.User_fullname">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone number">Phone Number</label>
+                            <input type="text" class="form-control" id="" name="phonenumber" placeholder="Enter Phone Number" value="@user.phone_number">
+                        </div>
                     </div>
-                    <div><label>Role Name</label></div>
+                    
+                   <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" value="@user.email">
+                        </div>
 
-                    <select name="roleId">
-                        @foreach (var role in @leadermemberrole.getLeaderAndMemberRoleId())
-                        {
-                            <option value="@role.role_id" @(role.role_name == user.role_name ? "selected" : "")>@user.role_name</option>
-                        }
-                    </select>
+                        <div class="mb-3">
+                            <div>
+                                <label>Status Account</label>
+                            </div>
+                            @if (user.account_status)
+                            {
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status" id="choice1" value="active" checked>
+                                    <label class="form-check-label" for="choice1">Active</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status" id="choice2" value="inactive">
+                                    <label class="form-check-label" for="choice2">In-active</label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status" id="choice1" value="active">
+                                    <label class="form-check-label" for="choice1">Active</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status" id="choice2" value="inactive" checked>
+                                    <label class="form-check-label" for="choice2">In-active</label>
+                                </div>
 
-                    <div class="d-flex justify-content-center">
+                            }
+                        </div>
+                        <div><label>Role Name</label></div>
+
+                        <select name="roleId">
+                            @foreach (var role in @leadermemberrole.getLeaderAndMemberRoleId())
+                            {
+                                <option value="@role.role_id" @(role.role_name == user.role_name ? "selected" : "")>@role.role_name</option>
+                            }
+                        </select>
+                   </div>
+
+                    <div class="pt-3 col-md-12 d-flex justify-content-center">
                         <button type="submit" onclick="submitEditUserAccount()" class="btn btn-primary">
                             Submit
                         </button>
