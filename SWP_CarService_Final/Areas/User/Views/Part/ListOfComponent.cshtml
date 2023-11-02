@@ -25,14 +25,20 @@
         <div>
             <h3>Components</h3>
         </div>
-        <div class="search-container">
-            <form action="ListOfComponent" method="get">
+
+
+        <form action="ListOfComponent" method="get">
+            <div class="input-group">
                 <input name="pageNumber" value="1" type="hidden" class="icheck">
                 <input name="onChange" value="true" type="hidden" class="icheck">
-                <input type="text" placeholder="Search.." name="SearchText">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
+                <input type="text" class="form-control" placeholder="Search" name="SearchText">
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+
+
         <a href="AddComponent"><button type="button" class="btn btn-primary">Add New Component</button></a>
         <!-- Trigger the modal with a button -->
         <!-- Modal -->
@@ -161,6 +167,8 @@
                                     <h3 class="h5 mb-1">@part.part_name</h3>
                                     <span class="d-block text-muted font-size-1 mb-1">@part.price VNĐ</span>
                                     <span class="d-block text-muted font-size-1 mb-3">Quantity: @part.quantity</span>
+                                    <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
+                                       href="EditComponent?part_id=@part.part_id">Edit</a>
                                     @if (contx.HttpContext.Session.GetString("role") == "member")
                                     {
                                         <button onclick="requestItem('@part.part_id.Trim()')" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" id="submit">
@@ -170,7 +178,7 @@
                                     else
                                     {
                                         <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
-                                           href="#">Edit</a>
+                                           href="EditComponent?part_id=@part.part_id">Edit</a>
                                     }
 
                                 </div>
