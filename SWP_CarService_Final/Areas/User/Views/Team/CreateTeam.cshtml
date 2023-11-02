@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="p-4">
-                <form method="post" asp-action="CreateTeam">
+                <form id="createTeam" method="post" asp-action="CreateTeam">
                     <div class="form-group">
                         <label for="teamname">Team Name</label>
                         <input name="teamName" type="text" class="form-control" id="" placeholder="Enter Team Name">
@@ -53,17 +53,24 @@
             </div>
         </div>
     </div>
-    @* <script>
-        function submitAddTeam() {
-            let text = "Do you want to submit this form?";
-            if (confirm(text) == true) {
-                alert("Submit successfully");
-
-            } else {
-                alert("Canceled!");
+   
+    <div>
+        <style>
+            label.error {
+                color: red;
+                width: 100%;
+                text-align: left;
+                padding-left: 4px;
+                display: block;
+                padding-top: 5px;
             }
-        }
-    </script> *@
+        </style>
+    </div>
+
+    <script src="~/lib/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/lib/jquery/jquery.validate.min.js"></script>
+    <script src="~/js/validateForm.js"></script>
+
 </body>
 
 </html>

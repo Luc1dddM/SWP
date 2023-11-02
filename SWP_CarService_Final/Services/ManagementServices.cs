@@ -16,7 +16,7 @@ namespace SWP_CarService_Final.Services
                 {
                     if (reader.Read())
                     {
-                        result = reader.GetDecimal(0);
+                        result = (reader.IsDBNull(0))?0:reader.GetDecimal(0);
                     }
                 }
             }
@@ -35,7 +35,7 @@ namespace SWP_CarService_Final.Services
                 {
                     if (reader.Read())
                     {
-                        result = reader.GetInt32(0);
+                        result = (reader.IsDBNull(0)) ? 0 : reader.GetInt32(0);
                     }
                 }
             }
@@ -54,7 +54,7 @@ namespace SWP_CarService_Final.Services
                 {
                     if (reader.Read())
                     {
-                        result = reader.GetInt32(0);
+                        result = (reader.IsDBNull(0)) ? 0 : reader.GetInt32(0);
                     }
                 }
             }
@@ -73,7 +73,7 @@ namespace SWP_CarService_Final.Services
                 {
                     if (reader.Read())
                     {
-                        result = reader.GetInt32(0);
+                        result = (reader.IsDBNull(0)) ? 0 : reader.GetInt32(0);
                     }
                 }
             }
@@ -95,7 +95,7 @@ namespace SWP_CarService_Final.Services
                     {
                         if (reader.Read())
                         {
-                            decimal result = reader.GetDecimal(0);
+                            decimal result = (reader.IsDBNull(0)) ? 0 : reader.GetDecimal(0);
                             results.Add(result);
                         }
                     }
@@ -122,7 +122,7 @@ namespace SWP_CarService_Final.Services
                     {
                         if (reader.Read())
                         {
-                            decimal result = reader.GetDecimal(0);
+                            decimal result = (reader.IsDBNull(0)) ? 0: reader.GetDecimal(0);
                             results.Add(result);
                         }
                     }

@@ -1,8 +1,9 @@
-﻿@{
+﻿@using SWP_CarService_Final.Models;
+@{
     ViewData["Title"] = "view";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewData["direction"] = "Appointment List";
-
+    @model List<Appointment>
 }
 
 <nav>
@@ -13,7 +14,7 @@
         <span><a href="./dashboard.html">Dashboard</a><i class="fa-solid fa-angle-right"></i>Appointment List</span>
     </div>
 </nav>
-<div class="list-appointment__container">
+<div class="list-appointment__container main-container content">
     <div class="row list-appointment__header">
         <h2 class="header__title">Appointment List</h2>
     </div>
@@ -22,18 +23,18 @@
         <h4 class="col-2 list-appointment__title">ID</h4>
         <h4 class="col-2 list-appointment__title">Description</h4>
         <h4 class="col-2 list-appointment__title">Time Arrived</h4>
-        <h4 class="col-2 list-appointment__title">Created</h4>
+        <h4 class="col-2 list-appointment__title">Customer</h4>
         <h4 class="col-2 list-appointment__title">Status</h4>
         <h4 class="col-2 list-appointment__title">Action</h4>
     </div>
     <div class="list-appointment__item--container">
-        @foreach (var @appointment in @Model)
+        @foreach (var appointment in Model)
         {
             <div class="row list-appointment__item">
                 <p class="col-2 list-appointment__item--id">@appointment.appointmentID</p>
                 <p class="col-2 list-appointment__item--description">@appointment.description</p>
                 <p class="col-2 list-appointment__item--time-arrived">@appointment.timeArrived</p>
-                <p class="col-2 list-appointment__item--created">@appointment.createdAt.ToString("dd/MM/yyyy")</p>
+                <p class="col-2 list-appointment__item--created">@appointment.customer.fullName</p>
                 <p class="col-2 list-appointment__item--customer">@appointment.status</p>
 
                 @if (@appointment.WorkOrderID.Trim().Equals(""))
@@ -55,7 +56,6 @@
                 @foreach (var @appointmentDetail in @appointment.details)
                 {
                     <div class="appointment-detail__item">
-                        <img src="~/img/@appointmentDetail.task.img" class="appointment-detail__item--img">
                         <p class="appointment-detail__item--name">@appointmentDetail.task.taskName</p>
                     </div>
                 }

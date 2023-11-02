@@ -76,7 +76,16 @@ namespace Areas
             TaskDetail newTaskDetail = _taskDetailService.getTaskDetailByID(wodID);
             newTaskDetail.status = Response;
             _taskDetailService.updateTaskDetail(newTaskDetail);
+            _orderService.updateTotalWordOrder(newTaskDetail.WorkOrder.WorkOrderID);
             return Redirect("/user/TaskDetail/view");
+        }
+
+        public IActionResult delete(string taskId, string woid)
+        {
+            _taskDetailService.DeleteTaskDetail(taskId);
+            _orderService.updateTotalWordOrder(woid);
+            return Redirect($"/user/OrderDetail/view?WorkOrderID={woid}");
+
         }
     }
 }

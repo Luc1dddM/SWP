@@ -225,7 +225,7 @@
 /*End CSS View Work Order Detail_Nguyen Son Lam*/
 
 
-/*CSS View Work Order Detail for team member _ Nguyen Son Lam*/
+/*CSS View request complete task + using component _ Nguyen Son Lam*/
 
 .table-Request_Complete_Task th {
     font-size: 20px;
@@ -247,14 +247,14 @@
 
     .table-Request_Complete_Task .inactive-status {
         background-color: rgb(216, 27, 27);
-        padding: 8px;
+        padding: 6px;
         border-radius: 4px;
         color: white;
     }
 
     .table-Request_Complete_Task .active-status {
         background-color: rgb(0, 145, 12);
-        padding: 8px;
+        padding: 6px;
         border-radius: 4px;
         color: white;
     }
@@ -263,16 +263,24 @@
     width: 50%;
 }
 
-/*End CSS View Work Order Detail for team member _ Nguyen Son Lam*/
-
-
-/*CSS Garagemanagement+Service_Hoang Vu Thai*/
-.add-service-button {
-    margin-left: 18px;
-    padding: 8px 10px;
-    background-color: #008cff;
-    border-radius: 4px;
+.table-Request_Complete_Task__action--col {
+    justify-content: space-evenly;
+    display: flex;
+    height: 66px;
+    align-items: center;
 }
+
+.table-Request_Complete_Task__action--col a button{
+    width: 100%;
+}
+    /*End CSS View request complete task + using component _ Nguyen Son Lam*/
+    /*CSS Garagemanagement+Service_Hoang Vu Thai*/
+    .add-service-button {
+        margin-left: 18px;
+        padding: 8px 10px;
+        background-color: #008cff;
+        border-radius: 4px;
+    }
 
     .add-service-button a {
         color: white;

@@ -11,7 +11,7 @@ namespace SWP_CarService_Final.Areas.User.Models
         public string password { get; set;}
         public Boolean account_status { get; set; }
         public DateTime created { get; set; }
-        public string role_name { get; set; }
+        public string? role_name { get; set; }
 
         
     }

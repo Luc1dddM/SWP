@@ -28,8 +28,6 @@ namespace SWP_CarService_Final.Controllers
         {
 
             TaskService taskService = new TaskService();
-            Console.WriteLine(taskService.getAllTasks()[0].taskID);
-
             return View();
         }
 
@@ -42,6 +40,7 @@ namespace SWP_CarService_Final.Controllers
             }
 
             if (string.IsNullOrEmpty(vehicleType))
+            if (string.IsNullOrEmpty(vehicleType))
             {
                 ModelState.AddModelError("vehicleType", "The Vehicle Type field is required.");
             }
@@ -51,11 +50,10 @@ namespace SWP_CarService_Final.Controllers
                 ModelState.AddModelError("description", "The Description field is required.");
             }
 
-            if (timeArrived == DateTime.MinValue || timeArrived < DateTime.Today)
+            if (timeArrived < DateTime.Today)
             {
                 ModelState.AddModelError("timeArrived", "Please select a valid date and make sure it is not in the past.");
             }
-            Console.WriteLine(timeArrived);
 
             if (!ModelState.IsValid)
             {
