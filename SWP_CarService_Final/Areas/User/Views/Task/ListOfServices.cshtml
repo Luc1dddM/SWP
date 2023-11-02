@@ -26,10 +26,9 @@
     <div class="table-services">
         <table style="width: 100%;">
             <tr>
-                <th style="width: 5%;">ID</th>
-                <th style="width: 15%;">Image</th>
-                <th style="width: 15%;">Name Services</th>
-                <th style="width: 10%;">Price</th>
+                <th style="width: 10%;">ID</th>
+                <th style="width: 20%;">Name Services</th>
+                <th style="width: 15%;">Price</th>
                 <th style="width: 30%;">Description</th>
                 <th style="width: 10%;">Status</th>
                 <th>Action</th>
@@ -38,7 +37,6 @@
             {
                 <tr>
                     <td>@task.taskID</td>
-                    <td><img src="~/img/@task.img" alt="Engine Repair"></td>
                     <td>@task.taskName</td>
                     <td>@task.price</td>
                     <td>
@@ -63,9 +61,6 @@
                             <div class="edit-button">
                                 <a href="EditService?task_id=@task.taskID">Edit</a>
                             </div>
-                            <div class="delete-button" onclick="cfDelete('@task.taskID')">
-                                <button>Delete</button>
-                            </div>
                         </div>
                     </td>
                 </tr>
@@ -81,11 +76,4 @@
         </div>
     </div>
 
-    <script type="text/javascript">
-        function cfDelete(key) {
-            if (confirm("Do you want to delete this service?")) {
-                window.location = "/user/task/Remove?task_id=" + key;
-            }
-        }
-    </script>
 

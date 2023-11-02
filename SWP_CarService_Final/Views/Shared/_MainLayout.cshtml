@@ -1,6 +1,20 @@
-﻿@{
-
+﻿@using Newtonsoft.Json;
+@using SWP_CarService_Final.Areas.User.Models;
+@{
     IHttpContextAccessor contx = new HttpContextAccessor();
+    string cUserString = contx.HttpContext.Session.GetString("cUser");
+    User cUser = null;
+    Customer cCustomer = null;
+
+    if(cUserString != null)
+    {
+        cUser = JsonConvert.DeserializeObject<User>(cUserString);
+    }
+    else
+    {
+        string cCustomerString = contx.HttpContext.Session.GetString("cCus");
+        cCustomer = JsonConvert.DeserializeObject<Customer>(cCustomerString);
+    }
 }
 
 <!DOCTYPE html>
@@ -28,7 +42,7 @@
                 <div class="avatar">
                     <img alt="" src="~/img/avatar.png" />
                 </div>
-                <div class="name">John Doe</div>
+                <div class="name">@if(cUser != null) @cUser.User_fullname else @cCustomer.fullName</div>
                 <div class="arrow-down" onclick="menuToggle();">
                     <a class="sub-btn-avatar"> <i class="fa-solid fa-angle-down dropup"></i></a>
                     <div class="menu-profile">
@@ -66,7 +80,7 @@
                     <img alt="" src="./img/logo.png" /><a href="#" class="px-2">Garage Nhà Làm</a><i class="fa-solid fa-xmark close-btn"></i>
                 </div>
 
-                <div class="item"><i class="fa-solid fa-gauge"></i><a href="./dashboard.html">Dashboard</a></div>
+                <div class="item"><i class="fa-solid fa-gauge"></i><a href="/user/GarageManagement/Index">Dashboard</a></div>
                 
                 @if (contx.HttpContext.Session.GetString("role") == "admin")
                 {
@@ -113,15 +127,19 @@
 
                     <div class="item"><i class="fa-solid fa-briefcase"></i><a href="/user/Order/view">Work Order</a></div>
 
-                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="/user/Order/view">Work Order</a></div>
+                    <div class="item"><i class="fa-solid fa-check"></i><a href="/user/TaskDetail/ViewListRequest">Request Complete</a></div>
 
-                    <div class="item"><i class="fa-solid fa-user"></i><a href="/user/TaskDetail/ViewListRequest">Request Complete</a></div>
-
+                    <div class="item"><i class="fa-solid fa-clipboard-check"></i><a href="/user/PartDetail/ViewListRequest">Request Use Part</a></div>
                 }
 
                 else if (contx.HttpContext.Session.GetString("role") == "member")
                 {
                     <div class="item"><i class="fa-solid fa-briefcase"></i><a href="/user/TaskDetail/view">Work Order</a></div>
+
+                    <div class="item"><i class="fa-solid fa-briefcase"></i><a href="/user/PartDetail/view">Part Request</a></div>
+
+
+                    <div class="item"><i class="fa-solid fa-wrench"></i><a href="/user/part/ListOfComponent?pageNumber=1&onChange=true">Components</a></div>
 
                     <div class="item"><i class="fa-solid fa-user"></i><a href="#">Team</a></div>
                 }

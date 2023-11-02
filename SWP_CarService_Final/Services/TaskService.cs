@@ -14,6 +14,7 @@ namespace SWP_CarService_Final.Services
     public class TaskService : DBContext
     {
 
+
         public List<Task> getAllTasks()
         {
             List<Task> tasks = new List<Task>();
@@ -31,8 +32,7 @@ namespace SWP_CarService_Final.Services
                             taskName = reader.GetString(1),
                             price = reader.GetDecimal(2),
                             active = reader.GetBoolean(3),
-                            img = (!reader.IsDBNull(4)) ? reader.GetString(4) : "",
-                            Description = (!reader.IsDBNull(5)) ? reader.GetString(5) : "",
+                            Description = reader.GetString(4)
                         };
                         tasks.Add(task);
                     }
@@ -47,13 +47,13 @@ namespace SWP_CarService_Final.Services
             Task task = null;
             try
             {
-                if(connection.State == System.Data.ConnectionState.Closed)
+                if (connection.State == System.Data.ConnectionState.Closed)
                 {
                     connection.Open();
                 }
                 SqlCommand cmd = new SqlCommand("Select * from Task where task_id = @id", connection);
                 cmd.Parameters.AddWithValue("id", id);
-                using(SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     if (reader.Read())
                     {
@@ -63,22 +63,22 @@ namespace SWP_CarService_Final.Services
                             taskName = reader.GetString(1),
                             price = reader.GetDecimal(2),
                             active = reader.GetBoolean(3),
-                            img = (!reader.IsDBNull(4)) ? reader.GetString(4) : "",
                         };
                     }
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
             return task;
         }
-    
+
 
         public Task GetTaskByID(string taskID)
         {
             Task task = null;
-        try
+            try
             {
                 if (connection.State == System.Data.ConnectionState.Closed)
                 {
@@ -97,8 +97,7 @@ namespace SWP_CarService_Final.Services
                             taskName = reader.GetString(1),
                             price = reader.GetDecimal(2),
                             active = reader.GetBoolean(3),
-                            img = (!reader.IsDBNull(4)) ? reader.GetString(4) : null,
-                            Description = (!reader.IsDBNull(5)) ? reader.GetString(5) : "",
+                            Description = reader.GetString(4)
                         };
                     }
                 }
@@ -113,60 +112,82 @@ namespace SWP_CarService_Final.Services
 
 
 
-        public void Remove(string taskId)
-        {
-            // Files to be deleted
-            string imgFile = "";
-
-            try
-            {
-
-                Task task = GetTaskByID(taskId);
-                connection.Open();
-
-                if (task != null)
+        /*        public void Remove(string taskId)
                 {
-                    if (task.img != null)
+                    // Files to be deleted
+                    string imgFile = "";
+
+                    try
                     {
-                        imgFile = task.img;
-                        // Check if file exists with its full path
-                        if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", imgFile)))
+
+                        Task task = GetTaskByID(taskId);
+                        connection.Open();
+
+                        if (task != null)
                         {
-                            // If file found, delete it
-                            File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", imgFile));
-                            string SQLDelete = "DELETE FROM [SWP].[dbo].[Task] WHERE task_id = @task_id";
-                            SqlCommand command = new SqlCommand(SQLDelete, connection);
-                            command.Parameters.AddWithValue("task_id", taskId);
-                            command.ExecuteNonQuery();
+                            if (task.img != null)
+                            {
+                                imgFile = task.img;
+                                // Check if file exists with its full path
+                                if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", imgFile)))
+                                {
+                                    // If file found, delete it
+                                    File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", imgFile));
+                                    string SQLDelete = "DELETE FROM [SWP].[dbo].[Task] WHERE task_id = @task_id";
+                                    SqlCommand command = new SqlCommand(SQLDelete, connection);
+                                    command.Parameters.AddWithValue("task_id", taskId);
+                                    command.ExecuteNonQuery();
+                                }
+                                else
+                                {
+                                    string SQLDelete = "DELETE FROM [SWP].[dbo].[Task] WHERE task_id = @task_id";
+                                    SqlCommand command = new SqlCommand(SQLDelete, connection);
+                                    command.Parameters.AddWithValue("task_id", taskId);
+                                    command.ExecuteNonQuery();
+                                }
+                            }
                         }
                         else
                         {
-                            string SQLDelete = "DELETE FROM [SWP].[dbo].[Task] WHERE task_id = @task_id";
-                            SqlCommand command = new SqlCommand(SQLDelete, connection);
-                            command.Parameters.AddWithValue("task_id", taskId);
-                            command.ExecuteNonQuery();
+                            throw new Exception("The service does not already exist.");
                         }
                     }
-                }
-                else
-                {
-                    throw new Exception("The service does not already exist.");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            finally { connection.Close(); }
-        }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
+                    finally { connection.Close(); }
+                }*/
 
         public int getNumberOfService()
         {
-            connection.Open();
-            SqlCommand command = new SqlCommand("select count(*) from Task", connection);
-            Int32 count = (Int32)command.ExecuteScalar();
-            connection.Close();
-            return count;
+            Task task = null;
+            try
+            {
+                connection.Open();
+                string SQLSelect = "SELECT top 1 * FROM Task ORDER BY CAST(SUBSTRING(task_id, PATINDEX('%[0-9]%', task_id), LEN(task_id)) AS INT) desc";
+                SqlCommand command = new SqlCommand(SQLSelect, connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        task = new Task()
+                        {
+                            taskID = reader.GetString(0),
+                            taskName = reader.GetString(1),
+                            price = reader.GetDecimal(2),
+                            active = reader.GetBoolean(3),
+                            Description = reader.GetString(4)
+                        };
+                    }
+                }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            finally
+            {
+                connection.Close();
+            }
+            return task == null ? 0 : int.Parse(task.taskID.Substring(4));
         }
 
         public void createService(Task ntask)
@@ -176,20 +197,6 @@ namespace SWP_CarService_Final.Services
             {
                 string id = "TASK" + (getNumberOfService() + 1);
                 connection.Open();
-                if(ntask.img != null)
-                {
-                    SqlCommand command = new SqlCommand("INSERT INTO[SWP].[dbo].[Task] ([task_id],[task_name],[task_price],[task_active],[image],[Description]) " +
-                                                        "values(@task_id,@task_name, @task_price, @task_active, @img,@description)", connection);
-                    command.Parameters.AddWithValue("task_id", id);
-                    command.Parameters.AddWithValue("task_name", ntask.taskName);
-                    command.Parameters.AddWithValue("task_price", ntask.price);
-                    command.Parameters.AddWithValue("task_active", ntask.active);
-                    command.Parameters.AddWithValue("img", ntask.img);
-                    command.Parameters.AddWithValue("description", ntask.Description);
-                    command.ExecuteNonQuery();
-                }
-                else
-                {
                     SqlCommand command = new SqlCommand("INSERT INTO[SWP].[dbo].[Task] ([task_id],[task_name],[task_price],[task_active],[Description]) " +
                                     "values(@task_id,@task_name, @task_price, @task_active,@description)", connection);
                     command.Parameters.AddWithValue("task_id", id);
@@ -198,9 +205,6 @@ namespace SWP_CarService_Final.Services
                     command.Parameters.AddWithValue("task_active", ntask.active);
                     command.Parameters.AddWithValue("description", ntask.Description);
                     command.ExecuteNonQuery();
-                }
-
-
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
             finally { connection.Close(); }
@@ -217,13 +221,12 @@ namespace SWP_CarService_Final.Services
                 {
                     SqlCommand command = new SqlCommand("UPDATE [SWP].[dbo].[Task] SET[task_name] = @task_name, " +
                                                         "[task_price] = @task_price, [task_active] = @task_active, " +
-                                                        "[image] = @img, [Description] = @description " +
+                                                        "[Description] = @description " +
                                                         "WHERE[task_id] = @task_id", connection);
                     command.Parameters.AddWithValue("task_id", ntask.taskID);
                     command.Parameters.AddWithValue("task_name", ntask.taskName);
                     command.Parameters.AddWithValue("task_price", ntask.price);
                     command.Parameters.AddWithValue("task_active", ntask.active);
-                    command.Parameters.AddWithValue("img", ntask.img);
                     command.Parameters.AddWithValue("description", ntask.Description);
                     command.ExecuteNonQuery();
 

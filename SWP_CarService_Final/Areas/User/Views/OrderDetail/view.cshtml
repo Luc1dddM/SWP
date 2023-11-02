@@ -6,7 +6,7 @@
 
 }
 
-<div class="work-order-detail">
+<div class="work-order-detail content main-container">
     <div class="work-order-detail__header">
         <h4>Work Order Detail</h4>
     </div>
@@ -28,16 +28,15 @@
                     <div class="row work-order-detail-task__item">
                         <div class="col-1 work-order-detail-task__item--ID">@WorkOrder.wod_id</div>
                         <div class="col-3 work-order-detail-task__item--service">
-                            <img src="./img/@WorkOrder.task.img" alt="">
                             <p>@WorkOrder.task.taskName</p>
                         </div>
                         <div class="col work-order-detail-task__item--quantity">@WorkOrder.quantity</div>
-                        <div class="col work-order-detail-task__item--amount">@string.Format("{0:C0}", @WorkOrder.price).Substring(1)</div>
+                        <div class="col work-order-detail-task__item--amount">@string.Format("{0:C0}", WorkOrder.price).Substring(1)</div>
                         <div class="col work-order-detail-task__item--status active"><span>@WorkOrder.status</span></div>
-                        <div class="col work-order-detail-task__item--member"><span>@WorkOrder.userName</span></div>
+                        <div class="col work-order-detail-task__item--member"><span>@WorkOrder.User.User_fullname</span></div>
                         <div class="col work-order-detail-task__item--Action">
-                            <a>Trash can</a>
-                            <a href="/user/TaskDetail/edit?wodID=@WorkOrder.wod_id">Edit</a>
+                            <a href="/user/TaskDetail/delete?taskId=@WorkOrder.wod_id.Trim()&woid=@Model.WorkOrderID.Trim()"><i class="fa-solid fa-trash-can"></i></a>
+                            <a style="color: white; text-decoration:none" href="/user/TaskDetail/edit?wodID=@WorkOrder.wod_id">Edit</a>
                         </div>
                     </div>
                 }
@@ -56,21 +55,23 @@
             </div>
 
             <div class="work-order-detail-component-item__container">
-                <div class="row work-order-detail-component__item">
-                    <div class="col-1 work-order-detail-Component__item--ID">01</div>
-                    <div class="col-3 work-order-detail-Component__item--service">
-                        <img src="" alt="">
-                        <p>Brake system repair</p>
+                @foreach(var component in Model.partDetails)
+                {
+                    <div class="row work-order-detail-component__item">
+                        <div class="col-1 work-order-detail-Component__item--ID">@component.ItemDetailId</div>
+                        <div class="col-3 work-order-detail-Component__item--service">
+                            <img src="~/img/@component.part.img" alt="">
+                            <p>@component.part.part_name</p>
+                        </div>
+                        <div class="col work-order-detail-component__item--quantity">@component.quantity</div>
+                        <div class="col work-order-detail-component__item--amount">@string.Format("{0:C0}", component.price).Substring(1)</div>
+                        <div class="col work-order-detail-component__item--null"></div>
+                        <div class="col work-order-detail-component__item--status">@component.user.User_fullname</div>
+                        <div class="col work-order-detail-component__item__item--Action">
+                            <a href="/user/PartDetail/delete?partDetailId=@component.ItemDetailId.Trim()&wodId=@Model.WorkOrderID.Trim()"><i class="fa-solid fa-trash-can"></i></a>
+                        </div>
                     </div>
-                    <div class="col work-order-detail-component__item--quantity">Quantity</div>
-                    <div class="col work-order-detail-component__item--amount">Amount</div>
-                    <div class="col work-order-detail-component__item--status"></div>
-                    <div class="col work-order-detail-component__item--status">Lam</div>
-                    <div class="col work-order-detail-component__item__item--Action">
-                        <a>Trash can</a>
-                        <a href="">Edit</a>
-                    </div>
-                </div>
+                }
             </div>
         </div>
 
