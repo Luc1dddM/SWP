@@ -163,16 +163,14 @@
                             <div class="card d-block">
                                 <img style="height: 230px;" class="card-img-top p-3" src="~/img/@part.img"
                                      alt="Image Description">
-                                <div class="card-footer text-center py-4">
+                                <div class="card-footer text-center py-4" style="height: 225px">
                                     <h3 class="h5 mb-1">@part.part_name</h3>
                                     <span class="d-block text-muted font-size-1 mb-1">@part.price VNĐ</span>
                                     <span class="d-block text-muted font-size-1 mb-3">Quantity: @part.quantity</span>
-                                    <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
-                                       href="EditComponent?part_id=@part.part_id">Edit</a>
                                     @if (contx.HttpContext.Session.GetString("role") == "member")
                                     {
                                         <button onclick="requestItem('@part.part_id.Trim()')" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" id="submit">
-                                            Submit
+                                            Request
                                         </button>
                                     }
                                     else

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using SWP_CarService_Final.Areas.User.Models;
 using SWP_CarService_Final.Models;
@@ -87,7 +88,7 @@ namespace Areas
             }
             partDetail.quantity = int.Parse(quantity);
             part.quantity = newQuantity;
-            _partService.editService(part);
+            _partService.editPart(part, null);
             _partDetailService.updatePartDetail(partDetail);
             return Redirect("/user/PartDetail/view");
         }
@@ -99,15 +100,24 @@ namespace Areas
             part.quantity -= newTaskDetail.quantity;
             newTaskDetail.status = Response;
             _partDetailService.updatePartDetail(newTaskDetail);
-            _partService.editService(part);
+            _partService.editPart(part, null);
             _orderService.updateTotalWordOrder(newTaskDetail.WorkOrderId);
             return Redirect("/user/PartDetail/viewListRequest");
         }
 
-        public IActionResult delete(string partDetailId, string wodId) {
+        public IActionResult delete(string partDetailId, string? wodId) {
+            PartDetail newTaskDetail = _partDetailService.getPartDetailById(partDetailId);
             _partDetailService.deletePartDetail(partDetailId);
-            _orderService.updateTotalWordOrder(wodId);
-            return Redirect($"/user/OrderDetail/view?WorkOrderID={wodId}");
+            _orderService.updateTotalWordOrder(newTaskDetail.WorkOrderId);
+            if (wodId != null)
+            {
+                return Redirect($"/user/OrderDetail/view?WorkOrderID={wodId}");
+            }
+            else
+            {
+                return Redirect("/user/PartDetail/view");
+            }
+            
         }
     }
 }
