@@ -8,12 +8,14 @@ namespace SWP_CarService_Final.Services
         private readonly TaskDetailService _taskDetailService;
         private readonly AppointmentService _appointmentService;
         private readonly PartDetailService  _partDetailService;
+        private readonly UserServices _userService;
         public OrderService()
         {
             TaskService taskService = new TaskService();
             _taskDetailService= new TaskDetailService();
             _appointmentService= new AppointmentService(taskService);
             _partDetailService = new PartDetailService();
+            _userService = new UserServices();
         }
         public int getNumberOfWorkOrder()
         {
@@ -44,7 +46,8 @@ namespace SWP_CarService_Final.Services
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
-                            taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),
+                            customer = _userService.getCustomerByUserName(reader.GetString(3)),
+                            /*taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),*/
                         });
                     }
                 }
@@ -79,7 +82,8 @@ namespace SWP_CarService_Final.Services
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
-                            taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),
+                            customer = _userService.getCustomerByUserName(reader.GetString(3)),
+                            /*taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),*/
                         });
                     }
                 }
@@ -110,9 +114,10 @@ namespace SWP_CarService_Final.Services
                             WorkOrderID = reader.GetString(0),
                             VehicleType = reader.GetString(1),
                             Total = reader.GetDecimal(2),
-                            CustomerName = reader.GetString(3),
+                            CustomerName = owner,
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
+                            customer = _userService.getCustomerByUserName(owner),
                         });
                     }
                 }

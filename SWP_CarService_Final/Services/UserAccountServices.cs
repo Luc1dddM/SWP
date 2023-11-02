@@ -33,9 +33,7 @@ namespace SWP_CarService_Final.Services
                         };
                         userAccounts.Add(user);
                     }
-
                 }
-
             }
             finally
             {

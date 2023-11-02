@@ -7,7 +7,12 @@ namespace SWP_CarService_Final.Services
 {
     public class TaskDetailService : DBContext
     {
+        private readonly UserServices _userServices;
 
+        public TaskDetailService()
+        {
+            _userServices = new UserServices();
+        }
         public string getTheLastID()
         {
             string result = null;
@@ -59,6 +64,7 @@ namespace SWP_CarService_Final.Services
                             createdAt = reader.GetDateTime(4),
                             updatedAt = reader.GetDateTime(5),
                             userName = reader.GetString(6),
+                            User = _userServices.getUserByUsername(reader.GetString(6)),
                             task = taskService.GetTaskByID(reader.GetString(7)),
                         };
                         result.Add(taskDetail);
@@ -247,6 +253,18 @@ namespace SWP_CarService_Final.Services
             }
             finally { connection.Close(); }
             return taskDetails;
+        }
+
+        public void DeleteTaskDetail(string taskId)
+        {
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("delete task_detail where wod_id = @id", connection);
+                cmd.Parameters.AddWithValue("id", taskId);
+                cmd.ExecuteNonQuery();
+            }catch(Exception ex) { throw new Exception(ex.Message); }
+            finally { connection.Close(); }
         }
     }
 }

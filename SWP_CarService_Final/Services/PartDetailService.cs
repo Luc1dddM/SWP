@@ -228,6 +228,7 @@ namespace SWP_CarService_Final.Services
         {
             List<PartDetail> partDetails = new List<PartDetail>();
             PartService partService = new PartService();
+            UserServices userSerivce = new UserServices();
             try
             {
                 if (connection.State == System.Data.ConnectionState.Closed)
@@ -250,6 +251,7 @@ namespace SWP_CarService_Final.Services
                             updated = reader.GetDateTime(5),
                             WorkOrderId = reader.GetString(6),
                             userName = reader.GetString(7),
+                            user = userSerivce.getUserByUsername(reader.GetString(7)),
                             partID = reader.GetString(8),
                             part = partService.GetPartByID(reader.GetString(8)),
                         };
@@ -259,6 +261,18 @@ namespace SWP_CarService_Final.Services
             }catch (Exception ex) { throw new Exception(ex.Message); }
             finally { connection.Close(); }
             return partDetails;
+        }
+
+        public void deletePartDetail(string id)
+        {
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("delete part_detail where item_detail_id = @id", connection);
+                cmd.Parameters.AddWithValue("id", id);
+                cmd.ExecuteNonQuery();
+            }catch (Exception ex) { throw new Exception(ex.Message); }
+            finally { connection.Close(); }
         }
     }
 }

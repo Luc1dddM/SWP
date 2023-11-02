@@ -77,12 +77,13 @@ namespace Areas
             int newQuantity = 0;
             PartDetail partDetail = _partDetailService.getPartDetailById(partDetailId);
             Part part = _partService.GetPartByID(partDetail.partID);
-            if(partDetail.status == "Accepted") { 
-                newQuantity = part.quantity + partDetail.quantity - int.Parse(quantity);
+            if(partDetail.status.Trim() == "Accepted") { 
+                newQuantity = part.quantity + partDetail.quantity;
+                partDetail.status = "Request Use";
             }
             else
             {
-                newQuantity = part.quantity - int.Parse(quantity);
+                newQuantity = part.quantity;
             }
             partDetail.quantity = int.Parse(quantity);
             part.quantity = newQuantity;
@@ -101,6 +102,12 @@ namespace Areas
             _partService.editService(part);
             _orderService.updateTotalWordOrder(newTaskDetail.WorkOrderId);
             return Redirect("/user/PartDetail/viewListRequest");
+        }
+
+        public IActionResult delete(string partDetailId, string wodId) {
+            _partDetailService.deletePartDetail(partDetailId);
+            _orderService.updateTotalWordOrder(wodId);
+            return Redirect($"/user/OrderDetail/view?WorkOrderID={wodId}");
         }
     }
 }
