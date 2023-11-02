@@ -4,13 +4,10 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     @model List<WorkOrder>
 }
-<div class="work-order">
+<div class="work-order main-container content">
     <div class="work-order__header">
         <div>
             <h3>Work Order</h3>
-        </div>
-        <div class="add-member-account-button">
-            <a href="./add-member-account.html">Add New Account</a>
         </div>
     </div>
     <div class="row work-order__title--container">
@@ -33,7 +30,6 @@
                 <div class="col work-order__item--Amount">@order.Total</div>
                 <div class="col work-order__item--Created">@order.createdAt.ToString("dd/MM/yyyy")</div>
                 <div class="col work-order__item--Action">
-                    <a href="#" class="work-order__Action--Edit">Edit</a>
                     <a href="/OrderDetail/view?WorkOrderID=@order.WorkOrderID" class="work-order__Action--Detail">Detail</a>
                 </div>
             </div>

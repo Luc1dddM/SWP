@@ -7,11 +7,15 @@ namespace SWP_CarService_Final.Services
     {
         private readonly TaskDetailService _taskDetailService;
         private readonly AppointmentService _appointmentService;
+        private readonly PartDetailService  _partDetailService;
+        private readonly UserServices _userService;
         public OrderService()
         {
             TaskService taskService = new TaskService();
             _taskDetailService= new TaskDetailService();
             _appointmentService= new AppointmentService(taskService);
+            _partDetailService = new PartDetailService();
+            _userService = new UserServices();
         }
         public int getNumberOfWorkOrder()
         {
@@ -42,7 +46,8 @@ namespace SWP_CarService_Final.Services
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
-                            taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),
+                            customer = _userService.getCustomerByUserName(reader.GetString(3)),
+                            /*taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),*/
                         });
                     }
                 }
@@ -77,7 +82,8 @@ namespace SWP_CarService_Final.Services
                             CustomerName = reader.GetString(3),
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
-                            taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),
+                            customer = _userService.getCustomerByUserName(reader.GetString(3)),
+                            /*taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),*/
                         });
                     }
                 }
@@ -108,10 +114,10 @@ namespace SWP_CarService_Final.Services
                             WorkOrderID = reader.GetString(0),
                             VehicleType = reader.GetString(1),
                             Total = reader.GetDecimal(2),
-                            CustomerName = reader.GetString(3),
+                            CustomerName = owner,
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
-                            taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),
+                            customer = _userService.getCustomerByUserName(owner),
                         });
                     }
                 }
@@ -127,7 +133,6 @@ namespace SWP_CarService_Final.Services
         public WorkOrder getWorkOrderById(string id)
         {
             WorkOrder WorkOrder = null;
-
             try
             {
                 if (connection.State == System.Data.ConnectionState.Closed)
@@ -149,6 +154,7 @@ namespace SWP_CarService_Final.Services
                             CreatedBy = reader.GetString(4),
                             createdAt = reader.GetDateTime(5),
                             taskDetails = _taskDetailService.GetTaskDetailsByWOID(reader.GetString(0)),
+                            partDetails = _partDetailService.GetPartDetailsByOrderID(reader.GetString(0)),
                         };
                     }
                 }
@@ -204,6 +210,8 @@ namespace SWP_CarService_Final.Services
                             price = taskDetail.task.price,
                             task = taskDetail.task,
                             status = "Process",
+                            createdAt = DateTime.Now,
+                            updatedAt = DateTime.Now,
                             userName = createdBy,
                             WorkOrder = workOrder,
                         };
@@ -239,11 +247,31 @@ namespace SWP_CarService_Final.Services
             {
                 connection.Open();
                 SqlCommand cmd = new SqlCommand("Update Work_order set Total = ( SELECT COALESCE(SUM(quantity * amount), 0) FROM task_detail WHERE WorkOrder_id = @WorkOrderID) " +
-                    "+ (SELECT COALESCE(SUM(quantity * price), 0) FROM part_detail WHERE WorkOrder_id = @WorkOrderID and part_detail.[status] = 'Approve') where WorkOrder_id = @WorkOrderID", connection);
+                    "+ (SELECT COALESCE(SUM(quantity * price), 0) FROM part_detail WHERE WorkOrder_id = @WorkOrderID and part_detail.[status] = 'Accepted') where WorkOrder_id = @WorkOrderID", connection);
                 cmd.Parameters.AddWithValue("WorkOrderID", workOrderID);
                 cmd.ExecuteNonQuery();
             }catch(Exception ex) { throw new Exception(ex.Message);
             }finally { connection.Close(); }
+        }
+
+        public string getCurrentWorkOrderId(string UserName)
+        {
+            string OrderId = null;
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("select task_detail.WorkOrder_id from task_detail where task_detail.[status] = 'Process' and task_detail.userName = @UserName", connection);
+                cmd.Parameters.AddWithValue("UserName", UserName);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        OrderId = reader.GetString(0);
+                    }
+                }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            return OrderId;
         }
     }
 }

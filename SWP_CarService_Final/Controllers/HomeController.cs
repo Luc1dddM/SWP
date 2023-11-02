@@ -89,28 +89,6 @@ namespace SWP_CarService_Final.Controllers
             return RedirectToAction("login");
         }
 
-        public IActionResult ResetPassword(string Username)
-        {
-            ViewBag.username = Username;
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult ResetPassword(string Username, string Password)
-        {
-            try
-            {
-                Customer customer = new Customer()
-                {
-                    user_name = Username,
-                    password = Password
-                };
-     /*       _userService.ResetCustomerPassword(Username, Password);*/
-            }
-            catch (Exception ex) { throw new Exception(ex.Message); }
-            return Redirect("login");
-        }
-
         public IActionResult Privacy()
         {
             return View();

@@ -179,6 +179,41 @@ namespace SWP_CarService_Final.Services
             return parts;
         }
 
+        public List<Part> GetAllPartRaw(int pageNumber, string searchText)
+        {
+            List<Part> parts = new List<Part>();
+            string filter = null;
+
+            try
+            {
+                if (searchText != null)
+                {
+                    filter += " and part_name like '%" + searchText + "%' ";
+                }
+
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM [SWP].[dbo].[Part] WHERE 1=1" + filter +
+                    " ORDER BY CAST(SUBSTRING(part_id, PATINDEX('%[0-9]%', part_id), LEN(part_id)) AS INT) desc  ", connection);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var part = new Part()
+                        {
+                            part_id = reader.GetString(0),
+                            part_name = reader.GetString(1),
+                            price = reader.GetDecimal(2),
+                            quantity = reader.GetInt32(3),
+                            img = (!reader.IsDBNull(4)) ? reader.GetString(4) : null
+                        };
+                        parts.Add(part);
+                    }
+                }
+            }
+            finally { connection.Close(); }
+            return parts;
+        }
+
         public int GetNumberOfPage(List<Part> listPart)
         {
             Int32 count = listPart.Count % 10 == 0 ? listPart.Count / 10 : (listPart.Count / 10) + 1;
@@ -368,8 +403,8 @@ namespace SWP_CarService_Final.Services
                 {
                     SqlCommand command = new SqlCommand("UPDATE [SWP].[dbo].[Part] SET [part_name] = @part_name, " +
                                                         "[price] = @price, [quantity] = @quantity, " +
-                                                        "[img] = @img" +
-                                                        " WHERE [part_id] = @part_id", connection);
+                                                        "[img] = @img " +
+                                                        "WHERE[part_id] = @part_id", connection);
                     command.Parameters.AddWithValue("part_id", nPart.part_id);
                     command.Parameters.AddWithValue("part_name", nPart.part_name);
                     command.Parameters.AddWithValue("price", nPart.price);

@@ -6,13 +6,21 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     PartService partService = new PartService();
     CategoryServices categoryServices = new CategoryServices();
+    IHttpContextAccessor contx = new HttpContextAccessor();
     @model List<Part>
     bool onChange = false;
+    var msg = TempData["Message"];
 }
 
 
 
 <div class="main-container content">
+    @if (msg != null)
+    {
+        <script>
+            alert('@msg');
+        </script>
+    }
     <div class="content-search">
         <div>
             <h3>Components</h3>
@@ -32,6 +40,59 @@
 
 
         <a href="AddComponent"><button type="button" class="btn btn-primary">Add New Component</button></a>
+        <!-- Trigger the modal with a button -->
+        <!-- Modal -->
+
+
+        <div class="modal fade" id="exampleModal"
+             tabindex="-1"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"
+                            id="exampleModalLabel">
+                            Confirmation
+                        </h5>
+
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">
+                                ×
+                            </span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <!-- Data passed is displayed
+                            in this part of the
+                            modal body -->
+                        <form action="/user/PartDetail/request" method="post">
+                            <div class="form-group">
+                                <input name="partID" type="text" id="IdInput" hidden />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="quantity">Input Quantity</label>
+                                <input name="quantity" type="number" id="quantity" />
+                            </div>
+
+
+                            <div class="form-group">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <input  type="submit" value="Submit"/>
+                            </div>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="container-fluid">
         <div class="row">
@@ -48,19 +109,19 @@
                         <input name="pageNumber" value="1" type="hidden" class="icheck">
                         <input name="onChange" value="true" type="hidden" class="icheck">
                         <h4>By category:</h4>
-                        @foreach(var category in categoryServices.getComponentCategory())
+                        @foreach (var category in categoryServices.getComponentCategory())
                         {
                             <div class="checkbox">
-                                <label><input name="filterString" value="@category.category_id.Trim()" type="checkbox" class="icheck" > @category.category_name</label>
+                                <label><input name="filterString" value="@category.category_id.Trim()" type="checkbox" class="icheck"> @category.category_name</label>
                             </div>
                         }
                         <!-- END FILTER BY CATEGORY -->
                         <!-- BEGIN FILTER BY BRAND -->
                         <h4>By Brand:</h4>
-                        @foreach(var category in categoryServices.getBrandCategory())
+                        @foreach (var category in categoryServices.getBrandCategory())
                         {
                             <div class="checkbox">
-                                <label><input name="filterString" value="@category.category_id.Trim()" type="checkbox" class="icheck" > @category.category_name</label>
+                                <label><input name="filterString" value="@category.category_id.Trim()" type="checkbox" class="icheck"> @category.category_name</label>
                             </div>
                         }
                         <!-- END FILTER BY BRAND -->
@@ -102,12 +163,22 @@
                             <div class="card d-block">
                                 <img style="height: 230px;" class="card-img-top p-3" src="~/img/@part.img"
                                      alt="Image Description">
-                                <div class="card-footer text-center py-4">
+                                <div class="card-footer text-center py-4" style="height: 225px">
                                     <h3 class="h5 mb-1">@part.part_name</h3>
                                     <span class="d-block text-muted font-size-1 mb-1">@part.price VNĐ</span>
                                     <span class="d-block text-muted font-size-1 mb-3">Quantity: @part.quantity</span>
-                                    <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
-                                       href="EditComponent?part_id=@part.part_id">Edit</a>
+                                    @if (contx.HttpContext.Session.GetString("role") == "member")
+                                    {
+                                        <button onclick="requestItem('@part.part_id.Trim()')" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" id="submit">
+                                            Request
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-sm btn-outline-primary btn-pill transition-3d-hover px-5"
+                                           href="EditComponent?part_id=@part.part_id">Edit</a>
+                                    }
+
                                 </div>
                             </div>
                             <!-- End Card -->
@@ -138,7 +209,7 @@
                         @for (int i = 1; partService.GetNumberOfPage(ViewBag.ListComponetRaw) >= i; i++)
                         {
                             <li class="page-item"><a class="page-link" href="listOfComponent?pageNumber=@i&onChange=@onChange">@i</a></li>
-                        }  
+                        }
                         @if (partService.GetNumberOfPage(ViewBag.ListComponetRaw) > ViewBag.CurrentPage)
                         {
                             <li class="page-item">
@@ -160,4 +231,60 @@
     </div>
     <!-- Products Section -->
 
+    <script>
+        @section Javascript{
+            document.addEventListener('DOMContentLoaded', function () {
+                // Get the parameter value from the URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const paramValue = urlParams.get('filterString');
+                console.log(paramValue);
 
+                // Check if a gender parameter is present in the URL and store it in localStorage
+                if (paramValue) {
+                    localStorage.setItem(paramValue, true);
+                }
+
+                // Retrieve the scroll position from localStorage and scroll the window accordingly
+                var scrollPos = localStorage.getItem('scrollPosition');
+                if (scrollPos) {
+                    window.scrollTo(0, scrollPos);
+                }
+
+                // Retrieve all checkboxes and set their state based on localStorage
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(function (checkbox) {
+                    var checked = localStorage.getItem(checkbox.id);
+                    checkbox.checked = checked === 'true';
+                });
+
+                // Add an event listener to each checkbox to save their state in localStorage
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.addEventListener('click', function () {
+                        checkboxes.forEach(function (checkbox) {
+                            localStorage.setItem(checkbox.id, checkbox.checked);
+                        });
+
+                        // Save the current scroll position in localStorage
+                        localStorage.setItem('scrollPosition', window.pageYOffset);
+
+                        // Submit the form
+                        document.querySelector("#myForm").submit();
+                    });
+                });
+
+                // Any additional code or modifications can be added here
+               
+            });
+
+        function requestItem(partID) {
+            document.getElementById("IdInput").value = partID;
+        };
+
+        function requestItem(partID) {
+            document.getElementById("IdInput").value = partID;
+        };
+
+           
+
+        }
+    </script>

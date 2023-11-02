@@ -9,9 +9,6 @@ namespace SWP_CarService_Final.Services
     public class UserServices : DBContext
     {
 
-        
-
-
 
         public Customer CustomerLogin(string username, string password)
         {
@@ -106,6 +103,37 @@ namespace SWP_CarService_Final.Services
                 connection.Close();
             }
             return null;
+        }
+
+        public User getUserByUsername(string userName)
+        {
+            User user = null;
+            try
+            {
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                SqlCommand cmd = new SqlCommand("select * from [user] where [user].UserName = @username", connection);
+                cmd.Parameters.AddWithValue("username", userName);
+                using(SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if(reader.Read()) {
+                        user = new User();
+                        user.UserName = reader.GetString(0);
+                        user.User_fullname = reader.GetString(1);
+                        user.phone_number = reader.GetString(2);
+                        user.email = reader.GetString(3);
+                        user.password = reader.GetString(4);
+                        user.account_status = reader.GetBoolean(5);
+                        user.created = reader.GetDateTime(6);
+                    }
+                }
+            }catch (Exception ex)
+            {
+                throw new Exception (ex.Message);
+            }finally { connection.Close(); }
+            return user;
         }
     }
 }
