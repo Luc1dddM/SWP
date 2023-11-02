@@ -33,7 +33,7 @@
                 <h3>Register New Account</h3>
             </div>
             <div class="p-4">
-                <form method="post" action="/Home/register">
+                <form id="register" method="post" action="/Home/register">
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" name="user_name" class="form-control" id="" placeholder="Username">
@@ -44,11 +44,11 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control" id="" placeholder="Password">
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Password">
                     </div>
                     <div class="form-group">
                         <label for="confirm password">Confirm Password</label>
-                        <input type="password" name="password" class="form-control" id="" placeholder="Confirm Password">
+                        <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Confirm Password">
                     </div>
                     <div class="form-group">
                         <label for="email">Email address</label>
@@ -64,17 +64,23 @@
             </div>
         </div>
     </div>
-    <script>
-        function submitRegister() {
-            let text = "Do you want to submit this form?";
-            if (confirm(text) == true) {
-                alert("your submit successfully");
 
-            } else {
-                alert("You canceled!");
+    <div>
+        <style>
+            label.error {
+                color: red;
+                width: 100%;
+                text-align: left;
+                display: block;
+                padding-top: 5px;
             }
-        }
-    </script>
+        </style>
+    </div>
+
+    <script src="~/lib/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/lib/jquery/jquery.validate.min.js"></script>
+    <script src="~/js/validateForm.js"></script>
+   
 </body>
 </html>
 

@@ -32,7 +32,7 @@
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="login-box bg-white box-shadow border-radius-10">
-                        <form method="post">
+                        <form id="login" method="post">
                             <div class="input-group custom">
                                 <lable for="user-name"></lable>
                                 <input autofocus autocomplete="off" id="user-name" type="text" name="userName" class="form-control form-control-lg" placeholder="Username">
@@ -78,5 +78,22 @@
     <script src="~/vendors/scripts/script.min.js"></script>
     <script src="~/vendors/scripts/process.js"></script>
     <script src="~/vendors/scripts/layout-settings.js"></script>
+
+    <div>
+        <style>
+            label.error {
+                color: red;
+                width: 100%;
+                text-align: left;
+                padding-left: 4px;
+                display: block;
+                padding-top: 5px;
+            }
+        </style>
+    </div>
+
+    <script src="~/lib/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/lib/jquery/jquery.validate.min.js"></script>
+    <script src="~/js/validateForm.js"></script>
 </body>
 </html>
