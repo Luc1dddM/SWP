@@ -214,6 +214,88 @@
         },
     });
 
+    $("#addCategory").validate({
+        onfocusout: true,
+        onkeyup: true,
+        onclick: true,
+        rules: {
+            "name": {
+                required: true,
+                textonly: true
+            },
+        },
+    });
+
+    $("#editCategory").validate({
+        onfocusout: true,
+        onkeyup: true,
+        onclick: true,
+        rules: {
+            "name": {
+                required: true,
+                textonly: true
+            },
+        },
+    });
+
+    $("#addComponent").validate({
+        onfocusout: true,
+        onkeyup: true,
+        onclick: true,
+        rules: {
+            "name": {
+                required: true,
+                textonly: true
+            },
+            "price": {
+                required: true,
+                number: true,
+                positiveNumber: true,
+                min: 1
+            },
+            "quantity": {
+                required: true,
+                number: true,
+                positiveNumber: true
+            },
+        },
+        messages: {
+            "quantity": {
+                positiveNumber: "Please enter a positive number.",
+                number: "Please enter a number."
+            }
+        }
+    });
+
+    $("#editComponent").validate({
+        onfocusout: true,
+        onkeyup: true,
+        onclick: true,
+        rules: {
+            "name": {
+                required: true,
+                textonly: true
+            },
+            "price": {
+                required: true,
+                number: true,
+                positiveNumber: true,
+                min: 1
+            },
+            "quantity": {
+                required: true,
+                number: true,
+                positiveNumber: true
+            },
+        },
+        messages: {
+            "quantity": {
+                positiveNumber: "Please enter a positive number.",
+                number: "Please enter a number."
+            }
+        }
+    });
+
     $("#editTaskDetail").validate({
         onfocusout: true,
         onkeyup: true,
@@ -232,6 +314,7 @@
             }
         }
     });
+
 
     $("#createUserAcccount").validate({
         onfocusout: true,
