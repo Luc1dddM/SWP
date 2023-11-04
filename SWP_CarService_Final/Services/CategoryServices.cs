@@ -12,7 +12,7 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM [SWP].[dbo].[Category]", connection);
+                SqlCommand cmd = new SqlCommand("SELECT *FROM [SWP].[dbo].[Category] ORDER BY CAST(SUBSTRING(category_id, PATINDEX('%[0-9]%', category_id), LEN(category_id)) AS INT) desc", connection);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

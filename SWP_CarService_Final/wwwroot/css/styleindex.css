@@ -991,3 +991,47 @@ h3 {
  
 
 /*End CSS for ListOfComponent_Hoang Vu Thai*/
+
+
+/*CSS for HomePageUser_Hoang Vu Thai*/
+/* home page leader */
+.box-work-order i {
+    color: rgb(0, 236, 207);
+    font-size: 28px;
+    padding-top: 34px;
+}
+
+.box-item-request i {
+    color: rgb(255, 91, 91);
+    font-size: 32px;
+    padding-top: 34px;
+}
+
+.box-complete-task i {
+    color: rgb(9, 204, 6);
+    font-size: 28px;
+    padding-top: 34px;
+}
+
+.box-component-request i {
+    color: rgb(255, 238, 2);
+    font-size: 28px;
+    padding-top: 34px;
+}
+
+/* home page member */
+.box-task i {
+    color: rgb(0, 236, 79);
+    font-size: 28px;
+    padding-top: 34px;
+}
+
+.box-component i {
+    color: rgb(158, 158, 158);
+    font-size: 32px;
+    padding-top: 34px;
+}
+
+
+/*End CSS for HomePageUser_Hoang Vu Thai*/
+

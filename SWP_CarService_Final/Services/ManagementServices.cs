@@ -132,5 +132,125 @@ namespace SWP_CarService_Final.Services
             finally { connection.Close(); }
             return results;
         }
+
+        public int StatisticOrderNotComplete(string user)
+        {
+            int result = 0;
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(WorkOrder_id) FROM [SWP].[dbo].[Work_order] WHERE [user] = @user and [Status] = 0 and CAST(created as date) = CAST(GetDate() as date)", connection);
+                cmd.Parameters.AddWithValue("user", user);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        result = (reader.IsDBNull(0)) ? 0 : reader.GetInt32(0);
+                    }
+                }
+            }
+            finally { connection.Close(); }
+            return result;
+        }
+
+        public int StatisticRequestComplete(string user)
+        {
+            int result = 0;
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("select COUNT(wod_id) from task_detail " +
+                                                "where task_detail.userName in (select [user].UserName " +
+                                                                               "from [user] join Team_Members on [user].UserName = Team_Members.userName " +
+                                                                               "where Team_Members.team_id = (select team_id from Team_Members " +
+                                                                                                             "join [user] on [user].UserName = Team_Members.userName where [User].UserName = @user)) " +
+                                                "and task_detail.status = 'Request Complete' and CAST(task_detail.updated as date) = CAST(GETDATE() as date)", connection);
+                cmd.Parameters.AddWithValue("user", user);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        result = (reader.IsDBNull(0)) ? 0 : reader.GetInt32(0);
+                    }
+                }
+            }
+            finally { connection.Close(); }
+            return result;
+        }
+
+        public int StatisticRequestRepair(string user)
+        {
+            int result = 0;
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("select COUNT(wod_id) from task_detail " +
+                                                "where task_detail.userName in (select [user].UserName " +
+                                                                               "from [user] join Team_Members on [user].UserName = Team_Members.userName " +
+                                                                               "where Team_Members.team_id = (select team_id from Team_Members " +
+                                                                                                             "join [user] on [user].UserName = Team_Members.userName where [User].UserName = @user)) " +
+                                                "and task_detail.status = 'Request Repair' and CAST(task_detail.updated as date) = CAST(GETDATE() as date)", connection);
+                cmd.Parameters.AddWithValue("user", user);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        result = (reader.IsDBNull(0)) ? 0 : reader.GetInt32(0);
+                    }
+                }
+            }
+            finally { connection.Close(); }
+            return result;
+        }
+
+        public int StatisticRequestUseItem(string user)
+        {
+            int result = 0;
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("select COUNT(item_detail_id) from part_detail " +
+                                                "where part_detail.userName in (select [user].UserName " +
+                                                                               "from [user] join Team_Members on [user].UserName = Team_Members.userName " +
+                                                                               "where Team_Members.team_id = (select team_id from Team_Members " +
+                                                                                                             "join [user] on [user].UserName = Team_Members.userName where [User].UserName = @user)) " +
+                                                "and part_detail.status = 'Request Use' and CAST(updated as date) = CAST(GETDATE() as date)", connection);
+                cmd.Parameters.AddWithValue("user", user);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        result = (reader.IsDBNull(0)) ? 0 : reader.GetInt32(0);
+                    }
+                }
+            }
+            finally { connection.Close(); }
+            return result;
+        }
+
+        public int StatisticInProcessTask(string user)
+        {
+            int result = 0;
+            try
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("select COUNT(wod_id) from task_detail " +
+                                                "where task_detail.userName in (select [user].UserName " +
+                                                                               "from [user] join Team_Members on [user].UserName = Team_Members.userName " +
+                                                                               "where Team_Members.team_id = (select team_id from Team_Members " +
+                                                                                                             "join [user] on [user].UserName = Team_Members.userName where [User].UserName = @user)) " +
+                                                "and task_detail.status = 'Process' and CAST(task_detail.updated as date) = CAST(GETDATE() as date)", connection);
+                cmd.Parameters.AddWithValue("user", user);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        result = (reader.IsDBNull(0)) ? 0 : reader.GetInt32(0);
+                    }
+                }
+            }
+            finally { connection.Close(); }
+            return result;
+        }
     }
 }
