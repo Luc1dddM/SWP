@@ -6,7 +6,7 @@ using SWP_CarService_Final.Services;
 namespace SWP_CarService_Final.Areas.User.Controllers
 {
     [Area("User")]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin, leader, member")]
     public class TeamController : Controller
     {
         private readonly IHttpContextAccessor _contx;
@@ -23,11 +23,13 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult CreateTeam()
         {
             return View();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult CreateTeam(string teamName)
         {
@@ -39,18 +41,21 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             return Redirect("ViewAllTeam");
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteTeam(string team_id)
         {
             _teamService.DeleteTeam(team_id);
             return Redirect("ViewAllTeam");
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult EditTeam(string team_id)
         {
             ViewBag.teamId = team_id;
             return View();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult EditTeam(string teamId, string teamName)
         {

@@ -111,6 +111,9 @@
                     <div class="item"><i class="fa-solid fa-check"></i><a href="/user/TaskDetail/ViewListRequest">Request Complete</a></div>
 
                     <div class="item"><i class="fa-solid fa-clipboard-check"></i><a href="/user/PartDetail/ViewListRequest">Request Use Part</a></div>
+
+                    <div class="item"><i class="fa-solid fa-user"></i><a href="/user/team/ViewAllTeam">Team</a></div>
+
                 }
 
                 else if (contx.HttpContext.Session.GetString("role") == "member")
@@ -124,7 +127,7 @@
 
                     <div class="item"><i class="fa-solid fa-wrench"></i><a href="/user/part/ListOfComponent?pageNumber=1&onChange=true">Components</a></div>
 
-                    <div class="item"><i class="fa-solid fa-user"></i><a href="#">Team</a></div>
+                    <div class="item"><i class="fa-solid fa-user"></i><a href="/user/team/ViewAllTeam">Team</a></div>
                 }
 
                 else
