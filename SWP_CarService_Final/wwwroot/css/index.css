@@ -152,7 +152,7 @@
 
 .work-order-detail-task__item--status span {
     display: block;
-    width: 50%;
+    width: 75%;
     margin: 0 auto;
     padding: 2px 0;
     color: white;
@@ -170,7 +170,11 @@
     color: #fff;
 }
 
-    .work-order-detail-task__item--Action a:nth-child(2) {
+    .work-order-detail-task__item--Action a.icon{
+        font-size: 24px;
+    }
+
+    .work-order-detail-task__item--Action a.none-icon {
         background-color: rgb(45, 45, 237);
         display: block;
         width: 40%;

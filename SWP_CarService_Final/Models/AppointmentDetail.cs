@@ -3,6 +3,9 @@
     public class AppointmentDetail
     {
         public string appointmentID;
-        public Task task;
+        public Appointment? appointment;
+        public string taskId;
+        public Task? task;
+      
     }
 }

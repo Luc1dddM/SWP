@@ -50,13 +50,12 @@
              aria-hidden="true">
 
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" style="margin-top: 80px">
                     <div class="modal-header">
                         <h5 class="modal-title"
                             id="exampleModalLabel">
                             Confirmation
                         </h5>
-
                         <button type="button"
                                 class="close"
                                 data-dismiss="modal"
@@ -76,19 +75,22 @@
                             <div class="form-group">
                                 <input name="partID" type="text" id="IdInput" hidden />
                             </div>
+                            <div class="form-group">
+                                <input hidden name="WorkOrderId" type="text" hiden id="WorkOrderId" />
+                            </div>
 
                             <div class="form-group">
                                 <label for="quantity">Input Quantity</label>
-                                <input name="quantity" type="number" id="quantity" />
+                                <input oninput="validate()" name="quantity" type="number" id="quantity" />
                             </div>
 
 
                             <div class="form-group">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <input  type="submit" value="Submit"/>
+                                <input type="submit" value="Submit" />
                             </div>
                         </form>
-                        
+
                     </div>
                 </div>
             </div>
@@ -169,7 +171,7 @@
                                     <span class="d-block text-muted font-size-1 mb-3">Quantity: @part.quantity</span>
                                     @if (contx.HttpContext.Session.GetString("role") == "member")
                                     {
-                                        <button onclick="requestItem('@part.part_id.Trim()')" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" id="submit">
+                                        <button onclick="requestItem('@part.part_id.Trim()', '@part.quantity')" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" id="submit">
                                             Request
                                         </button>
                                     }
@@ -277,11 +279,34 @@
                 var checkBox = document.getElementById(checkboxId);
                 checkBox.checked = true;
             });
+
+        var cQuantity;
+        function requestItem(partID, quantity) {
+            cQuantity = quantity;
+            document.getElementById("quantity").value = 0;
+            document.getElementById("IdInput").value = partID;
+            document.getElementById("WorkOrderId").value = querystring('WorkOrderID')[0].replace(/{|}/g, '');
+        };
         }
     </script>
 
+        function querystring(key) {
+            var re = new RegExp('(?:\\?|&)' + key + '=(.*?)(?=&|$)', 'gi');
+            var r = [], m;
+            while ((m = re.exec(document.location.search)) != null) r[r.length] = m[1];
+            return r;
+        }
     <script>
 
+        function validate() {
+            console.log(cQuantity);
+            var uQuantity = document.getElementById("quantity").value;
+            console.log(uQuantity);
+
+            if (Number(uQuantity) < 0 || Number(uQuantity) > Number(cQuantity)) {
+                document.getElementById("quantity").value = cQuantity;
+            }
+        }
 
         // Save the input text to local storage
         function saveInputText(inputId) {

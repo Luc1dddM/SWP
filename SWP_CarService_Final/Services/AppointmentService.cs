@@ -1,4 +1,5 @@
-﻿using SWP_CarService_Final.Models;
+﻿using Microsoft.SqlServer.Server;
+using SWP_CarService_Final.Models;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -16,31 +17,53 @@ namespace SWP_CarService_Final.Services
         {
             _taskService = taskService;
         }
-        public int getNumberOfAppointment()
+        public string getLastId()
         {
+            string id = null;
             connection.Open();
-            SqlCommand command = new SqlCommand("select count(*) from Appointment", connection);
-            Int32 count = (Int32)command.ExecuteScalar();
+            SqlCommand command = new SqlCommand("SELECT top 1 appointment_id FROM Appointment ORDER BY CAST(SUBSTRING(appointment_id, PATINDEX('%[0-9]%', appointment_id), LEN(appointment_id)) AS INT) desc", connection);
+            using(SqlDataReader reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    id = reader.GetString(0);
+                }
+            }
             connection.Close();
-            return count;
+            return id;
         }
 
         public void createAppointment(Appointment apppointment, List<string> detailIDs)
         {
-            string id = "APM" + (getNumberOfAppointment() + 1);
-            connection.Open();
-            SqlCommand command = new SqlCommand("insert into Appointment(appointment_id, vehical_type, [description], time_arrived, created_at, [status], user_name) " +
-                "values(@id, @type, @description, @arrived, @create, @status, @userName)", connection);
-            command.Parameters.AddWithValue("id", id.Trim());
-            command.Parameters.AddWithValue("type", apppointment.vehicalType);
-            command.Parameters.AddWithValue("description", apppointment.description);
-            command.Parameters.AddWithValue("arrived", apppointment.timeArrived);
-            command.Parameters.AddWithValue("create", DateTime.Now);
-            command.Parameters.AddWithValue("status", "pending");
-            command.Parameters.AddWithValue("userName", apppointment.customer.user_name);
-            command.ExecuteNonQuery();
-            connection.Close();
-            createAppointmentDetails(id, detailIDs);
+            string idFormat = "APM";
+            try
+            {
+                string lastId = getLastId();
+                string id;
+                if(lastId != null)
+                {
+                    id = idFormat + (int.Parse(lastId.Substring(idFormat.Length)) + 1);
+                }
+                else
+                {
+                    id = idFormat + "1";
+                }
+                connection.Open();
+                SqlCommand command = new SqlCommand("insert into Appointment(appointment_id, [description], time_arrived, created_at, [status], user_name) " +
+                    "values(@id, @description, @arrived, @create, @status, @userName)", connection);
+                command.Parameters.AddWithValue("id", id.Trim());
+                command.Parameters.AddWithValue("description", apppointment.description);
+                command.Parameters.AddWithValue("arrived", apppointment.timeArrived);
+                command.Parameters.AddWithValue("create", DateTime.Now);
+                command.Parameters.AddWithValue("status", "pending");
+                command.Parameters.AddWithValue("userName", apppointment.customer.user_name);
+                command.ExecuteNonQuery();
+                createAppointmentDetails(id, detailIDs);
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }finally { connection.Close(); }
+            
         }
 
         public void createAppointmentDetails(string apmID, List<string> detailIDs)
@@ -49,7 +72,10 @@ namespace SWP_CarService_Final.Services
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == System.Data.ConnectionState.Closed)
+                    {
+                        connection.Open();
+                    }
                     SqlCommand cmd = new SqlCommand("insert Appointment_Details values(@appointmentID, @taskID)", connection);
                     cmd.Parameters.AddWithValue("appointmentID", apmID);
                     cmd.Parameters.AddWithValue("taskID", detail);
@@ -78,7 +104,7 @@ namespace SWP_CarService_Final.Services
                         var detail = new AppointmentDetail()
                         {
                             appointmentID = reader1.GetString(0),
-                            task = _taskService.getTaskByIDForAppointment(reader1.GetString(1)),
+                            task = _taskService.GetTaskByID(reader1.GetString(1).Trim()),
                         };
                         details.Add(detail);
                     }
@@ -97,13 +123,8 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("select Appointment.appointment_id, Appointment.vehical_type, Appointment.[description], " +
-                    "Appointment.time_arrived, Appointment.created_at, Appointment.[status], Appointment.[user_name], Work_order.WorkOrder_id " +
-                    "from Appointment " +
-                    "left join Appointment_WorkOrder on Appointment.appointment_id = Appointment_WorkOrder.Appointment_ID " +
-                    "left join Work_order on Appointment_WorkOrder.WorkOrder_ID = Work_order.WorkOrder_id " +
-                    " where user_name = @userName", connection);
-                cmd.Parameters.AddWithValue("userName", cCustomer.user_name);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Appointment where Appointment.user_name = @username ORDER BY CAST(SUBSTRING(appointment_id, PATINDEX('%[0-9]%', appointment_id), LEN(appointment_id)) AS INT) desc ", connection);
+                cmd.Parameters.AddWithValue("username", cCustomer.user_name);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -111,12 +132,10 @@ namespace SWP_CarService_Final.Services
                         var appointment = new Appointment()
                         {
                             appointmentID = reader.GetString(0),
-                            vehicalType = reader.GetString(1),
-                            description = reader.GetString(2),
-                            timeArrived = reader.GetDateTime(3),
-                            createdAt = reader.GetDateTime(4),
-                            status = reader.GetString(5),
-                            WorkOrderID = (!reader.IsDBNull(7)) ? reader.GetString(7) : "",
+                            description = reader.GetString(1),
+                            timeArrived = reader.GetDateTime(2),
+                            createdAt = reader.GetDateTime(3),
+                            status = reader.GetString(4),
                             customer = cCustomer,
                             details = getAppointmentDetailByAPMID(reader.GetString(0)),
                         };
@@ -139,10 +158,7 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("select Appointment.appointment_id, Appointment.vehical_type, Appointment.[description], " +
-                    " Appointment.time_arrived, Appointment.created_at, Appointment.[status], Appointment.[user_name], Work_order.WorkOrder_id " +
-                    "from Appointment left join Appointment_WorkOrder on Appointment.appointment_id = Appointment_WorkOrder.Appointment_ID " +
-                    "left join Work_order on Appointment_WorkOrder.WorkOrder_ID = Work_order.WorkOrder_id", connection);
+                SqlCommand cmd = new SqlCommand("SELECT  *  FROM Appointment ORDER BY CAST(SUBSTRING(appointment_id, PATINDEX('%[0-9]%', appointment_id), LEN(appointment_id)) AS INT) desc", connection);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -150,13 +166,11 @@ namespace SWP_CarService_Final.Services
                         var appointment = new Appointment()
                         {
                             appointmentID = reader.GetString(0),
-                            vehicalType = reader.GetString(1),
-                            description = reader.GetString(2),
-                            timeArrived = reader.GetDateTime(3),
-                            createdAt = reader.GetDateTime(4),
-                            status = reader.GetString(5),
-                            customer = userService.getCustomerByUserName(reader.GetString(6)),
-                            WorkOrderID = (!reader.IsDBNull(7)) ? reader.GetString(7) : "",
+                            description = reader.GetString(1),
+                            timeArrived = reader.GetDateTime(2),
+                            createdAt = reader.GetDateTime(3),
+                            status = reader.GetString(4),
+                            customer = userService.getCustomerByUserName(reader.GetString(5)),
                             details = getAppointmentDetailByAPMID(reader.GetString(0)),
                         };
                         appointments.Add(appointment);
@@ -187,12 +201,11 @@ namespace SWP_CarService_Final.Services
                         appointment = new Appointment()
                         {
                             appointmentID = reader.GetString(0),
-                            vehicalType = reader.GetString(1),
-                            description = reader.GetString(2),
-                            timeArrived = reader.GetDateTime(3),
-                            createdAt = reader.GetDateTime(4),
-                            status = reader.GetString(5),
-                            customer = userService.getCustomerByUserName(reader.GetString(6)),
+                            description = reader.GetString(1),
+                            timeArrived = reader.GetDateTime(2),
+                            createdAt = reader.GetDateTime(3),
+                            status = reader.GetString(4),
+                            customer = userService.getCustomerByUserName(reader.GetString(5)),
                             details = getAppointmentDetailByAPMID(reader.GetString(0)),
                         };
                     }

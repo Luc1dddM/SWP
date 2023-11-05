@@ -89,14 +89,55 @@ namespace SWP_CarService_Final.Controllers
             return RedirectToAction("login");
         }
 
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword(string email)
+        {
+            try
+            {
+                if (_userService.checkUserByEmail(email))
+                {
+                    return Redirect("ResetPassworkStep2?email=" + email);
+                };
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            ViewBag.Msg = "Email not found";
+            return View("login");
+        }
+
+        public IActionResult ResetPassworkStep2(string email)
+        {
+            ViewBag.email = email;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ResetPassworkStep2(string email, string otp, string password)
+        {
+            try
+            {
+                _userService.resetPassword(password, otp, email);
+            }catch(Exception ex)
+            {
+                return Redirect("/home/Error?msg=" + ex.Message);
+            }
+            return Redirect("login");
+        }
+
         public IActionResult Privacy()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(string? msg)
         {
+            if(msg != null)
+            {
+                ViewBag.msg = msg;
+            }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 

@@ -1,14 +1,32 @@
 ﻿@using SWP_CarService_Final.Models
+@using Newtonsoft.Json;
+@using SWP_CarService_Final.Areas.User.Models;
+@using SWP_CarService_Final.Services;
+
 @{
     ViewData["Title"] = "view";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     @model WorkOrder
-
+    IHttpContextAccessor _context = new HttpContextAccessor();
+    string cUserString = _context.HttpContext.Session.GetString("cUser");
+    User cUser = JsonConvert.DeserializeObject<User>(cUserString);
+    OrderService orderService = new OrderService();
+    PartService partService = new PartService();
 }
 
 <div class="work-order-detail content main-container">
-    <div class="work-order-detail__header">
+    <div class="work-order-detail__header d-flex" style="justify-content:space-between">
         <h4>Work Order Detail</h4>
+        <div>
+            <a href="/user/taskDetail/create?WodId=@Model.WorkOrderID" class="btn btn-primary">Add New Task</a>
+            @if (orderService.checkWorkIn(cUser.UserName, Model.WorkOrderID))
+            {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1">
+                    Add new Part
+                </button>
+            }
+        </div>
+
     </div>
     <div class="work-order-detail__container">
         <div class="work-order-detail-task__container">
@@ -35,8 +53,35 @@
                         <div class="col work-order-detail-task__item--status active"><span>@WorkOrder.status</span></div>
                         <div class="col work-order-detail-task__item--member"><span>@WorkOrder.User.User_fullname</span></div>
                         <div class="col work-order-detail-task__item--Action">
-                            <a href="/user/TaskDetail/delete?taskId=@WorkOrder.wod_id.Trim()&woid=@Model.WorkOrderID.Trim()"><i class="fa-solid fa-trash-can"></i></a>
-                            <a style="color: white; text-decoration:none" href="/user/TaskDetail/edit?wodID=@WorkOrder.wod_id">Edit</a>
+                            @if (cUser.role_name.Trim() == "leader")
+                            {
+                                @if (WorkOrder.status.Trim() == "Request Repair")
+                                {
+                                    <a class="mr-2 icon" href="/test/TaskDetail/ResponseRequest?wodID=@WorkOrder.wod_id.Trim()&workOrderId=@Model.WorkOrderID&Response=Process"><i class="fa-solid fa-check"></i></a>
+                                    <a class="mr-2 icon" href="/user/TaskDetail/delete?taskId=@WorkOrder.wod_id.Trim()&woid=@Model.WorkOrderID.Trim()&go=1"><i class="fa-solid fa-trash-can "></i></a>
+                                }
+                                else if (WorkOrder.status.Trim() == "Request Complete")
+                                {
+                                    <a class="mr-2 icon" href="/user/TaskDetail/ResponseRequest?wodID=@WorkOrder.wod_id.Trim()&workOrderId=@Model.WorkOrderID&Response=Completed"><i class="fa-solid fa-check"></i></a>
+                                    <a class="mr-2 icon" href="/user/TaskDetail/ResponseRequest?wodID=@WorkOrder.wod_id.Trim()&workOrderId=@Model.WorkOrderID&Response=Process"><i class="fa-solid fa-trash-can"></i></a>
+                                }
+                                else if (WorkOrder.status.Trim() == "Process")
+                                {
+                                    <a class="mr-2 icon" href="/user/TaskDetail/delete/?taskId=@WorkOrder.wod_id.Trim()&woid=@Model.WorkOrderID.Trim()&go=1"><i class="fa-solid fa-trash-can"></i></a>
+                                    <a class="mr-2 btn btn-primary" style="color: white; text-decoration:none" href="/user/TaskDetail/edit?wodID=@WorkOrder.wod_id">Edit</a>
+                                }
+                            }
+                            else
+                            {
+                                @if (WorkOrder.status.Trim() == "Request Repair")
+                                {
+                                    <a href="/user/TaskDetail/delete?taskId=@WorkOrder.wod_id.Trim()&woid=@Model.WorkOrderID.Trim()&go=1"><i class="fa-solid fa-trash-can"></i></a>
+                                }
+                                else if (WorkOrder.status.Trim() == "Process")
+                                {
+                                    <a style="width:100%" class="mr-2 btn btn-primary" href="/user/TaskDetail/RequestComplete?wodID=@WorkOrder.wod_id">Complete</a>
+                                }
+                            }
                         </div>
                     </div>
                 }
@@ -49,13 +94,14 @@
                 <h5 class="col-3 work-order-detail-task__header">Product</h5>
                 <h5 class="col work-order-detail-task__header">Quantity</h5>
                 <h5 class="col work-order-detail-task__header">Amount</h5>
-                <h5 class="col work-order-detail-task__header"></h5>
+                <h5 class="col work-order-detail-task__header">Status</h5>
                 <h5 class="col work-order-detail-task__header">Add By</h5>
                 <h5 class="col work-order-detail-task__header">Action</h5>
             </div>
 
             <div class="work-order-detail-component-item__container">
-                @foreach(var component in Model.partDetails)
+
+                @foreach (var component in Model.partDetails)
                 {
                     <div class="row work-order-detail-component__item">
                         <div class="col-1 work-order-detail-Component__item--ID">@component.ItemDetailId</div>
@@ -65,19 +111,135 @@
                         </div>
                         <div class="col work-order-detail-component__item--quantity">@component.quantity</div>
                         <div class="col work-order-detail-component__item--amount">@string.Format("{0:C0}", component.price).Substring(1)</div>
-                        <div class="col work-order-detail-component__item--null"></div>
+                        <div class="col work-order-detail-component__item--null">@component.status</div>
                         <div class="col work-order-detail-component__item--status">@component.user.User_fullname</div>
                         <div class="col work-order-detail-component__item__item--Action">
-                            <a href="/user/PartDetail/delete?partDetailId=@component.ItemDetailId.Trim()&wodId=@Model.WorkOrderID.Trim()"><i class="fa-solid fa-trash-can"></i></a>
+
+                            @if (component.status.Trim() == "Request Use")
+                            {
+                                @if (cUser.role_name.Trim() == "leader")
+                                {
+                                    <a class="mr-2 icon" href="/user/PartDetail/ResponseRequest?partDetailId=@component.ItemDetailId.Trim()&workOrderId=@Model.WorkOrderID&Response=Accepted"><i class="fa-solid fa-check"></i></a>
+                                    <a class="mr-2 icon" href="/user/PartDetail/delete?partDetailId=@component.ItemDetailId.Trim()&woid=@Model.WorkOrderID.Trim()"><i class="fa-solid fa-trash-can "></i></a>
+                                }
+                                else
+                                {
+                                    <a class="mr-2 icon" href="/user/PartDetail/delete?partDetailId=@component.ItemDetailId.Trim()&wodId=@Model.WorkOrderID.Trim()"><i class="fa-solid fa-trash-can "></i></a>
+                                    <a style="width: 30%; padding: 7px;" onclick="requestItem('@component.ItemDetailId.Trim()', '@component.quantity', '@Model.WorkOrderID', '@partService.GetPartByID(component.partID).quantity')" type="button" class="mr-2 icon" data-toggle="modal" data-target="#exampleModal" id="submit">
+                                        Edit
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                @if (cUser.role_name.Trim() == "leader")
+                                {
+                                    <a class="mr-2 icon" href="/user/PartDetail/delete?partDetailId=@component.ItemDetailId.Trim()&woid=@Model.WorkOrderID.Trim()"><i class="fa-solid fa-trash-can "></i></a>
+                                }
+                                else
+                                {
+                                    <a style="width: 30%; padding: 7px;" onclick="requestItem('@component.ItemDetailId.Trim()', '@component.quantity', '@Model.WorkOrderID')" type="button" class="mr-2 icon" data-toggle="modal" data-target="#exampleModal" id="submit">
+                                        Edit
+                                    </a>
+                                }
+                            }
                         </div>
                     </div>
                 }
             </div>
         </div>
+        @if (cUser.role_name.Trim() == "leader")
+        {
+            <div class="work-order-detail-total">
+                Total: @string.Format("{0:C0}", Model.Total).Substring(1)
+            </div>
+        }
+    </div>
+</div>
 
-        <div class="work-order-detail-total">
-            Total: @string.Format("{0:C0}", Model.Total).Substring(1)
+<div class="modal fade" id="exampleModal"
+     tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"
+                    id="exampleModalLabel">
+                    Confirmation
+                </h5>
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Data passed is displayed
+                    in this part of the
+                    modal body -->
+                <form action="/user/PartDetail/EditRequest" method="post">
+                    <div class="form-group">
+                        <input name="partDetailId" type="text" id="IdInput" hidden />
+                    </div>
+                    <div class="form-group">
+                        <input name="workOrderDetail" type="text" id="WorkOrderId" hidden />
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Input Quantity</label>
+                        <input oninput="validate()" name="quantity" type="number" id="quantity" />
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <input type="submit" value="Submit" />
+                    </div>
+                </form>
+
+            </div>
         </div>
     </div>
 </div>
 
+
+
+
+<div style="width: 100% !important" class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div style="width: 100% !important; max-width: 100%" class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Request Use Part</h5>
+                <a href="/user/OrderDetail/view?WorkOrderID=@Model.WorkOrderID">x</a>
+            </div>
+            <div class="modal-body" style="position: relative; height: 700px; overflow: hidden">
+                <iframe allowfullscreen frameborder="1" style="position: absolute; top: -64px; left: 0; right: 0;width: 100%; height: 700px;" src="https://localhost:7044/user/part/ListOfComponent?pageNumber=1&onChange=true&WorkOrderID={@Model.WorkOrderID}"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var mQuantity;
+    @section Javascript{
+        function requestItem(partID, quantity, workOrderId, maxQuantity) {
+                mQuantity = maxQuantity
+            document.getElementById("IdInput").value = partID;
+            document.getElementById("quantity").value = quantity;
+            document.getElementById("WorkOrderId").value = workOrderId;
+        };
+
+        function validate() {
+        var uQuantity = document.getElementById("quantity").value;
+            if (Number(uQuantity) < 0 || Number(uQuantity) > Number(mQuantity)) {
+            document.getElementById("quantity").value = mQuantity;
+        }
+        }
+    }
+
+
+</script>
