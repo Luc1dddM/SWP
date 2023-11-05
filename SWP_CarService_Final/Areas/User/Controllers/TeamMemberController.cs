@@ -55,10 +55,13 @@ namespace Areas
                 if (existingUser != null)
                 {
                     TempData["ErrorMsg"] = "Username already exists";
-                    TempData["UsernameExist"] = existingUser.UserName;
-                    return Redirect("CreateAccount");
+                    TempData["UserExist"] = existingUser.UserName;
+                    TempData["InputValues"] = user; // Save input values in TempData
+                    TempData["InputRoleId"] = roleId;
+                    return View();
                 }
                 _userAccount.createAccount(user, roleId);
+
             }
             catch (Exception ex)
             {

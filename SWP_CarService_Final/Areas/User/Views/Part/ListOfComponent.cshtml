@@ -112,7 +112,7 @@
                         @foreach (var category in categoryServices.getComponentCategory())
                         {
                             <div class="checkbox">
-                                <label><input name="filterString" value="@category.category_id.Trim()" type="checkbox" class="icheck"> @category.category_name</label>
+                                <label><input name="filterString" value="@category.category_id.Trim()" type="checkbox" id="@category.category_id" onclick="saveCheckboxState('@category.category_id')" class="icheck"> @category.category_name</label>
                             </div>
                         }
                         <!-- END FILTER BY CATEGORY -->
@@ -121,7 +121,7 @@
                         @foreach (var category in categoryServices.getBrandCategory())
                         {
                             <div class="checkbox">
-                                <label><input name="filterString" value="@category.category_id.Trim()" type="checkbox" class="icheck"> @category.category_name</label>
+                                <label><input name="filterString" value="@category.category_id.Trim()" type="checkbox" id="@category.category_id" onclick="saveCheckboxState('@category.category_id')" class="icheck"> @category.category_name</label>
                             </div>
                         }
                         <!-- END FILTER BY BRAND -->
@@ -133,11 +133,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6 pr-3">
                                     <label>Min</label>
-                                    <input type="number" name="StartPrice" class="form-control" id="inputEmail4" placeholder="0">
+                                    <input type="number" name="StartPrice" class="form-control" id="input1" onkeyup="saveInputText('input1')" placeholder="min">
                                 </div>
                                 <div class="form-group col-md-6 pl-3 text-right">
                                     <label>Max</label>
-                                    <input type="number" name="EndPrice" class="form-control" placeholder="10,000,000">
+                                    <input type="number" name="EndPrice" class="form-control" id="input2" onkeyup="saveInputText('input2')" placeholder="max">
                                 </div>
                             </div>
                         </div>
@@ -232,49 +232,7 @@
     <!-- Products Section -->
 
     <script>
-        @section Javascript{
-            document.addEventListener('DOMContentLoaded', function () {
-                // Get the parameter value from the URL
-                const urlParams = new URLSearchParams(window.location.search);
-                const paramValue = urlParams.get('filterString');
-                console.log(paramValue);
-
-                // Check if a gender parameter is present in the URL and store it in localStorage
-                if (paramValue) {
-                    localStorage.setItem(paramValue, true);
-                }
-
-                // Retrieve the scroll position from localStorage and scroll the window accordingly
-                var scrollPos = localStorage.getItem('scrollPosition');
-                if (scrollPos) {
-                    window.scrollTo(0, scrollPos);
-                }
-
-                // Retrieve all checkboxes and set their state based on localStorage
-                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-                checkboxes.forEach(function (checkbox) {
-                    var checked = localStorage.getItem(checkbox.id);
-                    checkbox.checked = checked === 'true';
-                });
-
-                // Add an event listener to each checkbox to save their state in localStorage
-                checkboxes.forEach(function (checkbox) {
-                    checkbox.addEventListener('click', function () {
-                        checkboxes.forEach(function (checkbox) {
-                            localStorage.setItem(checkbox.id, checkbox.checked);
-                        });
-
-                        // Save the current scroll position in localStorage
-                        localStorage.setItem('scrollPosition', window.pageYOffset);
-
-                        // Submit the form
-                        document.querySelector("#myForm").submit();
-                    });
-                });
-
-                // Any additional code or modifications can be added here
-               
-            });
+    
 
         function requestItem(partID) {
             document.getElementById("IdInput").value = partID;
@@ -286,5 +244,58 @@
 
            
 
+        }
+    </script>
+
+    <script>
+        // Check local storage for any previously saved checkbox states
+        window.onload = function () {
+            loadSavedCheckboxStates();
+            loadSavedInputText('input1');
+            loadSavedInputText('input2');
+        };
+
+        // Save the checkbox states to local storage
+        function saveCheckboxState(checkboxId) {
+            var checkBox = document.getElementById(checkboxId);
+            var checkboxArray = JSON.parse(localStorage.getItem("checkboxArray")) || [];
+
+            if (checkBox.checked && checkboxArray.indexOf(checkboxId) === -1) {
+                checkboxArray.push(checkboxId);
+            } else if (!checkBox.checked && checkboxArray.indexOf(checkboxId) !== -1) {
+                checkboxArray.splice(checkboxArray.indexOf(checkboxId), 1);
+            }
+
+            localStorage.setItem("checkboxArray", JSON.stringify(checkboxArray));
+        }
+
+        // Load the checkbox states from local storage
+        function loadSavedCheckboxStates() {
+            var checkboxArray = JSON.parse(localStorage.getItem("checkboxArray")) || [];
+
+            checkboxArray.forEach(function (checkboxId) {
+                var checkBox = document.getElementById(checkboxId);
+                checkBox.checked = true;
+            });
+        }
+    </script>
+
+    <script>
+
+
+        // Save the input text to local storage
+        function saveInputText(inputId) {
+            var inputField = document.getElementById(inputId);
+            var text = inputField.value;
+            localStorage.setItem(inputId, text);
+        }
+
+        // Load the saved input text from local storage
+        function loadSavedInputText(inputId) {
+            var inputField = document.getElementById(inputId);
+            var savedText = localStorage.getItem(inputId);
+            if (savedText) {
+                inputField.value = savedText;
+            }
         }
     </script>

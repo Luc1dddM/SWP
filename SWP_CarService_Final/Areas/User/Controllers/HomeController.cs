@@ -31,6 +31,7 @@ namespace Areas.Controllers
         [Authorize]
         public IActionResult Index()
         {
+
             return View();
         }
 
@@ -93,7 +94,7 @@ namespace Areas.Controllers
                 string currentUser = JsonConvert.SerializeObject(user);
                 _context.HttpContext.Session.SetString("cUser", currentUser);
                 _context.HttpContext.Session.SetString("role", user.role_name.Trim());
-                return RedirectToAction("Index");
+                return Redirect("Index");
             }
             else
             {
