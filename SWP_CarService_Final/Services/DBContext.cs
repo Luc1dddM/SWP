@@ -10,10 +10,5 @@ namespace SWP_CarService_Final.Services
             connection = new SqlConnection();
             connection.ConnectionString = "Data Source=LAPTOP-269H1O24;Initial Catalog=SWP;Integrated Security=True;Trusted_Connection=true;MultipleActiveResultSets=True;";
         }
-
-        public SqlConnection _connection()
-        {
-            return connection;
-        }
     }
 }
