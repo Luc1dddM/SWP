@@ -18,13 +18,17 @@
     <div class="work-order-detail__header d-flex" style="justify-content:space-between">
         <h4>Work Order Detail</h4>
         <div>
-            <a href="/user/taskDetail/create?WodId=@Model.WorkOrderID" class="btn btn-primary">Add New Task</a>
-            @if (orderService.checkWorkIn(cUser.UserName, Model.WorkOrderID))
+            @if (cUser.role_name.Trim() != "admin")
             {
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1">
-                    Add new Part
-                </button>
+                <a href="/user/taskDetail/create?WodId=@Model.WorkOrderID" class="btn btn-primary">Add New Task</a>
+                @if (orderService.checkWorkIn(cUser.UserName, Model.WorkOrderID))
+                {
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1">
+                        Add new Part
+                    </button>
+                }
             }
+
         </div>
 
     </div>
@@ -226,19 +230,19 @@
 <script>
     var mQuantity;
     @section Javascript{
-        function requestItem(partID, quantity, workOrderId, maxQuantity) {
+            function requestItem(partID, quantity, workOrderId, maxQuantity) {
                 mQuantity = maxQuantity
-            document.getElementById("IdInput").value = partID;
-            document.getElementById("quantity").value = quantity;
-            document.getElementById("WorkOrderId").value = workOrderId;
-        };
+                document.getElementById("IdInput").value = partID;
+                document.getElementById("quantity").value = quantity;
+                document.getElementById("WorkOrderId").value = workOrderId;
+            };
 
         function validate() {
-        var uQuantity = document.getElementById("quantity").value;
+            var uQuantity = document.getElementById("quantity").value;
             if (Number(uQuantity) < 0 || Number(uQuantity) > Number(mQuantity)) {
             document.getElementById("quantity").value = mQuantity;
         }
-        }
+    }
     }
 
 

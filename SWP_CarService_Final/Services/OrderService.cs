@@ -53,11 +53,13 @@ namespace SWP_CarService_Final.Services
                         {
                             WorkOrderID = reader.GetString(0),
                             brand = reader.GetString(1),
-                            Total = reader.GetDecimal(2),
-                            CustomerName = reader.GetString(3),
-                            CreatedBy = reader.GetString(4),
-                            createdAt = reader.GetDateTime(5),
-                            customer = _userService.getCustomerByUserName(reader.GetString(3)),
+                            model = reader.GetString(2),
+                            YoM = reader.GetInt32(3),
+                            Total = reader.GetDecimal(4),
+                            CustomerName = reader.GetString(5),
+                            CreatedBy = reader.GetString(6),
+                            createdAt = reader.GetDateTime(7),
+                            customer = _userService.getCustomerByUserName(reader.GetString(5)),
                         });
                     }
                 }

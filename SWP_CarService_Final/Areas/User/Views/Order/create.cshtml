@@ -24,11 +24,11 @@
     <div class="container">
         <div class="p-3 mb-2 bg-white text-dark rounded">
             <div class="pl-5 pr-5 pt-2 ">
-                <h3>Edit Task Detail</h3>
+                <h3>Create Work Order<h3>
             </div>
             <div class="p-4">
                 <form action="/user/order/create" method="post">
-                    <input name="ApmID" value="@ViewBag.ApmId" type="text" class="form-control">
+                    <input hidden name="ApmID" value="@ViewBag.ApmId" type="text" class="form-control">
 
                     <div class="form-group">
                         <label for="username">Brand</label>

@@ -244,8 +244,6 @@
             document.getElementById("IdInput").value = partID;
         };
 
-           
-
         }
     </script>
 
@@ -278,7 +276,8 @@
             checkboxArray.forEach(function (checkboxId) {
                 var checkBox = document.getElementById(checkboxId);
                 checkBox.checked = true;
-            });
+            })
+        }
 
         var cQuantity;
         function requestItem(partID, quantity) {
@@ -286,9 +285,9 @@
             document.getElementById("quantity").value = 0;
             document.getElementById("IdInput").value = partID;
             document.getElementById("WorkOrderId").value = querystring('WorkOrderID')[0].replace(/{|}/g, '');
-        };
         }
-    </script>
+        
+   
 
         function querystring(key) {
             var re = new RegExp('(?:\\?|&)' + key + '=(.*?)(?=&|$)', 'gi');
@@ -296,7 +295,6 @@
             while ((m = re.exec(document.location.search)) != null) r[r.length] = m[1];
             return r;
         }
-    <script>
 
         function validate() {
             console.log(cQuantity);
