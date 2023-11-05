@@ -9,6 +9,7 @@
     TeamMemberService teamMemberService = new TeamMemberService();
     User user = teamMemberService.GetTeamMemberByUserName(ViewBag.user_name);
     RoleService roleService = new RoleService();
+    var msg = TempData["msg"];
 }
 
 <!DOCTYPE html>
@@ -40,6 +41,10 @@
 
 <body>
     <div class="container">
+        @if (msg != null)
+        {
+            <script>alert('@msg');</script>
+        }
         <div class="p-3 mb-2 bg-white text-dark rounded">
             <div class="header-form row">
                 <div class="col-md-1">
@@ -60,13 +65,8 @@
                                 <div class="form-group">
                                     <input type="hidden" class="form-control" id="" value="@user.UserName" name="username">
                                 </div>
-                                @* <div class="form-group">
-                                    <label for="username">Full Name</label>
-                                    <input type="text" class="form-control" id="" value="" placeholder="@user.User_fullname">
-                                </div> *@
                                 <div class="form-group">
                                     <label for="role name">Role name</label>
-                                    @* <input type="text" class="form-control" id="" value="" placeholder="@user.role_name"> *@
                                     <select name="role_id" class="form-control">
                                         @foreach (var role in roleService.getLeaderAndMemberRoleId())
                                         {
@@ -96,17 +96,6 @@
             </div>
         </div>
     </div>
-    <script>
-        function submitRegister() {
-            let text = "Do you want to submit this form?";
-            if (confirm(text) == true) {
-                alert("your submit successfully");
-
-            } else {
-                alert("You canceled!");
-            }
-        }
-    </script>
 </body>
 
 </html>

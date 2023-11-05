@@ -31,6 +31,7 @@ namespace Areas.Controllers
         [Authorize]
         public IActionResult Index()
         {
+
             return View();
         }
 
@@ -51,31 +52,22 @@ namespace Areas.Controllers
             User user = _userService.UserLogin(userName, password);
             if (user != null)
             {
-                List<Claim> claims = null;
+                List<Claim> claims = new List<Claim>();
                 if (user.role_name.Trim() == "admin")
                 {
-                    claims = new List<Claim>()
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, userName),
-                        new Claim(ClaimTypes.Role, "admin"),
-                    };
+              
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, userName));
+                    claims.Add(new Claim(ClaimTypes.Role, "admin"));
                 }
                 else if (user.role_name.Trim() == "leader")
                 {
-                    claims = new List<Claim>()
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, userName),
-                        new Claim(ClaimTypes.Role, "leader"),
-                    };
-
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, userName));
+                    claims.Add(new Claim(ClaimTypes.Role, "leader"));
                 }
                 else if (user.role_name.Trim() == "member")
                 {
-                    claims = new List<Claim>()
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, userName),
-                        new Claim(ClaimTypes.Role, "member"),
-                };
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, userName));
+                    claims.Add(new Claim(ClaimTypes.Role, "member"));
                 }
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
                     CookieAuthenticationDefaults.AuthenticationScheme);
@@ -93,7 +85,7 @@ namespace Areas.Controllers
                 string currentUser = JsonConvert.SerializeObject(user);
                 _context.HttpContext.Session.SetString("cUser", currentUser);
                 _context.HttpContext.Session.SetString("role", user.role_name.Trim());
-                return RedirectToAction("Index");
+                return Redirect("Index");
             }
             else
             {

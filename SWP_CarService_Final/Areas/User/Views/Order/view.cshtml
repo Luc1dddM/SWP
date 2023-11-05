@@ -1,11 +1,22 @@
 ﻿@using SWP_CarService_Final.Models
+@using Newtonsoft.Json;
+@using SWP_CarService_Final.Areas.User.Models;
 @{
     ViewData["Title"] = "view";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     @model List<WorkOrder>
-
+    IHttpContextAccessor _context = new HttpContextAccessor();
+    string cUserString = _context.HttpContext.Session.GetString("cUser");
+    User cUser = JsonConvert.DeserializeObject<User>(cUserString);
 }
-
+<nav>
+    <div class="icon-content">
+        <span><i style="font-size: 32px;" class="fa-solid fa-file-pen"></i>Work Order</span>
+    </div>
+    <div class="link-content">
+        <span><a class="text-decoration-none" href="">Homepage</a><i class="fa-solid fa-angle-right"></i>Work Order</span>
+    </div>
+</nav>
 <div class="main-container content work-order">
     <div class="work-order__header">
         <div>
@@ -16,8 +27,13 @@
         <div class="col work-order__title">ID</div>
         <div class="col work-order__title">Status</div>
         <div class="col work-order__title">Customer</div>
-        <div class="col work-order__title">Vehicle Type</div>
-        <div class="col work-order__title">Total Amount</div>
+        <div class="col work-order__title">Brand</div>
+        <div class="col work-order__title">Model</div>
+        <div class="col work-order__title">Year of Manufacturer</div>
+        @if (cUser.role_name.Trim() != "member")
+        {
+            <div class="col work-order__title">Total Amount</div>
+        }
         <div class="col work-order__title">Created</div>
         <div class="col work-order__title">Action</div>
     </div>
@@ -28,8 +44,13 @@
                 <div class="col work-order__item--ID">@order.WorkOrderID</div>
                 <div class="col work-order__item--Status"><span>Pending</span></div>
                 <div class="col work-order__item--Customer">@order.customer.fullName</div>
-                <div class="col work-order__item--Vehicle">@order.VehicleType</div>
-                <div class="col work-order__item--Amount">@string.Format("{0:C0}", @order.Total).Substring(1)</div>
+                <div class="col work-order__item--Vehicle">@order.brand</div>
+                <div class="col work-order__item--Model">@order.model</div>
+                <div class="col work-order__item--YoM">@order.YoM</div>
+                @if (cUser.role_name.Trim() != "member")
+                {
+                    <div class="col work-order__item--Amount">@string.Format("{0:C0}", @order.Total).Substring(1)</div>
+                }
                 <div class="col work-order__item--Created">@order.createdAt.ToString("dd/MM/yyyy")</div>
                 <div class="col work-order__item--Action">
                     <a href="/user/OrderDetail/view?WorkOrderID=@order.WorkOrderID" class="work-order__Action--Detail">Detail</a>

@@ -19,7 +19,7 @@ namespace SWP_CarService_Final.Areas.User.Controllers
             _contx = contx;
         }
 
-        public IActionResult ListOfComponent(int pageNumber, List<string>? filterString, string? StartPrice, string? EndPrice, bool onChange, string? SearchText)
+        public IActionResult ListOfComponent(int pageNumber, List<string>? filterString, string? StartPrice, string? EndPrice, bool onChange, string? SearchText, string? WorkOrderID)
         {
             List<Part> partList = null;
             List<string> myList = null;

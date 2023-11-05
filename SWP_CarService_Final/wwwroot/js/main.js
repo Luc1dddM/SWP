@@ -63,7 +63,7 @@
         }
     });
     $('.back-to-top').click(function () {
-        $('html, body').animate({ scrollTop: 0 }, 1500, 'easeInOutExpo');
+        $('html, body').animate({ scrollTop: 0 }, 100, 'easeInOutExpo');
         return false;
     });
 
@@ -72,15 +72,6 @@
     $('[data-toggle="counter-up"]').counterUp({
         delay: 10,
         time: 2000
-    });
-
-
-    // Date and time picker
-    $('.date').datetimepicker({
-        format: 'L'
-    });
-    $('.time').datetimepicker({
-        format: 'LT'
     });
 
 

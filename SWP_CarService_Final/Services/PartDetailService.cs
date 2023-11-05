@@ -235,7 +235,7 @@ namespace SWP_CarService_Final.Services
                 {
                     connection.Open();
                 }
-                SqlCommand cmd = new SqlCommand("select * from part_detail where part_detail.WorkOrder_id = @id and part_detail.[status] = 'Accepted'", connection);
+                SqlCommand cmd = new SqlCommand("select * from part_detail where part_detail.WorkOrder_id = @id", connection);
                 cmd.Parameters.AddWithValue("id", id);
                 using(SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -263,6 +263,47 @@ namespace SWP_CarService_Final.Services
             return partDetails;
         }
 
+        public List<PartDetail> GetPartDetailsByOrderID(string id, string UserName)
+        {
+            List<PartDetail> partDetails = new List<PartDetail>();
+            PartService partService = new PartService();
+            UserServices userSerivce = new UserServices();
+            try
+            {
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                SqlCommand cmd = new SqlCommand("select * from part_detail where part_detail.WorkOrder_id = @id and part_detail.userName = @userName", connection);
+                cmd.Parameters.AddWithValue("id", id);
+                cmd.Parameters.AddWithValue("userName", UserName);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        PartDetail part = new PartDetail()
+                        {
+                            ItemDetailId = reader.GetString(0),
+                            quantity = reader.GetInt32(1),
+                            price = reader.GetDecimal(2),
+                            status = reader.GetString(3),
+                            created = reader.GetDateTime(4),
+                            updated = reader.GetDateTime(5),
+                            WorkOrderId = reader.GetString(6),
+                            userName = reader.GetString(7),
+                            user = userSerivce.getUserByUsername(reader.GetString(7)),
+                            partID = reader.GetString(8),
+                            part = partService.GetPartByID(reader.GetString(8)),
+                        };
+                        partDetails.Add(part);
+                    }
+                }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            finally { connection.Close(); }
+            return partDetails;
+        }
+
         public void deletePartDetail(string id)
         {
             try
@@ -274,5 +315,7 @@ namespace SWP_CarService_Final.Services
             }catch (Exception ex) { throw new Exception(ex.Message); }
             finally { connection.Close(); }
         }
+
+       
     }
 }

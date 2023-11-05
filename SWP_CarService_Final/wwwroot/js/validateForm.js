@@ -321,6 +321,7 @@
         }
     });
 
+
     $("#createUserAcccount").validate({
         onfocusout: true,
         onkeyup: true,

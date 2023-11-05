@@ -27,22 +27,15 @@ namespace SWP_CarService_Final.Controllers
         public IActionResult create()
         {
 
-            TaskService taskService = new TaskService();
             return View();
         }
 
         [HttpPost]
-        public IActionResult create(string vehicleType, string description, DateTime timeArrived, List<string> servicesIDs)
+        public IActionResult create(string description, DateTime timeArrived, List<string> servicesIDs)
         {
             if (servicesIDs == null || servicesIDs.Count == 0)
             {
                 ModelState.AddModelError("servicesIDs", "Please select at least one service.");
-            }
-
-            if (string.IsNullOrEmpty(vehicleType))
-            if (string.IsNullOrEmpty(vehicleType))
-            {
-                ModelState.AddModelError("vehicleType", "The Vehicle Type field is required.");
             }
 
             if (string.IsNullOrEmpty(description))
@@ -64,7 +57,6 @@ namespace SWP_CarService_Final.Controllers
             Appointment newAppointment = new Appointment()
             {
                 description = description,
-                vehicalType = vehicleType,
                 timeArrived = timeArrived,
                 customer = cCustomer
             };

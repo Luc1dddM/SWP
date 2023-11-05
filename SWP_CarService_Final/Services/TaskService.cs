@@ -21,7 +21,7 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("Select * from Task", connection);
+                SqlCommand cmd = new SqlCommand("Select * from Task ORDER BY CAST(SUBSTRING(task_id, PATINDEX('%[0-9]%', task_id), LEN(task_id)) AS INT) desc", connection);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -41,39 +41,6 @@ namespace SWP_CarService_Final.Services
             finally { connection.Close(); }
             return tasks;
         }
-
-        public Task getTaskByIDForAppointment(string id)
-        {
-            Task task = null;
-            try
-            {
-                if (connection.State == System.Data.ConnectionState.Closed)
-                {
-                    connection.Open();
-                }
-                SqlCommand cmd = new SqlCommand("Select * from Task where task_id = @id", connection);
-                cmd.Parameters.AddWithValue("id", id);
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        task = new Task()
-                        {
-                            taskID = reader.GetString(0),
-                            taskName = reader.GetString(1),
-                            price = reader.GetDecimal(2),
-                            active = reader.GetBoolean(3),
-                        };
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return task;
-        }
-
 
         public Task GetTaskByID(string taskID)
         {

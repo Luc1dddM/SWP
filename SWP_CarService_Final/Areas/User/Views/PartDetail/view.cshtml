@@ -7,55 +7,7 @@
 }
 
 <div class="main-container content">
-    <div class="modal fade" id="exampleModal"
-         tabindex="-1"
-         aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"
-                        id="exampleModalLabel">
-                        Confirmation
-                    </h5>
-
-                    <button type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">
-                            ×
-                        </span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-
-                    <!-- Data passed is displayed
-                        in this part of the
-                        modal body -->
-                    <form action="/user/PartDetail/EditRequest" method="post">
-                        <div class="form-group">
-                            <input name="partDetailId" type="text" id="IdInput" hidden />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="quantity">Input Quantity</label>
-                            <input name="quantity" type="number" id="quantity" />
-                        </div>
-
-
-                        <div class="form-group">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <input type="submit" value="Submit" />
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
+   
 
     <div class="table-Request_Complete_Task ml-2 mr-2">
         <table class="" style="width: 100%;">
