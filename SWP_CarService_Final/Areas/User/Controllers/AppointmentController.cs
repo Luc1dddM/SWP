@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SWP_CarService_Final.Areas.User.Models;
 using SWP_CarService_Final.Models;
 using SWP_CarService_Final.Services;
+using System.Security.Claims;
 
 namespace Areas
 {
     [Area("User")]
+    [Authorize(Roles ="admin,leader")]
     public class AppointmentController : Controller
     {
         private readonly AppointmentService _appointmentService;

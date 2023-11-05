@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewData["direction"] = "Appointment List";
     @model List<Appointment>
+
 }
 
 <nav>
@@ -36,20 +37,10 @@
                 <p class="col-2 list-appointment__item--time-arrived">@appointment.timeArrived</p>
                 <p class="col-2 list-appointment__item--created">@appointment.customer.fullName</p>
                 <p class="col-2 list-appointment__item--customer">@appointment.status</p>
-
-                @if (@appointment.WorkOrderID.Trim().Equals(""))
+                @if (ViewBag.role != "admin" && appointment.status.Trim() != "Cancel")
                 {
-                    @if (ViewBag.role != "admin")
-                    {
-                        <a class="col-2" href="/user/order/create?ApmID=@appointment.appointmentID">Create Order</a>
-                    }
+                    <a class="col-2" href="/user/order/create/?ApmId=@appointment.appointmentID.Trim()">Create Order</a>
                 }
-                else
-                {
-                    <a class="col-2" href="/user/OrderDetail/view/?WorkOrderID=@appointment.WorkOrderID">View Work Order</a>
-                }
-
-
             </div>
             <div class="row appointment-detail__container">
 

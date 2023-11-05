@@ -35,7 +35,6 @@ namespace SWP_CarService_Final
             builder.Services.AddScoped<CategoryServices>();
             builder.Services.AddScoped<PartService>();
             builder.Services.AddScoped<PartDetailService>();
-
             builder.Services.AddScoped <ManagementServices>();
 
 
@@ -45,8 +44,9 @@ namespace SWP_CarService_Final
                     option =>
                     {
                         option.LoginPath = "/Home/login";
+                        option.LoginPath = "/user/Home/login";
                         option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-                        option.AccessDeniedPath = "/Home/logout";
+                        option.AccessDeniedPath = "/Home/login";
                     }
                 );
 

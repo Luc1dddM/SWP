@@ -8,9 +8,6 @@ namespace SWP_CarService_Final.Models
         public string appointmentID {  get; set; }
 
         [Required]
-        public string vehicalType { get; set; }
-
-        [Required]
         public string description { get; set; }
 
         [Required]
@@ -20,6 +17,5 @@ namespace SWP_CarService_Final.Models
         public string status { get; set; }
         public List<AppointmentDetail> details { get; set; }
         public Customer customer { get; set; }
-        public string WorkOrderID { get; set; }
     }
 }
