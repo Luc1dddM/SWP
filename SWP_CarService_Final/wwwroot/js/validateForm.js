@@ -1,9 +1,13 @@
 ﻿$(document).ready(function () {
-    function textOnly(value, element) {
+    /*function textOnly(value, element) {
         return this.optional(element) || /^[a-zA-Z\s\u00C0-\u024F]+$/.test(value);
     }
 
-    $.validator.addMethod("textonly", textOnly, "Only text characters are allowed.");
+    $.validator.addMethod("textonly", textOnly, "Only text characters are allowed.");*/
+
+    $.validator.addMethod("textonly", function (value, element) {
+        return this.optional(element) || /^[a-zA-Z\s]+$/i.test(value);
+    }, "Only text characters are allowed.");
 
     $.validator.addMethod("positiveNumber", function (value, element) {
         return Number(value) >= 0;
@@ -198,6 +202,7 @@
             "teamName": {
                 required: true,
                 textonly: true
+                /*maxLength: 10*/
             },
         },
     });
@@ -210,6 +215,7 @@
             "teamName": {
                 required: true,
                 textonly: true
+               /* maxLength: 10*/
             },
         },
     });
