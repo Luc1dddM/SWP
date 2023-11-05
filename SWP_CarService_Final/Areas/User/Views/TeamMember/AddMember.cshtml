@@ -41,7 +41,7 @@
             </div>
             <div class="p-4">
                 <h3>@ViewBag.msg</h3>
-                <form method="post" action="AddMember" @* onsubmit="return submitAddTeam() *@">
+                <form method="post" action="AddMember">
                     <div class="form-group">
                         <input type="hidden" name="teamId" value="@ViewBag.teamId">
                         <label for="exampleFormControlSelect2">Member Not In Team</label>
@@ -58,8 +58,8 @@
             </div>
         </div>
     </div>
-    @* <script>
-        function submitAddTeam() {
+    <script>
+      @*  function submitAddTeam() {
             let text = "Do you want to add this member?";
             if (confirm(text)) {
                 alert("Submitted successfully");
@@ -68,7 +68,7 @@
                 alert("Add canceled!");
                 return false;
             }
-        }
+            } *@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
