@@ -40,7 +40,7 @@
                 <h3>Edit Task Detail</h3>
             </div>
             <div class="p-4">
-                <form method="post">
+                <form id="editTaskDetail" method="post">
                     <div class="form-group">
                         <input hidden type="text" value="@Model.wod_id" name="id">
                     </div>
@@ -55,26 +55,29 @@
                         </select>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary"
-                                onclick="submitRegister()">
-                            Submit
-                        </button>
+                        <button type="submit" class="btn btn-primary">Submit </button>
                     </div>
-
                 </form>
             </div>
         </div>
     </div>
-    <script>
-        function submitRegister() {
-            let text = "Do you want to submit this form?";
-            if (confirm(text) == true) {
-                alert("your submit successfully");
-            } else {
-                alert("You canceled!");
+
+    <div>
+        <style>
+            label.error {
+                color: red;
+                width: 100%;
+                text-align: left;
+                padding-left: 4px;
+                display: block;
+                padding-top: 5px;
             }
-        }
-    </script>
+        </style>
+    </div>
+
+    <script src="~/lib/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/lib/jquery/jquery.validate.min.js"></script>
+    <script src="~/js/validateForm.js"></script>
 </body>
 
 </html>

@@ -21,7 +21,7 @@ namespace SWP_CarService_Final.Services
             try
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("Select * from Task", connection);
+                SqlCommand cmd = new SqlCommand("Select * from Task ORDER BY CAST(SUBSTRING(task_id, PATINDEX('%[0-9]%', task_id), LEN(task_id)) AS INT) desc", connection);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SWP_CarService_Final.Areas.User.Models;
+using SWP_CarService_Final.Models;
 using SWP_CarService_Final.Services;
 using User = SWP_CarService_Final.Areas.User.Models.User;
 
@@ -50,7 +51,17 @@ namespace Areas
                     account_status = status == "active" ? true : false,
                     created = DateTime.Now,
                 };
+                User existingUser = _userAccount.getUserByUserName(username);
+                if (existingUser != null)
+                {
+                    TempData["ErrorMsg"] = "Username already exists";
+                    TempData["UserExist"] = existingUser.UserName;
+                    TempData["InputValues"] = user; // Save input values in TempData
+                    TempData["InputRoleId"] = roleId;
+                    return View();
+                }
                 _userAccount.createAccount(user, roleId);
+
             }
             catch (Exception ex)
             {
@@ -100,8 +111,19 @@ namespace Areas
         [HttpPost]
         public IActionResult AddMember(string teamId, List<string> username)
         {
-            _teamMemberService.AddTeamMember(teamId, username);
-            return Redirect("/user/team/ViewAllTeam");
+            bool leaderExist = _teamMemberService.CheckLeaderExist(teamId);
+            var user = _teamMemberService.CheckIfListMemberExistLeader(username);
+            if (leaderExist && user)
+            {
+                TempData["msg"] = "This Team Already Has A Leader";
+                return Redirect("/user/TeamMember/AddMember?teamId=" + teamId);
+            }
+            else
+            {
+                _teamMemberService.AddTeamMember(teamId, username);
+                return Redirect("/user/team/ViewAllTeam");
+            }
+
         }
 
 
@@ -114,15 +136,26 @@ namespace Areas
         [HttpPost]
         public IActionResult EditTeamMember(string username, string role_id, string team_id)
         {
+            User user = null;
             try
             {
-                User user = new User()
+                bool leaderExist = _teamMemberService.CheckLeaderExist(team_id);
+                var userRole = _teamMemberService.GetRoleNameByRoleID(role_id);
+                if (leaderExist && userRole.role_name.Equals("leader"))
                 {
-                    UserName = username,
-                };
+                    TempData["msg"] = "This Team Already Has A Leader";
+                    return Redirect("/user/TeamMember/EditTeamMember?Username=" + username);
+                }
+                else
+                {
+                    user = new User()
+                    {
+                        UserName = username,
+                    };
 
-                _teamMemberService.EditTeamMemberRoleByUserName(username, role_id);
-                _teamMemberService.EditMemberTeam(username, team_id);
+                    _teamMemberService.EditTeamMemberRoleByUserName(username, role_id);
+                    _teamMemberService.EditMemberTeam(username, team_id);
+                }
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
 

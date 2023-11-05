@@ -19,14 +19,18 @@ namespace SWP_CarService_Final.Services
                     {
                         var role = new Role()
                         {
-                           role_id = reader.GetString(0),
-                           role_name = reader.GetString(1),
+                           role_id = reader.GetString(0).Trim(),
+                           role_name = reader.GetString(1).Trim(),
                         };
                         roles.Add(role);
                     }
 
                 }
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
             finally
             {

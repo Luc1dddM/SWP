@@ -23,7 +23,7 @@ namespace SWP_CarService_Final.Controllers
             string cCustomerString = _contx.HttpContext.Session.GetString("cCus");
             Customer cCustomer = JsonConvert.DeserializeObject<Customer>(cCustomerString);
             /*ViewBag.Customer = cCustomer;*/
-            return View();
+            return View(cCustomer);
         }
 
         [HttpPost]
