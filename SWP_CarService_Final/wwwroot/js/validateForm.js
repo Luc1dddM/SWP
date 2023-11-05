@@ -321,7 +321,6 @@
         }
     });
 
-
     $("#createUserAcccount").validate({
         onfocusout: true,
         onkeyup: true,
@@ -472,6 +471,31 @@
                 required: "Please enter the Description.",
             },
         },
+    });
+
+    $("#createAppointment").validate({
+        onfocusout: true,
+        onkeyup: true,
+        onclick: true,
+        rules: {
+            "description": {
+                required: true
+            },
+            "servicesIDs": {
+                required: true,
+            },
+            "timeArrived": {
+                required: true,
+            }
+        },
+        messages: {
+            "servicesIDs": {
+                required: "Please select at least one service."
+            },
+            "timeArrived": {
+                required: "Please select a time for the appointment."
+            }
+        }
     });
 
 });
