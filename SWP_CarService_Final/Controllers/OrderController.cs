@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SWP_CarService_Final.Areas.User.Models;
 using SWP_CarService_Final.Models;
@@ -6,6 +7,7 @@ using SWP_CarService_Final.Services;
 
 namespace SWP_CarService_Final.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly AppointmentService _appointmentService;

@@ -42,39 +42,6 @@ namespace SWP_CarService_Final.Services
             return tasks;
         }
 
-        public Task getTaskByIDForAppointment(string id)
-        {
-            Task task = null;
-            try
-            {
-                if (connection.State == System.Data.ConnectionState.Closed)
-                {
-                    connection.Open();
-                }
-                SqlCommand cmd = new SqlCommand("Select * from Task where task_id = @id", connection);
-                cmd.Parameters.AddWithValue("id", id);
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        task = new Task()
-                        {
-                            taskID = reader.GetString(0),
-                            taskName = reader.GetString(1),
-                            price = reader.GetDecimal(2),
-                            active = reader.GetBoolean(3),
-                        };
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return task;
-        }
-
-
         public Task GetTaskByID(string taskID)
         {
             Task task = null;

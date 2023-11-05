@@ -204,8 +204,7 @@ namespace SWP_CarService_Final.Services
                     "(select team_id from Team_Members join [user] on [user].UserName = Team_Members.userName where [User].UserName = @username) " +
                     "and [user].UserName not in " +
                     "(select [user].UserName from [user] join User_role on [user].UserName = User_role.userName join [Role] on User_role.role_id = [Role].role_id " +
-                    "where [Role].role_name = 'leader')" +
-                    "and [user].UserName not in (select task_detail.userName from task_detail where task_detail.status = 'Process')", connection);
+                    "where [Role].role_name = 'leader')", connection);
                 command.Parameters.AddWithValue("username", UserName);
                 using(SqlDataReader reader = command.ExecuteReader())
                 {

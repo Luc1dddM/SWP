@@ -89,36 +89,55 @@ namespace SWP_CarService_Final.Controllers
             return RedirectToAction("login");
         }
 
-        public IActionResult ResetPassword(string Username)
+        public IActionResult ResetPassword()
         {
-            ViewBag.username = Username;
             return View();
         }
 
-       /* [HttpPost]
-        public IActionResult ResetPassword(string Username, string Password)
+        [HttpPost]
+        public IActionResult ResetPassword(string email)
         {
             try
             {
-                Customer customer = new Customer()
+                if (_userService.checkUserByEmail(email))
                 {
-                    user_name = Username,
-                    password = Password
+                    return Redirect("ResetPassworkStep2?email=" + email);
                 };
-            _userService.ResetCustomerPassword(Username, Password);
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
+            ViewBag.Msg = "Email not found";
+            return View("login");
+        }
+
+        public IActionResult ResetPassworkStep2(string email)
+        {
+            ViewBag.email = email;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ResetPassworkStep2(string email, string otp, string password)
+        {
+            try
+            {
+                _userService.resetPassword(password, otp, email);
+            }catch(Exception ex)
+            {
+                return Redirect("/home/Error?msg=" + ex.Message);
+            }
             return Redirect("login");
-        }*/
+        }
 
         public IActionResult Privacy()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(string? msg)
         {
+            if(msg != null)
+            {
+                ViewBag.msg = msg;
+            }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 

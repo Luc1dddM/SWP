@@ -1,10 +1,8 @@
 ﻿@using SWP_CarService_Final.Models
-
 @{
-    ViewData["Title"] = "ViewListRequest";
+    ViewData["Title"] = "ViewListRequestRepair";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     @model List<TaskDetail>
-
 }
 
 <div class="main-container content">
@@ -36,11 +34,13 @@
                             </div>
                         </td>
                         <td class="table-Request_Complete_Task__action--col">
-                            <a class="mr-2" href="/test/TaskDetail/ResponseRequest?wodID=@task.wod_id.Trim()&Response=Completed"><button type="button" class="btn btn-primary btn-complete">Accept</button></a>
-                            <a class="mr-2" href="/test/TaskDetail/ResponseRequest?wodID=@task.wod_id.Trim()&Response=Process"><button type="button" class="btn btn-danger btn-complete">Cancel</button></a>
+                            <a class="mr-2" href="/test/TaskDetail/ResponseRequest?wodID=@task.wod_id.Trim()&Response=Process&repair=true"><button type="button" class="btn btn-primary btn-complete">Accept</button></a>
+                            <a class="mr-2 icon" href="/user/TaskDetail/delete?taskId=@task.wod_id.Trim()&woid=@task.WorkOrderId"><i class="fa-solid fa-trash-can "></i></a>
                         </td>
                     </tr>
                 }
             </tbody>
     </div>
 </div>
+
+
