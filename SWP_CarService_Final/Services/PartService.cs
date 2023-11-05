@@ -399,7 +399,7 @@ namespace SWP_CarService_Final.Services
             {
                 part = GetPartByID(nPart.part_id);
                 connection.Open();
-                if (part != null)
+                if (nPart.img != null)
                 {
                     SqlCommand command = new SqlCommand("UPDATE [SWP].[dbo].[Part] SET [part_name] = @part_name, " +
                                                         "[price] = @price, [quantity] = @quantity, " +
@@ -414,7 +414,15 @@ namespace SWP_CarService_Final.Services
                 }
                 else
                 {
-                    throw new Exception("This part does not already exist.");
+                        SqlCommand command = new SqlCommand("UPDATE [SWP].[dbo].[Part] SET [part_name] = @part_name, " +
+                                                            "[price] = @price, [quantity] = @quantity " +
+                                                            "WHERE[part_id] = @part_id", connection);
+                        command.Parameters.AddWithValue("part_id", nPart.part_id);
+                        command.Parameters.AddWithValue("part_name", nPart.part_name);
+                        command.Parameters.AddWithValue("price", nPart.price);
+                        command.Parameters.AddWithValue("quantity", nPart.quantity);
+                        command.ExecuteNonQuery();
+
                 }
 
             }
